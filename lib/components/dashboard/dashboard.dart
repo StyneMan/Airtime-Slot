@@ -1,21 +1,27 @@
+import 'dart:convert';
 import 'dart:io';
 
-// import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/preference/preference_manager.dart';
+import 'package:airtimeslot_app/auth_controller.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/database/database_handler.dart';
+// import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
+import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
+import 'package:airtimeslot_app/screens/account/account.dart';
+import 'package:airtimeslot_app/screens/home/home.dart';
+import 'package:airtimeslot_app/screens/messages/my_messages.dart';
+import 'package:airtimeslot_app/screens/network/no_internet.dart';
+import 'package:airtimeslot_app/screens/transaction/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-
-import '../../helper/state/state_manager.dart';
-import '../../screens/account/account.dart';
-import '../../screens/home/home.dart';
-import '../../screens/messages/my_messages.dart';
-import '../../screens/network/no_internet.dart';
-import '../../screens/transaction/transaction.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   final PreferenceManager manager;
@@ -31,9 +37,54 @@ class _DashboardState extends State<Dashboard> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
 
+  List<UserTransaction> _transactionList = [];
+  List<GuestTransactionModel> _transactionListGuest = [];
+
+  _parseState() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool _isLoggedIn = prefs.getBool("loggedIn") ?? false;
+    // debugPrint("AUTHED:: $_isLoggedIn");
+    if (_isLoggedIn) {
+      var data = _controller.transactions.value;
+      for (var v in data) {
+        _transactionList.add(UserTransaction.fromJson(v));
+      }
+    } else {
+      final resp = await DatabaseHandler().transactions();
+      setState(() {
+        _transactionListGuest = resp;
+      });
+    }
+  }
+
+  _getProducts() async {
+    try {
+      final response = await APIService().getProducts();
+      debugPrint("PRODUCT RESP:: ${response.body}");
+      _controller.setHasInternet(true);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        // ProductResponse body = ProductResponse.fromJson(map);
+        _controller.setProductData(map);
+      }
+    } on SocketException {
+      // toast("No Internet Connection!");
+      _controller.setHasInternet(false);
+    } on Error catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _parseState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getProducts();
   }
 
   @override
@@ -80,39 +131,44 @@ class _DashboardState extends State<Dashboard> {
               ? const NoInternet()
               : Scaffold(
                   key: _scaffoldKey,
-                  body: PersistentTabView(
-                    context,
-                    screens: _buildScreens(_isLoggedIn),
-                    items: _navBarsItems(),
-                    controller: _controller.tabController,
-                    confineInSafeArea: true,
-                    handleAndroidBackButtonPress: false, // Default is true.
-                    resizeToAvoidBottomInset:
-                        true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-                    stateManagement: true, // Default is true.
-                    hideNavigationBarWhenKeyboardShows:
-                        true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-                    decoration: const NavBarDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24),
-                      ),
-                      colorBehindNavBar: Colors.white,
-                    ),
-                    popAllScreensOnTapOfSelectedTab: true,
-                    popActionScreens: PopActionScreensType.all,
-                    itemAnimationProperties: const ItemAnimationProperties(
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.ease,
-                    ),
-                    screenTransitionAnimation: const ScreenTransitionAnimation(
-                      animateTabTransition: true,
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: 200),
-                    ),
-                    navBarStyle: NavBarStyle
-                        .style7, // Choose the nav bar style with this property.
-                  ),
+                  body: _controller.hideNavbar.value
+                      ? const SizedBox()
+                      : PersistentTabView(
+                          context,
+                          screens: _buildScreens(_isLoggedIn),
+                          items: _navBarsItems(),
+                          // controller: _controller.tabController,
+                          confineInSafeArea: true,
+                          handleAndroidBackButtonPress:
+                              false, // Default is true.
+                          resizeToAvoidBottomInset:
+                              true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+                          stateManagement: true, // Default is true.
+                          hideNavigationBarWhenKeyboardShows:
+                              true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+                          decoration: const NavBarDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
+                            ),
+                            colorBehindNavBar: Colors.white,
+                          ),
+                          popAllScreensOnTapOfSelectedTab: true,
+                          popActionScreens: PopActionScreensType.all,
+                          itemAnimationProperties:
+                              const ItemAnimationProperties(
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.ease,
+                          ),
+                          screenTransitionAnimation:
+                              const ScreenTransitionAnimation(
+                            animateTabTransition: true,
+                            curve: Curves.ease,
+                            duration: Duration(milliseconds: 200),
+                          ),
+                          navBarStyle: NavBarStyle
+                              .style7, // Choose the nav bar style with this property.
+                        ),
                 ),
         ),
       ),
@@ -170,9 +226,14 @@ class _DashboardState extends State<Dashboard> {
       Home(
         manager: widget.manager,
       ),
-      MyTransactions(manager: widget.manager),
-      MyMessages(manager: widget.manager),
-      Account(manager: widget.manager),
+      MyTransactions(
+          manager: widget.manager,
+          model: _transactionList,
+          guestModel: _transactionListGuest),
+      AuthController(
+        component: MyMessages(manager: widget.manager),
+      ),
+      AuthController(component: Account(manager: widget.manager)),
     ];
   }
 }

@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/auth/resetpass/resetpass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
@@ -10,12 +15,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-import '../../../components/text_components.dart';
-import '../../../helper/constants/constants.dart';
-import '../../../helper/preference/preference_manager.dart';
-import '../../../helper/state/state_manager.dart';
-import '../account_created/successscreen.dart';
-import '../resetpass/resetpass.dart';
+
 
 typedef void InitCallback(params);
 

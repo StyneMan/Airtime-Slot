@@ -1,23 +1,46 @@
-class ProductMenu {
-  late int id;
-  late String name;
-  late String image;
+import 'package:airtimeslot_app/model/networks/network_product.dart';
 
-  ProductMenu({
+class ProductModel {
+  int? id;
+  String? name;
+  String? description;
+  String? createdAt;
+  String? updatedAt;
+  List<NetworkProducts>? networks;
+
+  ProductModel({
     required this.id,
-    required this.image,
     required this.name,
+    required this.description,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.networks,
   });
 
-  ProductMenu.fromJson(Map<String, dynamic> parsedJson) {
-    id = parsedJson['id'];
-    name = parsedJson['name'];
-    image = parsedJson['image'] ?? "";
+  ProductModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    if (json['networks'] != null) {
+      networks = [];
+      json['networks'].forEach((v) {
+        networks?.add(NetworkProducts.fromJson(v));
+      });
+    }
   }
 
-  Map<String, dynamic> toJson(ProductMenu option) => {
-        'image': image,
-        'name': name,
-        'id': id,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> ProductModel = <String, dynamic>{};
+    ProductModel['id'] = id;
+    ProductModel['name'] = name;
+    ProductModel['description'] = description;
+    ProductModel['created_at'] = createdAt;
+    ProductModel['updated_at'] = updatedAt;
+    if (networks != null) {
+      ProductModel['networks'] = networks?.map((v) => v.toJson()).toList();
+    }
+    return ProductModel;
+  }
 }

@@ -1,18 +1,18 @@
 import 'dart:io';
 
+import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
+import 'package:airtimeslot_app/components/picker/img_picker.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/profile/editprofileform.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/instance_manager.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../components/drawer/custom_drawer.dart';
-import '../../components/picker/img_picker.dart';
-import '../../components/text_components.dart';
-import '../../forms/profile/editprofileform.dart';
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../helper/state/state_manager.dart';
 
 class EditProfile extends StatefulWidget {
   final PreferenceManager manager;

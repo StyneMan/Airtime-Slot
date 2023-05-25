@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -46,13 +46,13 @@ class _ImgPickerState extends State<ImgPicker> {
           ],
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'EasyFit Cropper',
+                toolbarTitle: 'Image Cropper',
                 toolbarColor: Constants.primaryColor,
                 toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(
-              title: 'EasyFit Cropper',
+              title: 'Image Cropper',
             ),
             WebUiSettings(
               context: context,
@@ -66,7 +66,7 @@ class _ImgPickerState extends State<ImgPicker> {
           Navigator.of(context).pop();
         });
       } else {
-        print('No image selected.');
+        debugPrint('No image selected.');
       }
     } catch (e) {
       debugPrint("IMAGE CROP ERR: ${e.toString()}");
@@ -92,13 +92,13 @@ class _ImgPickerState extends State<ImgPicker> {
           ],
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'EasyFit Cropper',
+                toolbarTitle: 'Image Cropper',
                 toolbarColor: Constants.primaryColor,
                 toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(
-              title: 'EasyFit Cropper',
+              title: 'Image Cropper',
             ),
             WebUiSettings(
               context: context,
@@ -112,7 +112,7 @@ class _ImgPickerState extends State<ImgPicker> {
           Navigator.of(context).pop();
         });
       } else {
-        print('No image selected.');
+        debugPrint('No image selected.');
       }
     } catch (e) {
       debugPrint("IMAGE CROP ERR: ${e.toString()}");

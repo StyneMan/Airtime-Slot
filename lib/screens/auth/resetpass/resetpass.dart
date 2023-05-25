@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/forms/resetpassword/resetpassform.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/resetpassword/resetpassform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -57,10 +54,10 @@ class _State extends State<ResetPassword> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
-                      Container(
+                      SizedBox(
                         child: Wrap(
                           children: [
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width * 0.64,
                               child: TextPoppins(
                                 text:

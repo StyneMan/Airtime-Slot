@@ -1,9 +1,9 @@
-import 'package:easyfit_app/data/transactions/demo_transactions.dart';
+import 'package:airtimeslot_app/data/transactions/demo_transactions.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../helper/constants/constants.dart';
-import '../../../helper/preference/preference_manager.dart';
 
 class AutoCompleteTextField extends StatefulWidget {
   const AutoCompleteTextField({Key? key}) : super(key: key);

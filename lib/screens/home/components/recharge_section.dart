@@ -1,16 +1,17 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/data/services/services_data.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/screens/services/service_info.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../../components/text_components.dart';
-import '../../../data/services/services_data.dart';
-import '../../../helper/preference/preference_manager.dart';
-import '../../services/service_info.dart';
-
 class RechargeSection extends StatelessWidget {
   final PreferenceManager manager;
+  final bool isAuthenticated;
   const RechargeSection({
     Key? key,
     required this.manager,
+    required this.isAuthenticated,
   }) : super(key: key);
 
   @override
@@ -21,12 +22,15 @@ class RechargeSection extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.grey.shade300,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(6.0),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextPoppins(text: "Recharge", fontSize: 18),
+          // TextPoppins(text: "Recharge", fontSize: 18),
           GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -42,8 +46,10 @@ class RechargeSection extends StatelessWidget {
                   context,
                   screen: ServiceInfo(
                     manager: manager,
-                    serviceName: rechargeList[index].title,
-                    data: rechargeList[index],
+                    isAuthenticated: isAuthenticated,
+                    service: rechargeList[index].title == "Cable TV"
+                        ? "Cable_TV"
+                        : rechargeList[index].title,
                   ),
                   withNavBar: true, // OPTIONAL VALUE. True by default.
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,

@@ -1,13 +1,14 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/data/transactions/demo_transactions.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../../components/text_components.dart';
-import '../../../data/transactions/demo_transactions.dart';
-import '../../../helper/constants/constants.dart';
-import '../../../helper/preference/preference_manager.dart';
-import '../../../helper/state/state_manager.dart';
+
 import 'autocomplete_tf.dart';
 
 class ListComponent extends StatefulWidget {
@@ -31,17 +32,17 @@ class _ListComponentState extends State<ListComponent> {
   @override
   void initState() {
     super.initState();
-    if (_controller.menus.value.isNotEmpty) {
-      setState(() {
-        _filtered = myTransactions;
-      });
-    }
+    // if (_controller.menus.value.isNotEmpty) {
+    //   setState(() {
+    //     _filtered = myTransactions;
+    //   });
+    // }
 
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _isLoaded = true;
-      });
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   setState(() {
+    //     _isLoaded = true;
+    //   });
+    // });
   }
 
   String timeUntil(DateTime date) {
@@ -79,28 +80,7 @@ class _ListComponentState extends State<ListComponent> {
           const SizedBox(
             height: 16.0,
           ),
-          // !_isLoaded
-          //     ? Shimmer.fromColors(
-          //         child: ListView.separated(
-          //           shrinkWrap: true,
-          //           itemCount: 4,
-          //           physics: const NeverScrollableScrollPhysics(),
-          //           separatorBuilder: (context, index) => const Divider(),
-          //           itemBuilder: (context, index) => Card(
-          //             elevation: 1.0,
-          //             shape: RoundedRectangleBorder(
-          //               borderRadius: BorderRadius.circular(12),
-          //             ),
-          //             child: SizedBox(
-          //               height: 64,
-          //               width: MediaQuery.of(context).size.width * 0.90,
-          //             ),
-          //           ),
-          //         ),
-          //         baseColor: Colors.grey[300]!,
-          //         highlightColor: Colors.grey[100]!,
-          //       )
-          //     :
+      
           ListView.separated(
             itemBuilder: (context, i) => TextButton(
               onPressed: () {},

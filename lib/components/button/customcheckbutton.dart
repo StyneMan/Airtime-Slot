@@ -1,5 +1,6 @@
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
+
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 typedef InitCallback(bool isActive);

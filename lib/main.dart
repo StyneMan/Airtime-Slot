@@ -3,31 +3,28 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:easyfit_app/components/dashboard/dashboard.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/preference/preference_manager.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
-import 'package:easyfit_app/helper/theme/app_theme.dart';
-import 'package:easyfit_app/screens/network/no_internet.dart';
-import 'package:easyfit_app/screens/onboarding/walkthrough.dart';
+import 'package:airtimeslot_app/helper/theme/app_theme.dart';
+import 'package:airtimeslot_app/screens/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'components/dashboard/dashboard.dart';
+import 'helper/constants/constants.dart';
+import 'helper/preferences/preference_manager.dart';
+import 'helper/state/state_controller.dart';
+import 'screens/network/no_internet.dart';
+import 'screens/onboarding/walkthrough.dart';
 
 enum Version { lazy, wait }
 
-// Cmd-line args/Env vars: https://stackoverflow.com/a/64686348/2301224
 const String version = String.fromEnvironment('VERSION');
 const Version running = version == "lazy" ? Version.lazy : Version.wait;
 
 class GlobalBindings extends Bindings {
-  // final LocalDataProvider _localDataProvider = LocalDataProvider();
   @override
   void dependencies() {
     Get.lazyPut<StateController>(() => StateController(), fenix: true);
-    // Get.put<StateController>(StateController(), permanent: true);
-    // Get.put<LocalDataProvider>(_localDataProvider, permanent: true);
-    // Get.put<LocalDataSource>(LocalDataSource(_localDataProvider),
-    // permanent: true);
   }
 }
 
@@ -44,28 +41,6 @@ class AwaitBindings extends Bindings {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-
-  // GlobalBindings().dependencies();
-  // Get.put(StateController());
-
-  //WidgetsFlutterBinding.ensureInitialized(); // if needed for resources
-  // if (running == Version.lazy) {
-  // print('running LAZY version');
-  // GlobalBindings().dependencies();
-  // }
-
-  // if (running == Version.wait) {
-  //   print('running AWAIT version');
-  //   await AwaitBindings().dependencies(); // await is key here
-  // }
-
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-  //     overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //   systemNavigationBarColor: Constants.accentColor, // navigation bar color
-  // ));
 
   runApp(
     MyApp(),
@@ -105,17 +80,20 @@ class _MyAppState extends State<MyApp> {
               ));
         } else {
           // Loading is done, return the app:
+          final SharedPreferences d = snapshot.requireData;
+          final bool _loggedIn = d.getBool("loggedIn") ?? false;
+          // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Payment App',
+            title: 'Airtime Slot',
             theme: appTheme,
             home: _controller.hasInternetAccess.value
-                ? 2 == 2
-                    ? Walkthrough(manager: _manager!)
-                    : Dashboard(manager: _manager!)
+                ? _loggedIn
+                    ? Dashboard(manager: _manager!)
+                    : const Welcome()
                 : const NoInternet(),
           );
-        }
+        } ///Users/thankgodokoro/Desktop/code    /Users/thankgodokoro/Desktop/code/Stanley
       },
     );
   }
@@ -139,7 +117,7 @@ class _SplashState extends State<Splash> {
     } on SocketException catch (io) {
       widget.controller.setHasInternet(false);
     } catch (e) {
-      print("$e");
+      debugPrint("$e");
     }
   }
 
@@ -164,7 +142,10 @@ class Init {
   static final instance = Init._();
 
   Future initialize() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
+    return await SharedPreferences.getInstance();
   }
 }
 
@@ -175,7 +156,7 @@ class Dao {
 
   static Future<Dao> createAsync() async {
     var dao = Dao._privateConstructor();
-    print('Dao.createAsync() called');
+    // print('Dao.createAsync() called');
     return dao._initAsync();
   }
 
@@ -184,7 +165,7 @@ class Dao {
   Future<Dao> _initAsync() async {
     dbValue =
         await Future.delayed(const Duration(seconds: 5), () => 'Some DB data');
-    print('Dao._initAsync done');
+    // print('Dao._initAsync done');
     return this;
   }
 }

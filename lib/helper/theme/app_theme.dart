@@ -1,4 +1,4 @@
-import 'package:easyfit_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,6 +11,9 @@ ThemeData appTheme = ThemeData(
   ),
   textTheme: const TextTheme(
     bodyText2: TextStyle(),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(elevation: 0.0),
   ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   inputDecorationTheme: const InputDecorationTheme(
@@ -37,10 +40,10 @@ ThemeData appTheme = ThemeData(
       .colorScheme
       .copyWith(
         primary: Constants.primaryColor,
-        secondary: const Color(0xFF64EE85),
+        secondary: Constants.accentColor,
         brightness: Brightness.light,
       )
       .copyWith(
-        secondary: const Color(0xFF64EE85),
+        secondary: Constants.accentColor,
       ),
 );

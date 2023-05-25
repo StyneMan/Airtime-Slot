@@ -1,11 +1,11 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/model/onboarding/onboarding_model.dart';
+import 'package:airtimeslot_app/screens/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../components/text_components.dart';
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../model/onboarding/onboarding_model.dart';
-import '../welcome/welcome.dart';
 
 class Walkthrough extends StatefulWidget {
   final PreferenceManager manager;
@@ -19,7 +19,7 @@ class Walkthrough extends StatefulWidget {
 }
 
 class _WalkthroughState extends State<Walkthrough> {
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
   int currentIndex = 0;
 
   @override
@@ -42,9 +42,8 @@ class _WalkthroughState extends State<Walkthrough> {
                 height: 16,
               ),
               Image.asset(
-                "assets/images/app_logo.png",
-                width: 48,
-                height: 48,
+                "assets/images/logo.png",
+               
                 fit: BoxFit.contain,
               ),
               Expanded(

@@ -9,25 +9,30 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 // import 'package:logger/logger.dart';
 
 class Constants {
-  static const Color primaryColor = Color(0xFF40898A);
-  static const Color accentColor = Color(0x79CFECED);
+  static const Color primaryColor = Color(0xFF1D9BE3);
+  static const Color accentColor = Color(0xE78FD0FF);
   static const Color secondaryColor = Color(0xFF000000);
 
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
+  static const baseURL = "https://vattax.deepay.com.ng/";
+  static const payKey = String.fromEnvironment("PAYSTACK_PUB_KEY");
+
   static String pstk = "pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(
-        amount: double.parse("${amt}.00"),
-        settings: MoneyFormatterSettings(
-            symbol: 'NGN',
-            thousandSeparator: ',',
-            decimalSeparator: '.',
-            symbolAndNumberSeparator: ' ',
-            fractionDigits: 3,
-            compactFormatType: CompactFormatType.short));
+      amount: double.parse("${amt}.00"),
+      settings: MoneyFormatterSettings(
+        symbol: 'NGN',
+        thousandSeparator: ',',
+        decimalSeparator: '.',
+        symbolAndNumberSeparator: ' ',
+        fractionDigits: 3,
+        compactFormatType: CompactFormatType.short,
+      ),
+    );
     return fmf.output.withoutFractionDigits;
   }
 

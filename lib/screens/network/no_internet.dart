@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
-import 'package:easyfit_app/main.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/instance_manager.dart';

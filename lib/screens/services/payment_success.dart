@@ -1,11 +1,11 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../components/text_components.dart';
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../home/home.dart';
 
 class PaymentSuccess extends StatelessWidget {
   final PreferenceManager manager;

@@ -1,3 +1,5 @@
+import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -5,8 +7,21 @@ import '../../components/text_components.dart';
 import '../auth/login/login.dart';
 import '../auth/register/register.dart';
 
-class Welcome extends StatelessWidget {
+class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
+
+  @override
+  State<Welcome> createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<Welcome> {
+  PreferenceManager? _manager;
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = PreferenceManager(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +37,17 @@ class Welcome extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
             ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/splash_icon.png',
-                    width: MediaQuery.of(context).size.width * 0.48,
-                  ),
-                  TextPoppins(
-                    text: "XYZ Payment App",
-                    fontSize: 24,
-                    color: Colors.white,
-                    align: TextAlign.center,
-                    fontWeight: FontWeight.bold,
-                  )
-                ],
-              ),
-            ),
             Positioned(
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
+              top: 8.0,
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color.fromARGB(200, 0, 0, 0),
-                      Color.fromARGB(0, 0, 0, 0)
+                      Color.fromARGB(234, 0, 0, 0),
+                      Color.fromARGB(90, 0, 0, 0)
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
@@ -73,6 +70,8 @@ class Welcome extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  
+                  
                   Container(
                     padding: const EdgeInsets.all(0.0),
                     decoration: BoxDecoration(
@@ -92,14 +91,14 @@ class Welcome extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.size,
                             alignment: Alignment.bottomCenter,
-                            child: Login(),
+                            child: const Login(),
                           ),
                         );
                       },
                       child: const Text("Sign in"),
                       style: TextButton.styleFrom(
-                        onSurface: Colors.white,
-                        primary: Colors.white,
+                        foregroundColor: Colors.white,
+                        disabledForegroundColor: Colors.white.withOpacity(0.38),
                       ),
                     ),
                   ),
@@ -125,7 +124,7 @@ class Welcome extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.size,
                             alignment: Alignment.bottomCenter,
-                            child: Register(),
+                            child: const Register(),
                           ),
                         );
                       },
@@ -135,9 +134,61 @@ class Welcome extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 21.0,
+                  ),
                 ],
               ),
             ),
+            Positioned(
+              top: 56,
+              left: 24,
+              right: 24,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/app_logo.png',
+                      width: MediaQuery.of(context).size.width * 0.225,
+                    ),
+                    TextPoppins(
+                      text: "Airtime Slot Services",
+                      fontSize: 24,
+                      color: Colors.white,
+                      align: TextAlign.center,
+                      fontWeight: FontWeight.bold,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextPoppins(
+                      text: "You Are Welcome",
+                      fontSize: 28,
+                      color: Colors.white,
+                      align: TextAlign.center,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(
+                      height: 2.0,
+                    ),
+                    TextRoboto(
+                      text: "Create account or continue as a guest.",
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

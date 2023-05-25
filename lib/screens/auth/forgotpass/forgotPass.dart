@@ -1,13 +1,13 @@
 import 'dart:io';
 
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/forgotpassword/passwordform.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
-import '../../../components/text_components.dart';
-import '../../../forms/forgotPassword/passwordform.dart';
-import '../../../helper/state/state_manager.dart';
 
 class ForgotPassword extends StatelessWidget {
   ForgotPassword({Key? key}) : super(key: key);

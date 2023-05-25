@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/forms/login/loginform.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/preference/preference_manager.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
-import 'package:easyfit_app/screens/auth/register/register.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/login/loginform.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/auth/register/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
                       right: -4,
                       bottom: -5,
                       child: Image.asset(
-                        "assets/images/login_logo.png",
+                        "assets/images/login_img2.png",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
                                       PageTransition(
                                         type: PageTransitionType.size,
                                         alignment: Alignment.bottomCenter,
-                                        child: Register(),
+                                        child: const Register(),
                                       ),
                                     ),
                               // ..onTap = _showTermsOfService,

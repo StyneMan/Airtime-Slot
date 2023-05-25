@@ -1,4 +1,4 @@
-name: easyfit_app
+name: airtimeslot_app
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.2.2+3
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -63,12 +63,19 @@ dependencies:
   equatable: ^2.0.5
   currency_text_input_formatter: ^2.1.7
   otp_text_field: ^1.1.3
+  pull_to_refresh: ^2.0.0
 
   http: ^0.13.3
   timeago: ^3.2.2
   http_interceptor: ^1.0.2
   package_info_plus: ^1.4.2
   mask_text_input_formatter: ^2.4.0
+
+dependency_overrides:
+  modal_bottom_sheet:
+    git:
+      url: https://github.com/danReynolds/modal_bottom_sheet.git
+      path: modal_bottom_sheet
 
 dev_dependencies:
   flutter_test:

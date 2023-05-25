@@ -1,4 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
+import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,19 +13,12 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/drawer/custom_drawer.dart';
-import '../../components/text_components.dart';
-import '../../data/transactions/demo_transactions.dart';
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../helper/state/state_manager.dart';
-import '../../screens/services/components/card_details.dart';
-import '../../screens/services/pay_wallet.dart';
-import '../Home/home.dart';
+import 'components/card_details.dart';
+import 'pay_wallet.dart';
 import 'payment_success.dart';
 
 class ConfirmTransaction extends StatefulWidget {
-  final DemoTransactions model;
+  final GuestTransactionModel model;
   final bool isLoggedIn;
   final String token;
   const ConfirmTransaction({
@@ -55,14 +54,14 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
 
   _payWallet() async {
     showBarModalBottomSheet(
-      expand: true,
+      expand: false,
       context: context,
       backgroundColor: Colors.white,
       builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.6,
         child: PayWallet(
           manager: _manager!,
-          transRef: widget.model.transRef,
+          transRef: "${widget.model.transactionRef}",
         ),
       ),
       topControl: ClipOval(
@@ -98,7 +97,7 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
 
     Charge charge = Charge()
       ..amount = int.parse("${widget.model.amount}") * 100
-      ..reference = widget.model.transRef
+      ..reference = "${widget.model.transactionRef}"
       ..email = widget.model.email;
 
     // var accessCode = widget.model.transactionRef;
@@ -211,10 +210,10 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
           ],
         ),
         title: TextPoppins(
-          text: "Confirm Transaction",
-          fontSize: 21,
-          fontWeight: FontWeight.w700,
-          color: Constants.primaryColor,
+          text: "Confirm Transaction".toUpperCase(),
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
         ),
         centerTitle: true,
         actions: [
@@ -254,7 +253,7 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
               value: widget.model.email,
               icon: Icons.email,
             ),
-            widget.model.type.toLowerCase() == "electricity"
+            "${widget.model.type}".toLowerCase() == "electricity"
                 ? Column(
                     children: [
                       const SizedBox(height: 16.0),
@@ -275,7 +274,7 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
             const SizedBox(height: 16.0),
             CardDetailTrans(
               title: "Transaction Reference",
-              value: widget.model.transRef,
+              value: "${widget.model.transactionRef}",
               icon: Icons.bubble_chart_rounded,
             ),
             const SizedBox(height: 16.0),
@@ -303,42 +302,41 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
               ),
             ),
             const SizedBox(height: 18.0),
-            // widget.token.isEmpty
-            //     ? ElevatedButton(
-            //         onPressed: () => _payCard(),
-            //         child: const Text("Pay Now"),
-            //       )
-            //     :
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextPoppins(
-                  text: "Payment Method",
-                  color: Constants.primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                ElevatedButton(
-                  onPressed: () => _payWallet(),
-                  child: const Text("Pay Wallet"),
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                ElevatedButton(
-                  onPressed: () => _payCard(),
-                  child: const Text("Pay Card"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Constants.secondaryColor,
-                    foregroundColor: Colors.white,
+            !widget.isLoggedIn
+                ? ElevatedButton(
+                    onPressed: () => _payCard(),
+                    child: const Text("Pay Now"),
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextPoppins(
+                        text: "Payment Method",
+                        color: Constants.primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      const SizedBox(
+                        height: 4.0,
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _payWallet(),
+                        child: const Text("Pay Wallet"),
+                      ),
+                      const SizedBox(
+                        height: 4.0,
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _payCard(),
+                        child: const Text("Pay Card"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
             ElevatedButton(
               onPressed: () => _cancelTransaction(),
               child: TextPoppins(

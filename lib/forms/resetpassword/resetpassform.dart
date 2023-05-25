@@ -1,7 +1,7 @@
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/screens/auth/forgotPass/forgotPass.dart';
-import 'package:easyfit_app/screens/auth/resetsuccess/resetsuccess.dart';
+
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/screens/auth/resetsuccess/resetsuccess.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

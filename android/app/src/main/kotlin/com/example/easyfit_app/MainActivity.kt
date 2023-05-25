@@ -1,4 +1,4 @@
-package com.payment_demo.app
+package com.airtimeslotservices.app
 
 import io.flutter.embedding.android.FlutterActivity
 

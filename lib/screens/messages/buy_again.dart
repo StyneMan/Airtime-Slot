@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
+import 'package:airtimeslot_app/components/shimmer/banner_shimmer.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -8,11 +13,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 
-import '../../components/drawer/custom_drawer.dart';
-import '../../components/shimmer/banner_shimmer.dart';
-import '../../components/text_components.dart';
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
 import 'components/no_data.dart';
 
 class BuyAgain extends StatefulWidget {
@@ -85,7 +85,7 @@ class _BuyAgainState extends State<BuyAgain> {
                                   fit: BoxFit.contain,
                                   errorWidget: (context, url, error) =>
                                       Image.asset(
-                                          "assets/images/bottle_placeholder.png"),
+                                          "assets/images/bottle_placeholder.png",),
                                 ),
                                 //  Image.network(
                                 //   '${productData['image']}',
@@ -100,12 +100,12 @@ class _BuyAgainState extends State<BuyAgain> {
                                 maxScale: 2.5,
                                 onZoomStart: () {
                                   if (kDebugMode) {
-                                    print('Start zooming');
+                                    debugPrint('Start zooming');
                                   }
                                 },
                                 onZoomEnd: () {
                                   if (kDebugMode) {
-                                    print('Stop zooming');
+                                    debugPrint('Stop zooming');
                                   }
                                 },
                               ),
@@ -351,7 +351,7 @@ class _BuyAgainState extends State<BuyAgain> {
                                               //                   //             .data,
                                               //                   //         cart.itemQuantity)
                                               //                   //     .then((re) {
-                                              //                   //   // print("STATUS::: $re");
+                                              //                   //   // debugPrint("STATUS::: $re");
                                               //                   //   _controller
                                               //                   //       .jumpTo(
                                               //                   //           1);
@@ -387,9 +387,9 @@ class _BuyAgainState extends State<BuyAgain> {
                                               //         //     favorites.unlikeProduct(
                                               //         //         widget.product);
                                               //         //   } else {
-                                              //         //     // print("VALUEE::: ${widget.data()}");
-                                              //         //     // print("VALUEE::: ${widget.data()}");
-                                              //         //     // print("VALUEE21::: ${widget.data.data()}");
+                                              //         //     // debugPrint("VALUEE::: ${widget.data()}");
+                                              //         //     // debugPrint("VALUEE::: ${widget.data()}");
+                                              //         //     // debugPrint("VALUEE21::: ${widget.data.data()}");
                                               //         //     favorites.unlikeProduct(
                                               //         //       ProductModel.fromJson(
                                               //         //         widget.data.data(),

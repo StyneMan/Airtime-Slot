@@ -1,18 +1,18 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/signup/signupform.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../components/text_components.dart';
-import '../../../forms/signup/signupform.dart';
-import '../../../helper/constants/constants.dart';
-import '../../../helper/state/state_manager.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({Key? key,}) : super(key: key);
 
   @override
   State<Register> createState() => _RegisterState();
@@ -20,6 +20,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _controller = Get.find<StateController>();
+  PreferenceManager? _manager;
 
   Future<void> _launchInBrowser(String url) async {
     if (await canLaunch(url)) {
@@ -32,6 +33,12 @@ class _RegisterState extends State<Register> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _manager = PreferenceManager(context);
   }
 
   @override
@@ -56,7 +63,7 @@ class _RegisterState extends State<Register> {
                       right: 0,
                       bottom: 18,
                       child: Image.asset(
-                        "assets/images/signup_logo.png",
+                        "assets/images/login_img2.png",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -97,7 +104,7 @@ class _RegisterState extends State<Register> {
                     const SizedBox(
                       height: 18.0,
                     ),
-                    SignupForm(),
+                    SignupForm(manager: _manager!,),
                     const SizedBox(
                       height: 8.0,
                     ),

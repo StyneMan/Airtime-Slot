@@ -1,10 +1,10 @@
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../helper/state/state_manager.dart';
 
 class ProfileForm extends StatefulWidget {
   final PreferenceManager manager;

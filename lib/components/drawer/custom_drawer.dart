@@ -1,17 +1,16 @@
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/logout_loader.dart';
+import 'package:airtimeslot_app/model/drawer/drawermodel.dart';
+import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/instance_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
-import '../../helper/state/state_manager.dart';
-import '../../logout_loader.dart';
-import '../../model/drawer/drawermodel.dart';
-import '../../screens/account/account.dart';
-import '../text_components.dart';
 
 class CustomDrawer extends StatefulWidget {
   final PreferenceManager manager;
@@ -75,8 +74,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   _logout() async {
     _controller.setLoading(true);
     try {
-      // await FirebaseAuth.instance.signOut();
       _controller.setLoading(false);
+      widget.manager.clearProfile();
 
       if (mounted) {
         pushNewScreen(
@@ -86,15 +85,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
       }
-      // Navigator.of(context).pushReplacement(
-      //   PageTransition(
-      //     type: PageTransitionType.size,
-      //     alignment: Alignment.bottomCenter,
-      //     child: const Welcome(),
-      //   ),
-      // );
     } catch (e) {
-      Constants.toast("${e.toString()}");
+      Constants.toast(e.toString());
       _controller.setLoading(false);
     }
   }
@@ -186,7 +178,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               onTap: () {
                                 if (i == 1) {
                                   Navigator.of(context).pop();
-                                  _controller.jumpTo(3);
+                                  // _controller.jumpTo(3);
                                 } else {
                                   if (drawerList[i].isAction) {
                                     Navigator.of(context).pop();

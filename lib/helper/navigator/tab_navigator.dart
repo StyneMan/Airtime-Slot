@@ -1,10 +1,15 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+import 'package:airtimeslot_app/data/messages/messages.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
+import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
+import 'package:airtimeslot_app/screens/account/account.dart';
+import 'package:airtimeslot_app/screens/home/home.dart';
+import 'package:airtimeslot_app/screens/messages/my_messages.dart';
+import 'package:airtimeslot_app/screens/transaction/transaction.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/account/account.dart';
-import '../../screens/home/home.dart';
-import '../../screens/messages/my_messages.dart';
-import '../../screens/transaction/transaction.dart';
-import '../preference/preference_manager.dart';
+import 'auth_controller.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -12,49 +17,51 @@ class TabNavigatorRoutes {
 }
 
 class TabNavigator extends StatefulWidget {
-  TabNavigator({
+  final PreferenceManager manager;
+  final List<GuestTransactionModel> guestModel;
+  final List<UserTransaction> model;
+
+  const TabNavigator({
     required this.navigatorKey,
     required this.tabItem,
     required this.manager,
+    required this.guestModel,
+    required this.model,
   });
-
   final GlobalKey<NavigatorState> navigatorKey;
   final String tabItem;
-  final PreferenceManager manager;
 
   @override
   State<TabNavigator> createState() => _TabNavigatorState();
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-  @override
-  void initState() {
-    navigatorKey = widget.navigatorKey;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    Widget child = Home(
-      manager: widget.manager,
-    );
+    Widget child = const Home();
     if (widget.tabItem == "Home")
       child = Home(
         manager: widget.manager,
       );
-    else if (widget.tabItem == "Messages")
-      child = MyMessages(
-        manager: widget.manager,
-      );
-    else if (widget.tabItem == "Transaction")
+    else if (widget.tabItem == "Transactions")
       child = MyTransactions(
+          manager: widget.manager,
+          guestModel: widget.guestModel,
+          model: widget.model,
+          );
+    else if (widget.tabItem == "Messages")
+      child = AuthController(
         manager: widget.manager,
+        child: MyMessages(
+          manager: widget.manager,
+        ),
       );
     else if (widget.tabItem == "Account")
-      child = Account(
+      child = AuthController(
         manager: widget.manager,
+        child: Account(
+          manager: widget.manager,
+        ),
       );
 
     return Navigator(

@@ -1,15 +1,18 @@
 import 'dart:ui';
 
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:flutter/material.dart';
-
-import '../../helper/constants/constants.dart';
-import '../../helper/preference/preference_manager.dart';
 
 class GlassCard extends StatefulWidget {
   final PreferenceManager manager;
-  const GlassCard({
+  var walletBalance;
+  final String email;
+  GlassCard({
     Key? key,
+    required this.email,
     required this.manager,
+    required this.walletBalance,
   }) : super(key: key);
 
   @override
@@ -30,13 +33,15 @@ class _GlassCardState extends State<GlassCard> {
       ),
       child: Center(
         child: Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              blurRadius: 16,
-              spreadRadius: 16,
-              color: Colors.black.withOpacity(0.1),
-            )
-          ]),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 16,
+                spreadRadius: 16,
+                color: Colors.black.withOpacity(0.1),
+              )
+            ],
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
             child: BackdropFilter(
@@ -45,7 +50,7 @@ class _GlassCardState extends State<GlassCard> {
                 sigmaY: 20.0,
               ),
               child: Container(
-                width: 360,
+                width: MediaQuery.of(context).size.width,
                 height: 200,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
@@ -84,10 +89,17 @@ class _GlassCardState extends State<GlassCard> {
                               color: Colors.white.withOpacity(0.75),
                             ),
                           ),
-                          Text(
-                            'john@doe.com',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.75),
+                          const SizedBox(
+                            width: 16.0,
+                          ),
+                          Expanded(
+                            child: Text(
+                              widget.email,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.white.withOpacity(0.75),
+                              ),
                             ),
                           ),
                         ],
@@ -96,7 +108,7 @@ class _GlassCardState extends State<GlassCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "${Constants.nairaSign(context).currencySymbol}1,000.00",
+                            "${Constants.nairaSign(context).currencySymbol}${widget.walletBalance}",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,

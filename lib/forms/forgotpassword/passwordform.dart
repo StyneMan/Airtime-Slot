@@ -1,13 +1,16 @@
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/helper/state/state_manager.dart';
-import 'package:easyfit_app/screens/auth/otp/verifyotp.dart';
+
+import 'dart:convert';
+
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
 
 class PasswordForm extends StatefulWidget {
-  PasswordForm({Key? key}) : super(key: key);
+  const PasswordForm({Key? key}) : super(key: key);
 
   @override
   State<PasswordForm> createState() => _PasswordFormState();
@@ -19,32 +22,28 @@ class _PasswordFormState extends State<PasswordForm> {
   final _formKey = GlobalKey<FormState>();
 
   _forgotPass() async {
-    // _controller.setLoading(true);
-    // try {
-    //   await _auth.sendPasswordResetEmail(email: _emailController.text);
-    //   _controller.setLoading(false);
-    //   Navigator.of(context).push(
-    //     PageTransition(
-    //       type: PageTransitionType.size,
-    //       alignment: Alignment.bottomCenter,
-    //       child: VerifyOTP(
-    //         caller: "Password",
-    //       ),
-    //     ),
-    //   );
-    // } on FirebaseAuthException catch (e) {
-    //   switch (e.code) {
-    //     case "user-not-found":
-    //       Constants.toast("Email not registered on the platform");
-    //       break;
-    //     case "invalid-email":
-    //       Constants.toast('Email is not valid. Try again');
-    //       break;
-    //     default:
-    //       Constants.toast('${e.message}');
-    //   }
-    //   _controller.setLoading(false);
-    // }
+    Map _payload = {
+      "email": _emailController.text,
+    };
+    _controller.setLoading(true);
+    try {
+      final response = await APIService().forgotPass(_payload);
+      debugPrint("PASSWORD RESET :: ${response.body}");
+      _controller.setLoading(false);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> errorMap = jsonDecode(response.body);
+        ErrorResponse error = ErrorResponse.fromJson(errorMap);
+        Constants.toast("${error.message}");
+        //Close bottom sheet
+        Navigator.pop(context);
+      } else {
+        Map<String, dynamic> errorMap = jsonDecode(response.body);
+        ErrorResponse error = ErrorResponse.fromJson(errorMap);
+        Constants.toast("${error.message}");
+      }
+    } catch (e) {
+      _controller.setLoading(false);
+    }
   }
 
   @override
@@ -110,13 +109,12 @@ class _PasswordFormState extends State<PasswordForm> {
                 }
               },
               child: TextPoppins(
-                text: "Send OTP",
+                text: "Continue",
                 fontSize: 14,
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                primary: Constants.primaryColor,
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Constants.primaryColor,
                 elevation: 0.2,
               ),
             ),

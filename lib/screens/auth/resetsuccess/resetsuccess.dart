@@ -1,6 +1,7 @@
-import 'package:easyfit_app/components/text_components.dart';
-import 'package:easyfit_app/helper/constants/constants.dart';
-import 'package:easyfit_app/screens/auth/login/login.dart';
+
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
