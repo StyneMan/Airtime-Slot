@@ -27,31 +27,31 @@ class _OthersSectionState extends State<OthersSection> {
   final _controller = Get.find<StateController>();
 
 
-  _filterProduct() {
-    try {
-      List<ProductModel>? products = [];
-      if (_controller.products != null) {
-        ProductResponse body = ProductResponse.fromJson(_controller.products!);
-        products = body.data;
-        // var resp = products?.map((e) => e.name == widget.service);
-        products?.forEach((element) {
-          if (element.name == "airtime") {
-            setState(() {
-              product = element;
-            });
-          }
-        });
-        // resp[0].
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  // _filterProduct() {
+  //   try {
+  //     List<ProductModel>? products = [];
+  //     if (_controller.products != null) {
+  //       ProductResponse body = ProductResponse.fromJson(_controller.products!);
+  //       products = body.data;
+  //       // var resp = products?.map((e) => e.name == widget.service);
+  //       products?.forEach((element) {
+  //         if (element.name == "airtime") {
+  //           setState(() {
+  //             product = element;
+  //           });
+  //         }
+  //       });
+  //       // resp[0].
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   @override
   initState() {
     super.initState();
-    _filterProduct();
+    // _filterProduct();
   }
 
   @override

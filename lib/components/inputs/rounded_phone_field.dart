@@ -1,7 +1,6 @@
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-
 class RoundedPhoneField extends StatefulWidget {
   final String hintText;
   final IconData icon;
@@ -9,6 +8,7 @@ class RoundedPhoneField extends StatefulWidget {
   final TextEditingController controller;
   final TextInputType inputType;
   final double borderRadius;
+  final Color fillColor;
   var validator;
 
   RoundedPhoneField({
@@ -20,6 +20,7 @@ class RoundedPhoneField extends StatefulWidget {
     required this.validator,
     required this.inputType,
     this.borderRadius = 6.0,
+    this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
   @override
@@ -40,30 +41,14 @@ class _RoundedPhoneFieldState extends State<RoundedPhoneField> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 24.0,
-          vertical: 12.0,
+          vertical: 16.0,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(widget.borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(widget.borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(widget.borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        filled: false,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
         hintText: widget.hintText,
-        labelText: widget.hintText,
-        focusColor: Constants.accentColor,
+        focusColor: widget.fillColor,
         hintStyle: const TextStyle(
           fontFamily: "Poppins",
           color: Colors.black38,
@@ -76,7 +61,6 @@ class _RoundedPhoneFieldState extends State<RoundedPhoneField> {
           fontSize: 18,
         ),
         isDense: true,
-          
       ),
       keyboardType: TextInputType.phone,
     );

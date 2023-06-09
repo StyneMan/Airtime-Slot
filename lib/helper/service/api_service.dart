@@ -146,7 +146,7 @@ class APIService {
   }
 
   Future<http.Response> getProfile(String accessToken) async {
-    return await client.get(
+    return await client.get( 
       Uri.parse('${Constants.baseURL}backend/user/profile'),
       headers: {
         "Content-type": "application/json",

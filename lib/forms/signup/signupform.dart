@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -40,7 +41,6 @@ class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
   final _controller = Get.find<StateController>();
 
-
   _togglePass() {
     setState(() {
       _obscureText = !_obscureText;
@@ -66,8 +66,7 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ),
         );
-      } else {
-      }
+      } else {}
     } catch (e) {
       _controller.setLoading(false);
       Constants.toast("$e");
@@ -75,6 +74,8 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   _signup() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
     Map _payload = {
       "name": _nameController.text,
       "email": _emailController.text,
@@ -98,7 +99,9 @@ class _SignupFormState extends State<SignupForm> {
 
         _controller.setAccessToken('${login.data?.token}');
         widget.manager.saveAccessToken('${login.data?.token}');
-        _controller.setUserData('${login.data?.user}');
+        _controller.setUserData(registerMap['data']['user']);
+
+        // _controller.setUserData('${login.data?.user}');
 
         //Verify account from here...
         //Send verification email first
@@ -118,6 +121,7 @@ class _SignupFormState extends State<SignupForm> {
       }
     } catch (e) {
       _controller.setLoading(false);
+      Constants.toast("$e");
       debugPrint("ERR::: $e");
     }
   }
@@ -130,203 +134,138 @@ class _SignupFormState extends State<SignupForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Full Name',
-              hintText: 'Full Name',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: RoundedInputField(
+              hintText: "Full name",
+              onChanged: (val) {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your fullname';
+                }
+                return null;
+              },
+              inputType: TextInputType.name,
+              capitalization: TextCapitalization.words,
+              controller: _nameController,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your fullname';
-              }
-              return null;
-            },
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
-            controller: _nameController,
           ),
           const SizedBox(
             height: 12.0,
           ),
-          TextFormField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                fillColor: Constants.accentColor,
+                filled: true,
+                prefixIcon: CountryCodePicker(
+                  alignLeft: false,
+                  onChanged: (val) {
+                    setState(() {
+                      _countryCode = val as String;
+                    });
+                  },
+                  flagWidth: 24,
+                  initialSelection: 'NG',
+                  favorite: const ['+234', 'NG'],
+                  showCountryOnly: false,
+                  showFlag: false,
+                  showOnlyCountryWhenClosed: false,
                 ),
+                hintText: 'Phone Number',
               ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-              ),
-              filled: false,
-              prefixIcon: CountryCodePicker(
-                alignLeft: false,
-                onChanged: (val) {
-                  setState(() {
-                    _countryCode = val as String;
-                  });
-                },
-                flagWidth: 24,
-                initialSelection: 'NG',
-                favorite: const ['+234', 'NG'],
-                showCountryOnly: false,
-                showFlag: false,
-                showOnlyCountryWhenClosed: false,
-              ),
-              labelText: 'Phone Number',
-              hintText: 'Phone Number',
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your number';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.number,
+              controller: _phoneController,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your number';
-              }
-              return null;
-            },
-            keyboardType: TextInputType.number,
-            controller: _phoneController,
           ),
           const SizedBox(
             height: 12.0,
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 2.0,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Email',
-              hintText: 'Email',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: RoundedInputField(
+              hintText: "Email",
+              onChanged: (val) {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                    .hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+              inputType: TextInputType.emailAddress,
+              controller: _emailController,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email';
-              }
-              if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
-                  .hasMatch(value)) {
-                return 'Please enter a valid email';
-              }
-              return null;
-            },
-            keyboardType: TextInputType.emailAddress,
-            controller: _emailController,
           ),
           const SizedBox(
             height: 12.0,
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              border:  OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 2.0,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                filled: true,
+                fillColor: Constants.accentColor,
+                hintText: 'Referral',
               ),
-              enabledBorder:  OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder:  OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Referral',
-              hintText: 'Referral',
-              
+              controller: _referalController,
+              keyboardType: TextInputType.text,
             ),
-            controller: _referalController,
-            keyboardType: TextInputType.text,
           ),
           const SizedBox(
             height: 12.0,
           ),
-          TextFormField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 2.0,
-              ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Password',
-              hintText: 'Password',
-              suffixIcon: IconButton(
-                onPressed: () => _togglePass(),
-                icon: Icon(
-                  _obscureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                filled: true,
+                fillColor: Constants.accentColor,
+                hintText: 'Password',
+                suffixIcon: IconButton(
+                  onPressed: () => _togglePass(),
+                  icon: Icon(
+                    _obscureText
+                        ? CupertinoIcons.eye_slash
+                        : CupertinoIcons.eye,
+                  ),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please type password';
+                }
+                if (value.length < 8) {
+                  return 'Password must be at least 8 characters';
+                }
+                return null;
+              },
+              obscureText: _obscureText,
+              controller: _passwordController,
+              keyboardType: TextInputType.visiblePassword,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please type password';
-              }
-              return null;
-            },
-            obscureText: _obscureText,
-            controller: _passwordController,
-            keyboardType: TextInputType.visiblePassword,
           ),
           const SizedBox(
-            height: 13.0,
+            height: 24.0,
           ),
           Container(
             width: double.infinity,
@@ -348,7 +287,8 @@ class _SignupFormState extends State<SignupForm> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Constants.primaryColor,
+                foregroundColor: Colors.white,
+                backgroundColor: Constants.primaryColor,
                 elevation: 0.2,
               ),
             ),

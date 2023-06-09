@@ -19,7 +19,7 @@ ThemeData appTheme = ThemeData(
   inputDecorationTheme: const InputDecorationTheme(
     focusColor: Constants.primaryColor,
     filled: true,
-    // fillColor: Color(0xFFEDF8F9),
+    fillColor: Constants.accentColor,
     // labelStyle: TextStyle(
     //   color: Constants.primaryColor,
     // ),
@@ -32,6 +32,7 @@ ThemeData appTheme = ThemeData(
       ),
     ),
   ),
+  
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Constants.primaryColor,
     foregroundColor: Constants.primaryColor,

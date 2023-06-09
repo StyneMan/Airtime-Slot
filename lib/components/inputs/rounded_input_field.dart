@@ -10,6 +10,7 @@ class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType inputType;
   final TextCapitalization capitalization;
+  final Color fillColor;
   var validator;
   final bool? isEnabled;
   final double borderRadius;
@@ -23,8 +24,9 @@ class RoundedInputField extends StatelessWidget {
     required this.controller,
     required this.validator,
     required this.inputType,
-    this.borderRadius = 5.0,
+    this.borderRadius = 6.0,
     this.isEnabled = true,
+    this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
   @override
@@ -34,44 +36,32 @@ class RoundedInputField extends StatelessWidget {
       cursorColor: Constants.primaryColor,
       controller: controller,
       validator: validator,
+      enabled: true,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 24.0,
           vertical: 12.0,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        filled: false,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: fillColor,
         hintText: hintText,
-        labelText: hintText,
-        focusColor: Constants.accentColor,
+        // labelText: hintText,
+        focusColor: fillColor,
+        prefixIcon: Icon(icon),
         hintStyle: const TextStyle(
           fontFamily: "Poppins",
           color: Colors.black38,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
-        labelStyle: const TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-        ),
+        // labelStyle: const TextStyle(
+        //   fontFamily: "Poppins",
+        //   fontWeight: FontWeight.w500,
+        //   fontSize: 18,
+        // ),
       ),
       keyboardType: inputType,
       textCapitalization: capitalization,

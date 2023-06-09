@@ -9,6 +9,7 @@ import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/model/auth/otp_resend.dart';
 import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:airtimeslot_app/screens/auth/account_created/successscreen.dart';
+import 'package:airtimeslot_app/screens/wallet/set_wallet_pin.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
@@ -73,8 +74,7 @@ class _VerifyAccountState extends State<VerifyAccount> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const AccountSuccess(
-            ),
+            builder: (context) => SetWalletPin(manager: widget.manager,),
           ),
         );
       } else {
@@ -101,108 +101,99 @@ class _VerifyAccountState extends State<VerifyAccount> {
               ),
         backgroundColor: Colors.black54,
         child: Scaffold(
-          body: Container(
-          padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 56),
-                Image.asset(
-                  "assets/images/app_logo.png",
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
+          backgroundColor: Constants.accentColor,
+          body: Column(
+            children: [
+              const SizedBox(height: 100),
+              Expanded(
+                child: Card(
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(36.0),
+                      topRight: Radius.circular(36.0),
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextPoppins(
-                          text: "VERIFY ACCOUNT",
-                          fontSize: 21,
-                          color: Constants.primaryColor,
-                          fontWeight: FontWeight.w600,
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Verify Account",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                "An OTP code has been sent to your email (${widget.email}). \nCheck your email and enter code here.",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 21.0),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              OTPTextField(
+                                controller: otpController,
+                                length: 6,
+                                width: MediaQuery.of(context).size.width,
+                                textFieldAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                fieldWidth: 45,
+                                fieldStyle: FieldStyle.box,
+                                outlineBorderRadius: 15,
+                                obscureText: true,
+                                otpFieldStyle: OtpFieldStyle(
+                                  backgroundColor: Constants.accentColor,
+                                ),
+                                style: const TextStyle(fontSize: 17),
+                                onChanged: (pin) {
+                                  debugPrint("Changed: " + pin);
+                                },
+                                onCompleted: (pin) {
+                                  debugPrint("Completed: " + pin);
+                                  _verifyAccount(pin);
+                                },
+                              ),
+                              const SizedBox(height: 21.0),
+                              ElevatedButton(
+                                child: TextPoppins(
+                                    text: "RESEND CODE", fontSize: 15),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _resendOTP();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Center(
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: "An email has been sent to ",
-                              style: const TextStyle(
-                                color: Constants.accentColor,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: widget.email,
-                                  style: const TextStyle(
-                                    color: Constants.secondaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text: " Kindly check your email.",
-                                  style: TextStyle(
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            OTPTextField(
-                              controller: otpController,
-                              length: 6,
-                              width: MediaQuery.of(context).size.width,
-                              textFieldAlignment:
-                                  MainAxisAlignment.spaceAround,
-                              fieldWidth: 45,
-                              fieldStyle: FieldStyle.box,
-                              outlineBorderRadius: 15,
-                              style: const TextStyle(fontSize: 17),
-                              onChanged: (pin) {
-                                debugPrint("Changed: " + pin);
-                              },
-                              onCompleted: (pin) {
-                                debugPrint("Completed: " + pin);
-                                _verifyAccount(pin);
-                              },
-                            ),
-                            const SizedBox(height: 21.0),
-                            ElevatedButton(
-                              child: TextPoppins(text: "RESEND CODE", fontSize: 15),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _resendOTP();
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

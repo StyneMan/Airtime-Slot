@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/main.dart';
@@ -24,13 +27,24 @@ class StateController extends GetxController {
   var hasMoreInvites = false.obs;
   var transactionCurrentPage = 1.obs;
 
-  Map<String, dynamic>? products;
+  var products = [].obs;
+  var internetData = {}.obs;
+  var airtimeData = {}.obs;
+  var electricityData = {}.obs;
+  var cableData = {}.obs;
   var unreadNotifications = 0.obs;
   var isSpinning = false.obs;
 
+  var selectedDataProvider = {}.obs;
+  var selectedDataPlan = {}.obs;
+
+  var selectedAirtimeProvider = {}.obs;
+
+  var selectedElectricityProvider = {}.obs;
+
   var mynotifications = [].obs;
   var navColor = Constants.primaryColor.obs;
-  var userData;
+  var userData = {}.obs;
 
   var airtimeSwapRate = "".obs;
   var airtimeSwapNumber = "".obs;
@@ -47,19 +61,71 @@ class StateController extends GetxController {
   var accessToken = "".obs;
   String _token = "";
 
+  RxString dbItem = 'Awaiting data'.obs;
+
+  getProducts() async {
+    try {
+      final response = await APIService().getProducts();
+      debugPrint("PRODUCT RESP:: ${response.body}");
+      setHasInternet(true);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        // ProductResponse body = ProductResponse.fromJson(map);
+        setProductData(map['data']);
+
+        map['data']?.forEach((elem) => {
+              if (elem['name'].toString().toLowerCase() == "airtime")
+                {airtimeData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "data")
+                {internetData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "electricity")
+                {electricityData.value = elem}
+              else if (elem['name'].toString().toLowerCase() == "cable_tv")
+                {cableData.value = elem}
+            });
+      }
+    } on SocketException {
+      Constants.toast("No Internet Connection!");
+      setHasInternet(false);
+    } on Error catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   void onInit() async {
     super.onInit();
-    // _manager = PreferenceManager(context);
+    initDao();
+    // Get products
+
     //Fetch user data
-    final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString("accessToken") ?? "";
+    final _prefs = await SharedPreferences.getInstance();
+    _token = _prefs.getString("accessToken") ?? "";
     // bool _isAuthenticated = prefs.getBool("loggedIn") ?? false;
+    
 
     if (_token.isNotEmpty) {
-      // APIService().fetchTransactions(_token);
+      APIService().getProfile(_token).then((value) {
+        print("STATE GET PROFILE >>> ${value.body}");
+        Map<String, dynamic> data = jsonDecode(value.body);
+        userData.value = data['data'];
+        _prefs.setString("user", jsonEncode(data['data']));
+
+        //Update preference here
+      }).catchError((onError) {
+        debugPrint("STATE GET PROFILE ERROR >>> $onError");
+        if (onError.toString().contains("rk is unreachable")) {
+          hasInternetAccess.value = false;
+        }
+      });
       paginateTransaction(_token);
     }
+  }
+
+  Future<void> initDao() async {
+    // instantiate Dao only if null (i.e. not supplied in constructor)
+    myDao = await Dao.createAsync();
+    dbItem.value = myDao!.dbValue;
   }
 
   void paginateTransaction(String accessToken) {
@@ -90,10 +156,10 @@ class StateController extends GetxController {
       );
 
   var currentPage = "Home";
-  List<String> pageKeys = ["Home", "Transactions", "Messages", "Account"];
+  List<String> pageKeys = ["Home", "Pay", "Messages", "Account"];
   Map<String, GlobalKey<NavigatorState>> navigatorKeys = {
     "Home": GlobalKey<NavigatorState>(),
-    "Transactions": GlobalKey<NavigatorState>(),
+    "Pay": GlobalKey<NavigatorState>(),
     "Messages": GlobalKey<NavigatorState>(),
     "Account": GlobalKey<NavigatorState>(),
   };
@@ -140,8 +206,10 @@ class StateController extends GetxController {
     }
   }
 
-  void setUserData(var data) {
-    userData = data;
+  setUserData(var value) {
+    if (value != null) {
+      userData.value = value;
+    }
   }
 
   void setTransactions(var list) {
@@ -161,7 +229,7 @@ class StateController extends GetxController {
   }
 
   void setProductData(var data) {
-    products = data;
+    products.value = data;
   }
 
   void setLoading(bool state) {

@@ -9,14 +9,16 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 // import 'package:logger/logger.dart';
 
 class Constants {
-  static const Color primaryColor = Color(0xFF1D9BE3);
-  static const Color accentColor = Color(0xE78FD0FF);
-  static const Color secondaryColor = Color(0xFF000000);
+  static const Color primaryColor = Color(0xFF009EF7);
+  static const Color accentColor = Color(0xFFE5EEFD);
+  static const Color checkBg = Color(0xFFD1E4FF); 
+  static const Color secondaryColor = Color(0xFF000000); 
+  static const Color backgroundColor = Color(0xFFEBEBEB);
 
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL = "https://vattax.deepay.com.ng/";
+  static const baseURL = "https://cloud.airtimeslot.com/"; // "https://vattax.deepay.com.ng/";
   static const payKey = String.fromEnvironment("PAYSTACK_PUB_KEY");
 
   static String pstk = "pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";

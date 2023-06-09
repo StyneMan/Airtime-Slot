@@ -59,16 +59,16 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
     return resp;
   }
 
-  ProductModel? _filterProduct() {
-    List<ProductModel>? products = [];
-    if (_controller.products != null) {
-      ProductResponse body = ProductResponse.fromJson(_controller.products!);
-      products = body.data;
+  // ProductModel? _filterProduct() {
+  //   List<ProductModel>? products = [];
+  //   if (_controller.products != null) {
+  //     ProductResponse body = ProductResponse.fromJson(_controller.products!);
+  //     products = body.data;
 
-      var filtered = products?.where((element) => element.name == "airtime");
-      return filtered?.first;
-    }
-  }
+  //     var filtered = products?.where((element) => element.name == "airtime");
+  //     return filtered?.first;
+  //   }
+  // }
 
   @override
   void initState() {
@@ -259,12 +259,12 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
                               fontSize: 16,
                               color: Constants.primaryColor,
                             ),
-                            RoundedDropdown(
-                              type: widget.service,
-                              placeholder: "Select network",
-                              networks: _filterProduct()?.networks ?? [],
-                              onSelected: setSelected,
-                            ),
+                            // RoundedDropdown(
+                            //   type: widget.service,
+                            //   placeholder: "Select network",
+                            //   networks: _filterProduct()?.networks ?? [],
+                            //   onSelected: setSelected,
+                            // ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,

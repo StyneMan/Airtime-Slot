@@ -11,6 +11,7 @@ class RoundedInputMoney extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   var validator;
+  final Color fillColor;
 
   final double borderRadius;
 
@@ -23,6 +24,7 @@ class RoundedInputMoney extends StatelessWidget {
     required this.controller,
     required this.validator,
     this.borderRadius = 6.0,
+    this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
   @override
@@ -42,31 +44,16 @@ class RoundedInputMoney extends StatelessWidget {
       ],
       keyboardType: TextInputType.number,
      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
+       contentPadding: const EdgeInsets.symmetric(
           horizontal: 24.0,
-          vertical: 12.0,
+          vertical: 16.0,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        filled: false,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: fillColor,
         hintText: hintText,
-        // labelText: hintText,
         focusColor: Constants.accentColor,
         hintStyle: const TextStyle(
           fontFamily: "Poppins",

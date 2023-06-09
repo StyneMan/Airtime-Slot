@@ -6,7 +6,7 @@ import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
 import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:airtimeslot_app/screens/messages/my_messages.dart';
-import 'package:airtimeslot_app/screens/transaction/transaction.dart';
+import 'package:airtimeslot_app/screens/transaction/pay.dart';
 import 'package:flutter/material.dart';
 
 import 'auth_controller.dart';
@@ -43,12 +43,10 @@ class _TabNavigatorState extends State<TabNavigator> {
       child = Home(
         manager: widget.manager,
       );
-    else if (widget.tabItem == "Transactions")
-      child = MyTransactions(
-          manager: widget.manager,
-          guestModel: widget.guestModel,
-          model: widget.model,
-          );
+    else if (widget.tabItem == "Pay")
+      child = Pay(
+        manager: widget.manager,
+      );
     else if (widget.tabItem == "Messages")
       child = AuthController(
         manager: widget.manager,

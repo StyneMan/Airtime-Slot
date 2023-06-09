@@ -4,14 +4,14 @@
     <item android:drawable="@color/background_color" />
 
     <!-- You can insert your own image assets here -->
-    <item>
+    <!-- <item>
         <bitmap
             android:gravity="fill"
             android:src="@drawable/pattern" />
-    </item>
+    </item> -->
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/splash_icon" />
+            android:src="@mipmap/splash_img" />
     </item>
 </layer-list>

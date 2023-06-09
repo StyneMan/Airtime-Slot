@@ -28,7 +28,7 @@ class ServiceForm extends StatefulWidget {
   final bool isAuthenticated;
   final String service;
   final String token;
-  final ProductModel product;
+  final ProductModel? product;
   final String? mAmount;
 
   const ServiceForm({
@@ -36,7 +36,7 @@ class ServiceForm extends StatefulWidget {
     this.mAmount,
     required this.token,
     required this.service,
-    required this.product,
+     this.product,
     required this.isAuthenticated,
   }) : super(key: key);
 
@@ -151,207 +151,11 @@ class _ServiceFormState extends State<ServiceForm> {
   void initState() {
     _initAuth();
     super.initState();
-    debugPrint("PRDUCT DATA: ${widget.product.createdAt}");
+    // debugPrint("PRDUCT DATA: ${widget.product.createdAt}");
     _controller.discountAmount.value = 0.0;
   }
 
-  _guestPayTv() async {
-    _controller.setLoading(true);
 
-    Map _payloadGuestTV = {
-      "amount": "${_controller.discountAmount.value}",
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "email": _emailController?.text,
-      "isn": _smartCardNumController.text,
-      "product_id": _selectedProduct?.id,
-    };
-
-    try {
-      final resp = await APIService().guestBuy(_payloadGuestTV);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
-
-        //Save to sqlite
-        await DatabaseHandler().saveTransaction(trans.data);
-
-        Constants.toast("${trans.message}");
-
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: false,
-              token: "",
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
-
-  _guestPayData() async {
-    _controller.setLoading(true);
-
-    Map _payload = {
-      "amount": "${_controller.discountAmount.value}", //"$_discountAmt",
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "email": _emailController?.text,
-      "product_id": _selectedProduct?.id,
-    };
-
-    try {
-      final resp = await APIService().guestBuy(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
-
-        //Save to sqlite
-        await DatabaseHandler().saveTransaction(trans.data);
-
-        Constants.toast("${trans.message}");
-
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: false,
-              token: "",
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
-
-  _guestPayAirtime() async {
-    _controller.setLoading(true);
-
-    String? amt = _amountController?.text.replaceAll("₦ ", "");
-    String filteredAmt = amt!.replaceAll(",", "");
-    int price = int.parse(amt.replaceAll(",", ""));
-
-    Map _payload = {
-      "amount": amt.replaceAll(",", ""),
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "email": _emailController?.text,
-    };
-
-    try {
-      final resp = await APIService().guestBuy(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
-
-        //Save to sqlite
-        await DatabaseHandler().saveTransaction(trans.data);
-
-        Constants.toast("${trans.message}");
-
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: false,
-              token: "",
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
-
-  _guestPayElectricity() async {
-    _controller.setLoading(true);
-
-    String? amt = _amountController?.text.replaceAll("₦ ", "");
-    String filteredAmt = amt!.replaceAll(",", "");
-    int price = int.parse(amt.replaceAll(",", ""));
-
-    Map _payload = {
-      "amount": price,
-      "disco_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "email": _emailController?.text,
-      "product_id": _selectedProduct?.id,
-      "meter_number": _meterNumController.text,
-      "meter_type": _meterType.toLowerCase(),
-    };
-
-    try {
-      final resp = await APIService().guestBuy(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
-
-        //Save to sqlite
-        await DatabaseHandler().saveTransaction(trans.data);
-
-        Constants.toast("${trans.message}");
-
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: false,
-              token: "",
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
 
   _buyTv() async {
     _controller.setLoading(true);
@@ -548,18 +352,7 @@ class _ServiceFormState extends State<ServiceForm> {
       } else {
         _buyTv();
       }
-    } else {
-      //Guest user
-      if (widget.service.toLowerCase() == "airtime") {
-        _guestPayAirtime();
-      } else if (widget.service.toLowerCase() == "data") {
-        _guestPayData();
-      } else if (widget.service.toLowerCase() == "electricity") {
-        _guestPayElectricity();
-      } else {
-        _guestPayTv();
-      }
-    }
+    } 
   }
 
   @override
@@ -691,7 +484,7 @@ class _ServiceFormState extends State<ServiceForm> {
               RoundedDropdown(
                 type: widget.service,
                 placeholder: "Select network",
-                networks: widget.product.networks,
+                networks: widget.product?.networks,
                 onSelected: setSelected,
               ),
               const SizedBox(

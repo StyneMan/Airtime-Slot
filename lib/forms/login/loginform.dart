@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -10,9 +11,11 @@ import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:airtimeslot_app/model/error/validation_error.dart';
 import 'package:airtimeslot_app/screens/account/verify_account.dart';
 import 'package:airtimeslot_app/screens/auth/forgotpass/forgotPass.dart';
+import 'package:airtimeslot_app/screens/auth/otp/verifyotp.dart';
 import 'package:airtimeslot_app/screens/wallet/set_wallet_pin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -40,6 +43,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   _login() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     Map _payload = {
       "email": _emailController.text,
       "password": _passwordController.text
@@ -71,9 +75,9 @@ class _LoginFormState extends State<LoginForm> {
             String userData = jsonEncode(loginMap['data']['user']);
             widget.manager.setUserData(userData);
 
-            // _controller.setUserData('${loginMap['data']['user']}');
+            _controller.setUserData('${loginMap['data']['user']}');
 
-            await APIService().fetchTransactions(_toks);
+            // await APIService().fetchTransactions(_toks);
 
             widget.manager.setIsLoggedIn(true);
             _controller.setLoading(false);
@@ -84,8 +88,6 @@ class _LoginFormState extends State<LoginForm> {
                 builder: (context) => Dashboard(manager: widget.manager),
               ),
             );
-
-           
           } else {
             //Set wallet PIN from here.
             _controller.setLoading(false);
@@ -138,145 +140,178 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Email',
-              hintText: 'Email',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email or phone';
-              }
-              //if email
-              // if (value.contains(RegExp(r'[a-z]'))) {
-              //Email is entere now check if the email is valid
-              if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
-                  .hasMatch(value)) {
-                return 'Please enter a valid email';
-              }
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: RoundedInputField(
+              hintText: "Email",
+              icon: CupertinoIcons.person,
+              onChanged: (val) {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email address';
+                }
+                //if email
+                // if (value.contains(RegExp(r'[a-z]'))) {
+                //Email is entere now check if the email is valid
+                if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                    .hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
 
-              return null;
-            },
-            keyboardType: TextInputType.emailAddress,
-            controller: _emailController,
+                return null;
+              },
+              inputType: TextInputType.emailAddress,
+              controller: _emailController,
+            ),
           ),
           const SizedBox(
             height: 16.0,
           ),
-          TextFormField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                gapPadding: 1.0,
-              ),
-              filled: false,
-              labelText: 'Password',
-              hintText: 'Password',
-              suffixIcon: IconButton(
-                onPressed: () => _togglePass(),
-                icon: Icon(
-                  _obscureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: TextFormField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                filled: true,
+                fillColor: Constants.accentColor,
+                hintText: 'Password',
+                prefixIcon: const Icon(CupertinoIcons.lock),
+                suffixIcon: IconButton(
+                  onPressed: () => _togglePass(),
+                  icon: Icon(
+                    _obscureText
+                        ? CupertinoIcons.eye_slash
+                        : CupertinoIcons.eye,
+                  ),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please type password';
+                }
+                return null;
+              },
+              obscureText: _obscureText,
+              controller: _passwordController,
+              keyboardType: TextInputType.visiblePassword,
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please type password';
-              }
-              return null;
-            },
-            obscureText: _obscureText,
-            controller: _passwordController,
-            keyboardType: TextInputType.visiblePassword,
           ),
           const SizedBox(
-            height: 1.0,
+            height: 8.0,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    PageTransition(
-                      type: PageTransitionType.size,
-                      alignment: Alignment.bottomCenter,
-                      child: ForgotPassword(),
-                    ),
-                  );
-                },
-                child: TextPoppins(
-                  text: "Forgot password?",
-                  fontSize: 13,
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                PageTransition(
+                  type: PageTransitionType.size,
+                  alignment: Alignment.bottomCenter,
+                  child: ForgotPassword(),
+                ),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Forgot email",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Constants.primaryColor,
+                  ),
+                ),
+                TextPoppins(
+                  text: " or ",
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
+                ),
+                const Text(
+                  "Password?",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Constants.primaryColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 32.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Constants.primaryColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8.0),
+                    ),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _login();
+                      }
+                    },
+                    child: TextPoppins(
+                      text: "Sign in",
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Constants.primaryColor,
+                      elevation: 0.2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 21.0,
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Constants.accentColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8.0),
+                    ),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // if (_formKey.currentState!.validate()) {
+                      //   _login();
+                      // }
+                      Get.to(
+                        Dashboard(
+                          manager: widget.manager,
+                        ),
+                      );
+                    },
+                    child: Image.asset(
+                      "assets/images/fingerprint.png",
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Constants.accentColor,
+                      elevation: 0.0,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(
-            height: 16.0,
+            height: 24.0,
           ),
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Constants.primaryColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              ),
-            ),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _login();
-                }
-              },
-              child: TextPoppins(
-                text: "Sign in",
-                fontSize: 14,
-                color: Colors.white,
-              ),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Constants.primaryColor,
-                elevation: 0.2,
-              ),
-            ),
-          )
         ],
       ),
     );

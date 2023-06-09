@@ -93,9 +93,6 @@ class _State extends State<VerifyOTP> {
     // }
   }
 
-  _linkAccount() async {
-    //
-  }
 
   @override
   void dispose() {
@@ -253,7 +250,7 @@ class _State extends State<VerifyOTP> {
                               ),
                             );
                           } else {
-                            _linkAccount();
+                            // _linkAccount();
                           }
                         },
                         child: TextPoppins(

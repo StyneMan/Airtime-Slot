@@ -42,30 +42,30 @@ class _ServiceInfoState extends State<ServiceInfo> {
     _token = _prefs.getString("accessToken") ?? "";
   }
 
-  _filterProduct() {
-    try {
-      List<ProductModel>? products = [];
-      if (_controller.products != null) {
-        ProductResponse body = ProductResponse.fromJson(_controller.products!);
-        products = body.data;
-        // var resp = products?.map((e) => e.name == widget.service);
-        products?.forEach((element) {
-          if (element.name == widget.service.toLowerCase()) {
-            setState(() {
-              product = element;
-            });
-          }
-        });
-        // resp[0].
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    } 
-  }
+  // _filterProduct() {
+  //   try {
+  //     List<ProductModel>? products = [];
+  //     if (_controller.products != null) {
+  //       ProductResponse body = ProductResponse.fromJson(_controller.products!);
+  //       products = body.data;
+  //       // var resp = products?.map((e) => e.name == widget.service);
+  //       products?.forEach((element) {
+  //         if (element.name == widget.service.toLowerCase()) {
+  //           setState(() {
+  //             product = element;
+  //           });
+  //         }
+  //       });
+  //       // resp[0].
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   } 
+  // }
 
   @override
   void initState() {
-    _filterProduct();
+    // _filterProduct();
     _init();
     _manager = PreferenceManager(context);
     super.initState();

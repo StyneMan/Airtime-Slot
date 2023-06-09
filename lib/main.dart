@@ -14,7 +14,6 @@ import 'helper/constants/constants.dart';
 import 'helper/preferences/preference_manager.dart';
 import 'helper/state/state_controller.dart';
 import 'screens/network/no_internet.dart';
-import 'screens/onboarding/walkthrough.dart';
 
 enum Version { lazy, wait }
 
@@ -63,38 +62,45 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _manager = PreferenceManager(context);
+    _controller.getProducts();
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Init.instance.initialize(),
-      builder: (context, AsyncSnapshot snapshot) {
-        // Show splash screen while waiting for app resources to load:
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: Splash(
-                controller: _controller,
-              ));
-        } else {
-          // Loading is done, return the app:
-          final SharedPreferences d = snapshot.requireData;
-          final bool _loggedIn = d.getBool("loggedIn") ?? false;
-          // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Airtime Slot',
-            theme: appTheme,
-            home: _controller.hasInternetAccess.value
-                ? _loggedIn
-                    ? Dashboard(manager: _manager!)
-                    : const Welcome()
-                : const NoInternet(),
-          );
-        } ///Users/thankgodokoro/Desktop/code    /Users/thankgodokoro/Desktop/code/Stanley
-      },
+    return Obx(
+      () => _controller.hasInternetAccess.value == false
+          ? const NoInternet()
+          : FutureBuilder(
+              future: Init.instance.initialize(),
+              builder: (context, AsyncSnapshot snapshot) {
+                // Show splash screen while waiting for app resources to load:
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return GetMaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: Splash(
+                        controller: _controller,
+                      ));
+                } else {
+                  // Loading is done, return the app:
+                  final SharedPreferences d = snapshot.requireData;
+                  final String _token = d.getString("accessToken") ?? "";
+                  // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
+                  return GetMaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: 'Airtime Slot',
+                    theme: appTheme,
+                    home: _controller.hasInternetAccess.value
+                        ? _token.isNotEmpty
+                            ? Dashboard(manager: _manager!)
+                            : const Welcome()
+                        : const NoInternet(),
+                  );
+                }
+
+                ///Users/thankgodokoro/Desktop/code    /Users/thankgodokoro/Desktop/code/Stanley
+              },
+            ),
     );
   }
 }
@@ -115,7 +121,7 @@ class _SplashState extends State<Splash> {
     try {
       // await FirebaseFirestore.instance.collection("stores").snapshots();
     } on SocketException catch (io) {
-      widget.controller.setHasInternet(false);
+      // widget.controller.setHasInternet(false);
     } catch (e) {
       debugPrint("$e");
     }
