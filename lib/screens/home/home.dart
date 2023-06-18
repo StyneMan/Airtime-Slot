@@ -11,6 +11,8 @@ import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart'
 import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
 import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
 import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
+import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
+import 'package:airtimeslot_app/screens/services/television/television.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -637,8 +639,8 @@ class _HomeState extends State<Home> {
                             color: Colors.white,
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 21.0,
-                                vertical: 32.0,
+                                horizontal: 16.0,
+                                vertical: 24.0,
                               ),
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -651,131 +653,156 @@ class _HomeState extends State<Home> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        padding: const EdgeInsets.all(16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade300,
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/television_icon.svg",
-                                            width: 114,
-                                            color: Constants.primaryColor,
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.to(
+                                        const Television(),
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          padding: const EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/images/television_icon.svg",
+                                              width: 114,
+                                              color: Constants.primaryColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      const Text(
-                                        "Cable \nTV",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                        const SizedBox(
+                                          height: 5.0,
                                         ),
-                                      )
-                                    ],
+                                        const Text(
+                                          "Cable \nTV",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 16.0,
                                   ),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        padding: const EdgeInsets.all(16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade300,
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/lamp_icon.svg",
-                                            width: 100,
-                                            color: Constants.primaryColor,
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.to(
+                                        const Electricity(),
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          padding: const EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/images/lamp_icon.svg",
+                                              width: 100,
+                                              color: Constants.primaryColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      const Text(
-                                        "Electricity",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                        const SizedBox(
+                                          height: 5.0,
                                         ),
-                                      )
-                                    ],
+                                        const Text(
+                                          "Electricity",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 16.0,
                                   ),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        padding: const EdgeInsets.all(16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade300,
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/history.svg",
-                                            width: 108,
-                                            color: Constants.primaryColor,
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          padding: const EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/images/history.svg",
+                                              width: 108,
+                                              color: Constants.primaryColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      const Text(
-                                        "History",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                        const SizedBox(
+                                          height: 5.0,
                                         ),
-                                      )
-                                    ],
+                                        const Text(
+                                          "History",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),

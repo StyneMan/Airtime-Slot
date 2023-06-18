@@ -89,9 +89,10 @@ class _LoginState extends State<Login> {
                       Text(
                         "Welcome back",
                         style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -122,7 +123,9 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 48,),
+                      const SizedBox(
+                        height: 48,
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,7 +150,7 @@ class _LoginState extends State<Login> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(
+                                   SizedBox(
                                     width: 8.0,
                                   ),
                                   Text(

@@ -91,6 +91,9 @@ class _NetworkSelectorState extends State<NetworkSelector> {
       case "electricity":
         _controller.selectedElectricityProvider.value = network;
         break;
+      case "cabletv":
+        _controller.selectedTelevisionProvider.value = network;
+        break;
       default:
     }
   }
@@ -178,9 +181,8 @@ class _NetworkSelectorState extends State<NetworkSelector> {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
+                  shrinkWrap: true,
                   children: [
                     const SizedBox(
                       height: 8.0,
@@ -193,6 +195,7 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                     //     :
                     ListView.separated(
                       shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) => ClipRRect(
                         borderRadius: BorderRadius.circular(16.0),
                         child: Container(
@@ -217,16 +220,31 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                                       child: Image.network(
                                         "${Constants.baseURL}${_filteredList[index]['icon']}",
                                         width: 24,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Image.asset(
+                                          'assets/images/logo_big.png',
+                                          width: 24,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(
                                       width: 8.0,
                                     ),
-                                    TextPoppins(
-                                      text: "${_filteredList[index]['name']}",
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.70,
+                                      child: Wrap(
+                                        children: [
+                                          TextPoppins(
+                                            text:
+                                                "${_filteredList[index]['name']}",
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -240,7 +258,11 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                               foregroundColor: index == (_selectedIndex - 1)
                                   ? Colors.green
                                   : Constants.checkBg,
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.only(
+                                  top: 16.0,
+                                  bottom: 16.0,
+                                  left: 14,
+                                  right: 10.0),
                             ),
                           ),
                         ),

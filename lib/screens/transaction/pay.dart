@@ -8,6 +8,10 @@ import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
+import 'package:airtimeslot_app/screens/services/bill_payment.dart';
+import 'package:airtimeslot_app/screens/services/bill_payment.dart';
+import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
 import 'package:airtimeslot_app/screens/transaction/transaction_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -201,18 +205,6 @@ class _PayState extends State<Pay> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Positioned(
-                left: 16.0,
-                top: 1,
-                bottom: 21,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Constants.primaryColor,
-                  ),
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 36.0),
@@ -235,13 +227,13 @@ class _PayState extends State<Pay> {
                     const SizedBox(
                       height: 8.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
                             "Recharge & Pay Bills",
                             style: TextStyle(
                               fontSize: 24,
@@ -249,251 +241,262 @@ class _PayState extends State<Pay> {
                               color: Colors.black,
                             ),
                           ),
-                          const SizedBox(
-                            height: 16.0,
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        color: Constants.primaryColor,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/internet_access_icon.svg",
-                                          ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(
+                              const InternetData(),
+                              transition: Transition.cupertino,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Container(
+                                      color: Constants.primaryColor,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          "assets/images/internet_access_icon.svg",
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextRoboto(
-                                          text: "Internet Data",
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextRoboto(
+                                        text: "Internet Data",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      const Text(
+                                        "Best rates on data purchase",
+                                        style: TextStyle(
+                                          color: Colors.grey,
                                         ),
-                                        const Text(
-                                          "Best rates on data purchase",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                const Icon(Icons.chevron_right),
-                              ],
-                            ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(2.0),
-                              foregroundColor: Colors.black,
-                            ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              const Icon(Icons.chevron_right),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 21.0,
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(8.0),
+                            foregroundColor: Colors.black,
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        color: Constants.primaryColor,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/phone_call_icon.svg",
-                                            width: 21,
-                                          ),
+                        ),
+                        const SizedBox(
+                          height: 21.0,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(
+                              const Airtime(),
+                              transition: Transition.cupertino,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Container(
+                                      color: Constants.primaryColor,
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          "assets/images/phone_call_icon.svg",
+                                          width: 21,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextRoboto(
-                                          text: "Airtime Topup",
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextRoboto(
+                                        text: "Airtime Topup",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      const Text(
+                                        "Recharge any phone easily",
+                                        style: TextStyle(
+                                          color: Colors.grey,
                                         ),
-                                        const Text(
-                                          "Recharge any phone easily",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                const Icon(Icons.chevron_right),
-                              ],
-                            ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(2.0),
-                              foregroundColor: Colors.black,
-                            ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              const Icon(Icons.chevron_right),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 21.0,
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(8.0),
+                            foregroundColor: Colors.black,
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        color: Constants.primaryColor,
-                                        padding: const EdgeInsets.all(8.0),
-                                        width: 36,
-                                        height: 36,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/hand_exchange_money.svg",
-                                            fit: BoxFit.cover,
-                                          ),
+                        ),
+                        const SizedBox(
+                          height: 21.0,
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Container(
+                                      color: Constants.primaryColor,
+                                      padding: const EdgeInsets.all(8.0),
+                                      width: 36,
+                                      height: 36,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          "assets/images/hand_exchange_money.svg",
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextRoboto(
-                                          text: "Airtime to Cash",
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextRoboto(
+                                        text: "Airtime to Cash",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      const Text(
+                                        "Convert airtime to cash easily",
+                                        style: TextStyle(
+                                          color: Colors.grey,
                                         ),
-                                        const Text(
-                                          "Convert airtime to cash easily",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                const Icon(Icons.chevron_right),
-                              ],
-                            ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(2.0),
-                              foregroundColor: Colors.black,
-                            ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              const Icon(Icons.chevron_right),
+                            ],
                           ),
-                          const SizedBox(
-                            height: 21.0,
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(8.0),
+                            foregroundColor: Colors.black,
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        color: Constants.primaryColor,
-                                        padding: const EdgeInsets.all(8.0),
-                                        width: 36,
-                                        height: 36,
-                                        child: Center(
-                                          child: Image.asset(
-                                            "assets/images/bill_icon.png",
-                                            fit: BoxFit.cover,
-                                          ),
+                        ),
+                        const SizedBox(
+                          height: 21.0,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(
+                              const BillPayment(),
+                              transition: Transition.cupertino,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Container(
+                                      color: Constants.primaryColor,
+                                      padding: const EdgeInsets.all(8.0),
+                                      width: 36,
+                                      height: 36,
+                                      child: Center(
+                                        child: Image.asset(
+                                          "assets/images/bill_icon.png",
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextRoboto(
-                                          text: "Bill Payment",
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextRoboto(
+                                        text: "Bill Payment",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      const Text(
+                                        "All utility bills payment",
+                                        style: TextStyle(
+                                          color: Colors.grey,
                                         ),
-                                        const Text(
-                                          "All utility bills payment",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                const Icon(Icons.chevron_right),
-                              ],
-                            ),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(2.0),
-                              foregroundColor: Colors.black,
-                            ),
-                          )
-                        ],
-                      ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              const Icon(Icons.chevron_right),
+                            ],
+                          ),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(8.0),
+                            foregroundColor: Colors.black,
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(height: 21.0),
                   ],

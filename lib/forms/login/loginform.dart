@@ -11,7 +11,6 @@ import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:airtimeslot_app/model/error/validation_error.dart';
 import 'package:airtimeslot_app/screens/account/verify_account.dart';
 import 'package:airtimeslot_app/screens/auth/forgotpass/forgotPass.dart';
-import 'package:airtimeslot_app/screens/auth/otp/verifyotp.dart';
 import 'package:airtimeslot_app/screens/wallet/set_wallet_pin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -291,11 +290,11 @@ class _LoginFormState extends State<LoginForm> {
                       // if (_formKey.currentState!.validate()) {
                       //   _login();
                       // }
-                      Get.to(
-                        Dashboard(
-                          manager: widget.manager,
-                        ),
-                      );
+                      // Get.to(
+                      //   Dashboard(
+                      //     manager: widget.manager,
+                      //   ),
+                      // );
                     },
                     child: Image.asset(
                       "assets/images/fingerprint.png",

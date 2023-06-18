@@ -7,6 +7,7 @@ class TextPoppins extends StatelessWidget {
   late final TextAlign? align;
   late final FontWeight? fontWeight;
   late final bool? softWrap;
+  late final TextOverflow? overflow;
 
   TextPoppins({
     required this.text,
@@ -15,6 +16,7 @@ class TextPoppins extends StatelessWidget {
     this.fontWeight,
     this.align,
     this.softWrap,
+    this.overflow,
   });
 
   final fontFamily = "PT Serif";
@@ -25,6 +27,7 @@ class TextPoppins extends StatelessWidget {
       text!,
       softWrap: softWrap,
       textAlign: align,
+      overflow: overflow,
       style: TextStyle(
         color: color,
         fontSize: fontSize,

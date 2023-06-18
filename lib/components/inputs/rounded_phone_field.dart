@@ -40,13 +40,14 @@ class _RoundedPhoneFieldState extends State<RoundedPhoneField> {
       validator: widget.validator,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
+          horizontal: 22.0,
           vertical: 16.0,
         ),
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         filled: true,
+        fillColor: widget.fillColor,
         hintText: widget.hintText,
         focusColor: widget.fillColor,
         hintStyle: const TextStyle(

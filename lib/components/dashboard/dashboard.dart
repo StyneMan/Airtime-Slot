@@ -1,27 +1,21 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:airtimeslot_app/auth_controller.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/database/database_handler.dart';
 // import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
-import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
 import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
-import 'package:airtimeslot_app/screens/messages/my_messages.dart';
 import 'package:airtimeslot_app/screens/network/no_internet.dart';
+import 'package:airtimeslot_app/screens/support/support.dart';
 import 'package:airtimeslot_app/screens/transaction/pay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   final PreferenceManager manager;
@@ -36,6 +30,8 @@ class _DashboardState extends State<Dashboard> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
+
+  int indx = 0;
 
   @override
   void initState() {
@@ -98,7 +94,8 @@ class _DashboardState extends State<Dashboard> {
                           context,
                           screens: _buildScreens(_isLoggedIn),
                           items: _navBarsItems(),
-                          // controller: _controller.tabController,
+                          backgroundColor: Colors.white,
+                          controller: _controller.tabController,
                           confineInSafeArea: true,
                           navBarHeight: 64,
                           handleAndroidBackButtonPress:
@@ -115,6 +112,11 @@ class _DashboardState extends State<Dashboard> {
                             ),
                             colorBehindNavBar: Colors.white,
                           ),
+                          onItemSelected: (val) {
+                            setState(() {
+                              indx = val;
+                            });
+                          },
                           popAllScreensOnTapOfSelectedTab: true,
                           popActionScreens: PopActionScreensType.all,
                           itemAnimationProperties:
@@ -145,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(
-          CupertinoIcons.home,
+          Icons.home_rounded,
           size: 24,
         ),
         title: "Home",
@@ -163,11 +165,13 @@ class _DashboardState extends State<Dashboard> {
         activeColorSecondary: Constants.primaryColor,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(
-          CupertinoIcons.chat_bubble_text,
-          size: 24,
+        icon: SvgPicture.asset(
+          "assets/images/headset_icon.svg",
+          color: indx == 2
+              ? Constants.primaryColor
+              : Colors.grey,
         ),
-        title: "Messages",
+        title: "Support",
         activeColorPrimary: Constants.primaryColor,
         inactiveColorPrimary: Colors.grey,
         inactiveColorSecondary: Colors.grey,
@@ -195,9 +199,7 @@ class _DashboardState extends State<Dashboard> {
       Pay(
         manager: widget.manager,
       ),
-      AuthController(
-        component: MyMessages(manager: widget.manager),
-      ),
+      Support(manager: widget.manager),
       Account(manager: widget.manager)
       // AuthController(component: Account(manager: widget.manager)),
     ];

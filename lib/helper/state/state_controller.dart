@@ -7,6 +7,7 @@ import 'package:airtimeslot_app/main.dart';
 import 'package:airtimeslot_app/screens/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StateController extends GetxController {
@@ -37,10 +38,10 @@ class StateController extends GetxController {
 
   var selectedDataProvider = {}.obs;
   var selectedDataPlan = {}.obs;
-
   var selectedAirtimeProvider = {}.obs;
-
   var selectedElectricityProvider = {}.obs;
+  var selectedTelevisionProvider = {}.obs;
+  var selectedTelevisionPlan = {}.obs;
 
   var mynotifications = [].obs;
   var navColor = Constants.primaryColor.obs;
@@ -62,6 +63,8 @@ class StateController extends GetxController {
   String _token = "";
 
   RxString dbItem = 'Awaiting data'.obs;
+
+  var tabController = PersistentTabController(initialIndex: 0);
 
   getProducts() async {
     try {
@@ -102,7 +105,6 @@ class StateController extends GetxController {
     final _prefs = await SharedPreferences.getInstance();
     _token = _prefs.getString("accessToken") ?? "";
     // bool _isAuthenticated = prefs.getBool("loggedIn") ?? false;
-    
 
     if (_token.isNotEmpty) {
       APIService().getProfile(_token).then((value) {
@@ -156,11 +158,11 @@ class StateController extends GetxController {
       );
 
   var currentPage = "Home";
-  List<String> pageKeys = ["Home", "Pay", "Messages", "Account"];
+  List<String> pageKeys = ["Home", "Pay", "Support", "Account"];
   Map<String, GlobalKey<NavigatorState>> navigatorKeys = {
     "Home": GlobalKey<NavigatorState>(),
     "Pay": GlobalKey<NavigatorState>(),
-    "Messages": GlobalKey<NavigatorState>(),
+    "Support": GlobalKey<NavigatorState>(),
     "Account": GlobalKey<NavigatorState>(),
   };
 
