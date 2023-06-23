@@ -40,7 +40,7 @@ class _RoundedPhoneFieldState extends State<RoundedPhoneField> {
       validator: widget.validator,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 22.0,
+          horizontal: 17.0,
           vertical: 16.0,
         ),
         border: InputBorder.none,

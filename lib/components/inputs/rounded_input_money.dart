@@ -45,7 +45,7 @@ class RoundedInputMoney extends StatelessWidget {
       keyboardType: TextInputType.number,
      decoration: InputDecoration(
        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
+          horizontal: 18.0,
           vertical: 16.0,
         ),
         border: InputBorder.none,

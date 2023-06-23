@@ -248,12 +248,12 @@ class APIService {
     }
   }
 
-  Future<http.Response> transaction(Map body) async {
+  Future<http.Response> startTransaction(Map body, String accessToken) async {
     return await client.post(
       Uri.parse('${Constants.baseURL}backend/user/transaction'),
       headers: {
         "Content-type": "application/json",
-        // "Authorization": "Bearer " + accessToken,
+        "Authorization": "Bearer " + accessToken,
         "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
       },
       body: jsonEncode(body),

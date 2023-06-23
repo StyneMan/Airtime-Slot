@@ -1,15 +1,11 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/database/database_handler.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
 import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
-import 'package:airtimeslot_app/screens/services/bill_payment.dart';
 import 'package:airtimeslot_app/screens/services/bill_payment.dart';
 import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
 import 'package:airtimeslot_app/screens/transaction/transaction_details.dart';
@@ -21,7 +17,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:http/http.dart' as http;
 import "package:collection/collection.dart";
 
 import 'components/transaction_row.dart';
@@ -248,7 +243,9 @@ class _PayState extends State<Pay> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const InternetData(),
+                              InternetData(
+                                manager: widget.manager!,
+                              ),
                               transition: Transition.cupertino,
                             );
                           },
@@ -311,7 +308,9 @@ class _PayState extends State<Pay> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const Airtime(),
+                              Airtime(
+                                manager: widget.manager!,
+                              ),
                               transition: Transition.cupertino,
                             );
                           },
@@ -436,7 +435,9 @@ class _PayState extends State<Pay> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const BillPayment(),
+                              BillPayment(
+                                manager: widget.manager!,
+                              ),
                               transition: Transition.cupertino,
                             );
                           },

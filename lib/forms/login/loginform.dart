@@ -61,42 +61,31 @@ class _LoginFormState extends State<LoginForm> {
         _controller.setAccessToken('${loginMap['data']['token']}');
         widget.manager.saveAccessToken('${loginMap['data']['token']}');
 
-        final _toks = "${loginMap['data']['token']}";
+        // final _toks = "${loginMap['data']['token']}";
 
         // UserModel? model = login.data?.user;
-        // _controller.setUserData('${login.data?.user}');
 
         if (loginMap['data']['user']['is_account_verified']) {
           //Account has been verified. Now check if wallet pin is set.
-          if (loginMap['data']['user']['is_wallet_pin']) {
-            //Wallet pin has been set, go to dashboard from here.
-            //Save user data and preferences
-            String userData = jsonEncode(loginMap['data']['user']);
-            widget.manager.setUserData(userData);
+          // if (loginMap['data']['user']['is_wallet_pin']) {
+          //Wallet pin has been set, go to dashboard from here.
+          //Save user data and preferences
+          String userData = jsonEncode(loginMap['data']['user']);
+          widget.manager.setUserData(userData);
 
-            _controller.setUserData('${loginMap['data']['user']}');
+          _controller.setUserData(loginMap['data']['user']);
 
-            // await APIService().fetchTransactions(_toks);
+          // await APIService().fetchTransactions(_toks);
 
-            widget.manager.setIsLoggedIn(true);
-            _controller.setLoading(false);
+          widget.manager.setIsLoggedIn(true);
+          _controller.setLoading(false);
 
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Dashboard(manager: widget.manager),
-              ),
-            );
-          } else {
-            //Set wallet PIN from here.
-            _controller.setLoading(false);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SetWalletPin(manager: widget.manager),
-              ),
-            );
-          }
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Dashboard(manager: widget.manager),
+            ),
+          );
         } else {
           //Verify account from here...
           _controller.setLoading(false);
@@ -285,7 +274,7 @@ class _LoginFormState extends State<LoginForm> {
                       Radius.circular(8.0),
                     ),
                   ),
-                  child: ElevatedButton(
+                  child: TextButton(
                     onPressed: () {
                       // if (_formKey.currentState!.validate()) {
                       //   _login();
@@ -299,7 +288,7 @@ class _LoginFormState extends State<LoginForm> {
                     child: Image.asset(
                       "assets/images/fingerprint.png",
                     ),
-                    style: ElevatedButton.styleFrom(
+                    style: TextButton.styleFrom(
                       backgroundColor: Constants.accentColor,
                       elevation: 0.0,
                     ),

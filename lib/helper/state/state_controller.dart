@@ -38,6 +38,7 @@ class StateController extends GetxController {
 
   var selectedDataProvider = {}.obs;
   var selectedDataPlan = {}.obs;
+  var selectedDataPlanAmount = 0.obs;
   var selectedAirtimeProvider = {}.obs;
   var selectedElectricityProvider = {}.obs;
   var selectedTelevisionProvider = {}.obs;
@@ -209,9 +210,9 @@ class StateController extends GetxController {
   }
 
   setUserData(var value) {
-    if (value != null) {
-      userData.value = value;
-    }
+    // if (value != null) {
+    userData.value = value;
+    // }
   }
 
   void setTransactions(var list) {

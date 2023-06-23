@@ -209,7 +209,7 @@ class _HomeState extends State<Home> {
                                 child: Image.asset(
                                   "assets/images/dash_bg.png",
                                   fit: BoxFit.cover,
-                                  height: 225,
+                                  height: 224,
                                 ),
                               ),
                             ),
@@ -482,7 +482,9 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(
-                                        const InternetData(),
+                                        InternetData(
+                                          manager: widget.manager!,
+                                        ),
                                         transition: Transition.cupertino,
                                       );
                                     },
@@ -535,7 +537,9 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(
-                                        const Airtime(),
+                                        Airtime(
+                                          manager: widget.manager!,
+                                        ),
                                         transition: Transition.cupertino,
                                       );
                                     },
@@ -656,7 +660,9 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(
-                                        const Television(),
+                                        Television(
+                                          manager: widget.manager!,
+                                        ),
                                         transition: Transition.cupertino,
                                       );
                                     },
@@ -709,7 +715,7 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(
-                                        const Electricity(),
+                                         Electricity(manager: widget.manager!,),
                                         transition: Transition.cupertino,
                                       );
                                     },

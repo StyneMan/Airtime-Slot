@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -68,13 +69,22 @@ class _VerifyAccountState extends State<VerifyAccount> {
     try {
       final response = await APIService().verify(_payload, widget.token);
       _controller.setLoading(false);
-      debugPrint("RESPONSE:: ${response.body}");
+      // debugPrint("RESPONSE:: ${response.body}");
 
       if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        Constants.toast(map['message']);
+
+        String userData = jsonEncode(map['data']);
+        widget.manager.setUserData(userData);
+        _controller.setUserData('${map['data']}');
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => SetWalletPin(manager: widget.manager,),
+            builder: (context) => Dashboard(
+              manager: widget.manager,
+            ),
           ),
         );
       } else {

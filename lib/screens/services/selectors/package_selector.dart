@@ -85,11 +85,8 @@ class _PackageSelectorState extends State<PackageSelector> {
       case "data":
         _controller.selectedDataPlan.value = network;
         break;
-      case "airtime":
-        // _controller.selec.value = network;
-        break;
-      case "electricity":
-        // _controller.sele.value = network;
+      case "cabletv":
+        _controller.selectedTelevisionPlan.value = network;
         break;
       default:
     }
@@ -177,19 +174,10 @@ class _PackageSelectorState extends State<PackageSelector> {
               ),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    // _filteredList.isEmpty
-                    //     ? const Text(
-                    //         'No results found',
-                    //         style: TextStyle(fontSize: 24),
-                    //       )
-                    //     :
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -217,16 +205,26 @@ class _PackageSelectorState extends State<PackageSelector> {
                                       child: Image.network(
                                         "${Constants.baseURL}${widget.image}",
                                         width: 24,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Image.asset(
+                                          "assets/images/placeholder.png",
+                                          width: 24,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(
                                       width: 8.0,
                                     ),
-                                    TextPoppins(
-                                      text: "${_filteredList[index]['name']}",
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.66,
+                                      child: TextPoppins(
+                                        text: "${_filteredList[index]['name']}",
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -250,26 +248,28 @@ class _PackageSelectorState extends State<PackageSelector> {
                       ),
                       itemCount: _filteredList.length,
                     ),
-                    const SizedBox(height: 21.0),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            RoundedButton(
-                              text: "Continue",
-                              press: () {
-                                if (_selectedIndex > 0) {
-                                  Get.back();
-                                } else {
-                                  Constants.toast("Select a package!");
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                    _filteredList.length > 4
+                        ? const SizedBox(height: 21.0)
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.12,
+                          ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          RoundedButton(
+                            text: "Continue",
+                            press: () {
+                              if (_selectedIndex > 0) {
+                                Get.back();
+                              } else {
+                                Constants.toast("Select a package!");
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     )
                   ],

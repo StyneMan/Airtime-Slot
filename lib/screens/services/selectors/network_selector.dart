@@ -93,6 +93,7 @@ class _NetworkSelectorState extends State<NetworkSelector> {
         break;
       case "cabletv":
         _controller.selectedTelevisionProvider.value = network;
+        _controller.selectedTelevisionPlan.value = {};
         break;
       default:
     }
@@ -187,12 +188,6 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                     const SizedBox(
                       height: 8.0,
                     ),
-                    // _filteredList.isEmpty
-                    //     ? const Text(
-                    //         'No results found',
-                    //         style: TextStyle(fontSize: 24),
-                    //       )
-                    //     :
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -272,26 +267,24 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                       ),
                       itemCount: _filteredList.length,
                     ),
-                    const SizedBox(height: 21.0),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            RoundedButton(
-                              text: "Continue",
-                              press: () {
-                                if (_selectedIndex > 0) {
-                                  Get.back();
-                                } else {
-                                  Constants.toast("Select a network provider");
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          RoundedButton(
+                            text: "Continue",
+                            press: () {
+                              if (_selectedIndex > 0) {
+                                Get.back();
+                              } else {
+                                Constants.toast("Select a network provider");
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     )
                   ],

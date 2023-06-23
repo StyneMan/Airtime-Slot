@@ -157,201 +157,201 @@ class _ServiceFormState extends State<ServiceForm> {
 
 
 
-  _buyTv() async {
-    _controller.setLoading(true);
+  // _buyTv() async {
+  //   _controller.setLoading(true);
 
-    // print("SSSASS:: $_discountAmt");
+  //   // print("SSSASS:: $_discountAmt");
 
-    Map _payload = {
-      "amount": "${_controller.discountAmount.value}", //"$_discountAmt",
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "isn": _smartCardNumController.text,
-      "product_id": _selectedProduct?.id,
-    };
+  //   Map _payload = {
+  //     "amount": "${_controller.discountAmount.value}", //"$_discountAmt",
+  //     "network_id": _selectedNetwork?.id,
+  //     "phone": _phoneController.text,
+  //     "transaction_type": widget.service.toLowerCase(),
+  //     "isn": _smartCardNumController.text,
+  //     "product_id": _selectedProduct?.id,
+  //   };
 
-    try {
-      final resp = await APIService().transaction(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
+  //   try {
+  //     final resp = await APIService().transaction(_payload);
+  //     debugPrint("${widget.service}:: ${resp.body}");
+  //     _controller.setLoading(false);
+  //     if (resp.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       TransactionResponse trans = TransactionResponse.fromJson(map);
 
-        Constants.toast("${trans.message}");
+  //       Constants.toast("${trans.message}");
 
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: true,
-              token: widget.token,
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
+  //       Navigator.push(
+  //         context,
+  //         PageTransition(
+  //           type: PageTransitionType.rightToLeft,
+  //           isIos: true,
+  //           child: ConfirmTransaction(
+  //             model: trans.data,
+  //             isLoggedIn: true,
+  //             token: widget.token,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       Map<String, dynamic> errorMap = jsonDecode(resp.body);
+  //       ErrorResponse error = ErrorResponse.fromJson(errorMap);
+  //       Constants.toast("${error.message}");
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //   }
+  // }
 
-  _buyData() async {
-    _controller.setLoading(true);
+  // _buyData() async {
+  //   _controller.setLoading(true);
 
-    Map _payload = {
-      "amount": "${_controller.discountAmount.value}", //"$_discountAmt",
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-      "product_id": _selectedProduct?.id,
-    };
+  //   Map _payload = {
+  //     "amount": "${_controller.discountAmount.value}", //"$_discountAmt",
+  //     "network_id": _selectedNetwork?.id,
+  //     "phone": _phoneController.text,
+  //     "transaction_type": widget.service.toLowerCase(),
+  //     "product_id": _selectedProduct?.id,
+  //   };
 
-    try {
-      final resp = await APIService().transaction(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
+  //   try {
+  //     final resp = await APIService().transaction(_payload);
+  //     debugPrint("${widget.service}:: ${resp.body}");
+  //     _controller.setLoading(false);
+  //     if (resp.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       TransactionResponse trans = TransactionResponse.fromJson(map);
 
-        Constants.toast("${trans.message}");
+  //       Constants.toast("${trans.message}");
 
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: true,
-              token: widget.token,
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
+  //       Navigator.push(
+  //         context,
+  //         PageTransition(
+  //           type: PageTransitionType.rightToLeft,
+  //           isIos: true,
+  //           child: ConfirmTransaction(
+  //             model: trans.data,
+  //             isLoggedIn: true,
+  //             token: widget.token,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       Map<String, dynamic> errorMap = jsonDecode(resp.body);
+  //       ErrorResponse error = ErrorResponse.fromJson(errorMap);
+  //       Constants.toast("${error.message}");
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //   }
+  // }
 
-  _buyAirtime() async {
-    _controller.setLoading(true);
+  // _buyAirtime() async {
+  //   _controller.setLoading(true);
 
-    String? amt = _amountController?.text.replaceAll("₦ ", "");
-    String filteredAmt = amt!.replaceAll(",", "");
-    int price = int.parse(amt.replaceAll(",", ""));
+  //   String? amt = _amountController?.text.replaceAll("₦ ", "");
+  //   String filteredAmt = amt!.replaceAll(",", "");
+  //   int price = int.parse(amt.replaceAll(",", ""));
 
-    Map _payload = {
-      "amount": amt.replaceAll(",", ""),
-      "network_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service.toLowerCase(),
-    };
+  //   Map _payload = {
+  //     "amount": amt.replaceAll(",", ""),
+  //     "network_id": _selectedNetwork?.id,
+  //     "phone": _phoneController.text,
+  //     "transaction_type": widget.service.toLowerCase(),
+  //   };
 
-    try {
-      final resp = await APIService().transaction(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
+  //   try {
+  //     final resp = await APIService().transaction(_payload);
+  //     debugPrint("${widget.service}:: ${resp.body}");
+  //     _controller.setLoading(false);
+  //     if (resp.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       TransactionResponse trans = TransactionResponse.fromJson(map);
 
-        Constants.toast("${trans.message}");
+  //       Constants.toast("${trans.message}");
 
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: true,
-              token: widget.token,
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
+  //       Navigator.push(
+  //         context,
+  //         PageTransition(
+  //           type: PageTransitionType.rightToLeft,
+  //           isIos: true,
+  //           child: ConfirmTransaction(
+  //             model: trans.data,
+  //             isLoggedIn: true,
+  //             token: widget.token,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       Map<String, dynamic> errorMap = jsonDecode(resp.body);
+  //       ErrorResponse error = ErrorResponse.fromJson(errorMap);
+  //       Constants.toast("${error.message}");
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //   }
+  // }
 
-  _buyElectricity() async {
-    _controller.setLoading(true);
+  // _buyElectricity() async {
+  //   _controller.setLoading(true);
 
-    String? amt = _amountController?.text.replaceAll("₦ ", "");
-    String filteredAmt = amt!.replaceAll(",", "");
-    int price = int.parse(amt.replaceAll(",", ""));
+  //   String? amt = _amountController?.text.replaceAll("₦ ", "");
+  //   String filteredAmt = amt!.replaceAll(",", "");
+  //   int price = int.parse(amt.replaceAll(",", ""));
 
-    Map _payload = {
-      "amount": amt.replaceAll(",", ""),
-      "disco_id": _selectedNetwork?.id,
-      "phone": _phoneController.text,
-      "transaction_type": widget.service,
-      "meter_number": _meterNumController.text,
-      "meter_type": _meterType,
-    };
+  //   Map _payload = {
+  //     "amount": amt.replaceAll(",", ""),
+  //     "disco_id": _selectedNetwork?.id,
+  //     "phone": _phoneController.text,
+  //     "transaction_type": widget.service,
+  //     "meter_number": _meterNumController.text,
+  //     "meter_type": _meterType,
+  //   };
 
-    try {
-      final resp = await APIService().transaction(_payload);
-      debugPrint("${widget.service}:: ${resp.body}");
-      _controller.setLoading(false);
-      if (resp.statusCode == 200) {
-        Map<String, dynamic> map = jsonDecode(resp.body);
-        TransactionResponse trans = TransactionResponse.fromJson(map);
+  //   try {
+  //     final resp = await APIService().transaction(_payload);
+  //     debugPrint("${widget.service}:: ${resp.body}");
+  //     _controller.setLoading(false);
+  //     if (resp.statusCode == 200) {
+  //       Map<String, dynamic> map = jsonDecode(resp.body);
+  //       TransactionResponse trans = TransactionResponse.fromJson(map);
 
-        Constants.toast("${trans.message}");
+  //       Constants.toast("${trans.message}");
 
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmTransaction(
-              model: trans.data,
-              isLoggedIn: true,
-              token: widget.token,
-            ),
-          ),
-        );
-      } else {
-        Map<String, dynamic> errorMap = jsonDecode(resp.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-    }
-  }
+  //       Navigator.push(
+  //         context,
+  //         PageTransition(
+  //           type: PageTransitionType.rightToLeft,
+  //           isIos: true,
+  //           child: ConfirmTransaction(
+  //             model: trans.data,
+  //             isLoggedIn: true,
+  //             token: widget.token,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       Map<String, dynamic> errorMap = jsonDecode(resp.body);
+  //       ErrorResponse error = ErrorResponse.fromJson(errorMap);
+  //       Constants.toast("${error.message}");
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //   }
+  // }
 
   _beginTransaction() async {
     if (_isLoggedIn) {
       //Auth user
-      if (widget.service.toLowerCase() == "airtime") {
-        _buyAirtime();
-      } else if (widget.service.toLowerCase() == "data") {
-        _buyData();
-      } else if (widget.service.toLowerCase() == "electricity") {
-        _buyElectricity();
-      } else {
-        _buyTv();
-      }
+      // if (widget.service.toLowerCase() == "airtime") {
+      //   _buyAirtime();
+      // } else if (widget.service.toLowerCase() == "data") {
+      //   _buyData();
+      // } else if (widget.service.toLowerCase() == "electricity") {
+      //   _buyElectricity();
+      // } else {
+      //   _buyTv();
+      // }
     } 
   }
 
