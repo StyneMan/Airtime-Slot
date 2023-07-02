@@ -107,10 +107,34 @@ class _LoginState extends State<Login> {
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(36.0),
+                          side: const BorderSide(
+                            color: Constants.primaryColor,
+                            width: 0.25,
+                          ),
                         ),
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(21.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(36.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xFFBBDCF7),
+                                offset: Offset(
+                                  1.0,
+                                  1.0,
+                                ),
+                                blurRadius: 7.0,
+                                spreadRadius: 2.0,
+                              ), //BoxShadow
+                              BoxShadow(
+                                color: Colors.white,
+                                offset: Offset(0.0, 0.0),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ), //BoxShadow
+                            ],
+                          ),
                           child: Column(
                             children: [
                               const SizedBox(
@@ -123,8 +147,8 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 48,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.16,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -148,15 +172,17 @@ class _LoginState extends State<Login> {
                                     "New to Airtimeslot? ",
                                     style: TextStyle(
                                       color: Colors.white,
+                                      fontFamily: "Poppins",
                                     ),
                                   ),
-                                   SizedBox(
+                                  SizedBox(
                                     width: 8.0,
                                   ),
                                   Text(
                                     "Sign Up ",
                                     style: TextStyle(
                                       color: Colors.black,
+                                      fontFamily: "Poppins",
                                     ),
                                   )
                                 ],
@@ -177,93 +203,6 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-
-                // Expanded(
-                //   child: Stack(
-                //     children: [
-                //       const SizedBox(),
-                //       Positioned(
-                //         top: 18,
-                //         right: -4,
-                //         bottom: -5,
-                //         child: Image.asset(
-                //           "assets/images/login_img2.png",
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //       Positioned(
-                //         top: 40,
-                //         left: 8.0,
-                //         child: IconButton(
-                //           onPressed: () {
-                //             Navigator.of(context).pop();
-                //           },
-                //           icon: const Icon(
-                //             CupertinoIcons.arrow_left_circle_fill,
-                //             color: Colors.black,
-                //             size: 36,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Expanded(
-                //   child: ListView(
-                //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //     shrinkWrap: true,
-                //     children: [
-                //       TextPoppins(
-                //         text: "Welcome back!",
-                //         fontSize: 24,
-                //         color: Colors.black,
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //       TextPoppins(
-                //         text: "Sign in to your account!",
-                //         fontSize: 14,
-                //       ),
-                //       const SizedBox(
-                //         height: 14.0,
-                //       ),
-                //       LoginForm(
-                //         manager: _manager!,
-                //       ),
-                //       const SizedBox(
-                //         height: 14.0,
-                //       ),
-                //       Center(
-                //         child: RichText(
-                //           textAlign: TextAlign.center,
-                //           text: TextSpan(
-                //             text: "Don't have an account? ",
-                //             style: const TextStyle(
-                //               color: Colors.black,
-                //             ),
-                //             children: [
-                //               TextSpan(
-                //                 text: "Sign up ",
-                //                 style: const TextStyle(
-                //                   color: Constants.primaryColor,
-                //                   fontWeight: FontWeight.w600,
-                //                 ),
-                //                 recognizer: TapGestureRecognizer()
-                //                   ..onTap = () => Navigator.of(context).push(
-                //                         PageTransition(
-                //                           type: PageTransitionType.size,
-                //                           alignment: Alignment.bottomCenter,
-                //                           child: const Register(),
-                //                         ),
-                //                       ),
-                //                 // ..onTap = _showTermsOfService,
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),

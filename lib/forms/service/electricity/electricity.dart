@@ -239,7 +239,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "electricity", data: map['data']),
+          TransactionSummary(type: "electricity", data: map['data'], manager: widget.manager,),
           transition: Transition.cupertino,
         );
         

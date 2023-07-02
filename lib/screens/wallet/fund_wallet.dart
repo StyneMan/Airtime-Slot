@@ -1,15 +1,12 @@
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/wallet/components/abt.dart';
-import 'package:airtimeslot_app/screens/wallet/components/mbt.dart';
+import 'package:airtimeslot_app/screens/wallet/components/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/instance_manager.dart';
-
-import 'components/card.dart';
+import 'package:get/get.dart';
 
 class FundWallet extends StatefulWidget {
   final PreferenceManager manager;
@@ -24,7 +21,6 @@ class FundWallet extends StatefulWidget {
 
 class _FundWalletState extends State<FundWallet>
     with SingleTickerProviderStateMixin {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
 
   late TabController tabController;
@@ -44,109 +40,229 @@ class _FundWalletState extends State<FundWallet>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0.0,
-        foregroundColor: Colors.white,
-        backgroundColor: Constants.primaryColor,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: TextPoppins(
-          text: "Fund Wallet".toUpperCase(),
-           fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (!_scaffoldKey.currentState!.isEndDrawerOpen) {
-                _scaffoldKey.currentState!.openEndDrawer();
-              }
-            },
-            icon: SvgPicture.asset(
-              'assets/images/menu_icon.svg',
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      endDrawer: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: CustomDrawer(
-          manager: widget.manager,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: Constants.accentColor,
+      body: Column(
+        children: [
+          const SizedBox(height: 48),
+          Stack(
+            clipBehavior: Clip.none,
             children: [
-              const SizedBox(height: 10.0),
-              SizedBox(
-                // height: 50,
-                width: MediaQuery.of(context).size.height,
+              Center(
+                child: TextPoppins(
+                  text: "Topup your wallet",
+                  fontSize: 21,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Positioned(
+                left: 8.0,
+                top: -5,
+                bottom: -5,
+                child: Center(
+                  child: ClipOval(
+                    child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Constants.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 36.0),
+          Expanded(
+            child: Card(
+              color: Colors.white.withOpacity(.9),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36.0),
+                  topRight: Radius.circular(36.0),
+                ),
+              ),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.all(5),
-                      child: TabBar(
-                        unselectedLabelColor: Colors.grey,
-                        labelColor: Colors.white,
-                        indicatorColor: Constants.primaryColor,
-                        indicatorWeight: 3,
-                        indicator: BoxDecoration(
-                          color: Constants.primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        controller: tabController,
-                        tabs: [
-                          Tab(
-                            child: TextPoppins(text: "Card", fontSize: 16),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Center(
+                      child: TextPoppins(
+                        text: "Select payment method",
+                        fontSize: 21,
+                        align: TextAlign.center,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 6.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10.0,
                           ),
-                          Tab(
-                            child: TextPoppins(text: "ABT", fontSize: 16),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(
+                                BankTransfer(
+                                  manager: widget.manager,
+                                ),
+                                transition: Transition.cupertino,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      child: Container(
+                                        color: Constants.primaryColor,
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            "assets/images/bank_deposit_icon.svg",
+                                            color: Colors.white,
+                                            width: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextPoppins(
+                                          text: "Bank Transfer",
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        TextPoppins(
+                                          text: "Pay with local bank transfer",
+                                          fontSize: 13,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                const Icon(Icons.chevron_right),
+                              ],
+                            ),
+                            style: TextButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              foregroundColor: Colors.black,
+                            ),
                           ),
-                          Tab(
-                            child: TextPoppins(text: "MBT", fontSize: 16),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(
+                                CardWallet(
+                                  manager: widget.manager,
+                                ),
+                                transition: Transition.cupertino,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      child: Container(
+                                        color: Constants.primaryColor,
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            "assets/images/credit_card_icon.svg",
+                                            color: Colors.white,
+                                            width: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextPoppins(
+                                          text: "Card",
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        TextPoppins(
+                                          text:
+                                              "Pay with your debit or credit card",
+                                          fontSize: 13,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                const Icon(Icons.chevron_right),
+                              ],
+                            ),
+                            style: TextButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              foregroundColor: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 21.0,
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
+                    const SizedBox(height: 21.0),
                   ],
                 ),
               ),
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    CardWallet(
-                      manager: widget.manager,
-                    ),
-                    ABT(
-                      manager: widget.manager,
-                    ),
-                    MBT(
-                      manager: widget.manager,
-                    )
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

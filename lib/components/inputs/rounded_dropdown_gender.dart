@@ -47,7 +47,7 @@ class _RoundedDropdownState extends State<RoundedDropdownGender> {
       validator: widget.validator,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 22.0,
+          horizontal: 21.0,
           vertical: 12.0,
         ),
         border: InputBorder.none,

@@ -21,30 +21,18 @@ class RoundedInputDisabledField extends StatelessWidget {
       enabled: false,
       initialValue: value,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 12.0,
+       contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 10.0,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        filled: false,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: Constants.accentColor,
         hintText: hintText,
+        // labelText: hintText,
+        suffixIcon: suffix,
         labelText: hintText,
         focusColor: Constants.accentColor,
         hintStyle: const TextStyle(

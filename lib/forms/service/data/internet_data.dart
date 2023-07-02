@@ -316,7 +316,7 @@ class _InternetDataFormState extends State<InternetDataForm> {
 
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "data", data: map['data']),
+          TransactionSummary(type: "data", data: map['data'], manager: widget.manager,),
           transition: Transition.cupertino,
         );
       } else {

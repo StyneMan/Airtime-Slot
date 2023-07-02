@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_button_wrapped.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_date_picker.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_disabled.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -13,16 +14,20 @@ import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/model/auth/wallet_pin.dart';
 import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:airtimeslot_app/model/user/user_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalInfo extends StatefulWidget {
   final PreferenceManager manager;
+  final bool shouldEdit;
   const PersonalInfo({
     Key? key,
+    this.shouldEdit = false,
     required this.manager,
   }) : super(key: key);
 
@@ -35,14 +40,29 @@ class _PersonalInfoState extends State<PersonalInfo> {
   final _controller = Get.find<StateController>();
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _dateController = TextEditingController();
+
+  String _selectedGender = "";
 
   @override
   void initState() {
     super.initState();
     _nameController.text = widget.manager.getUser()['name'];
     _phoneController.text = widget.manager.getUser()['phone'] ?? "";
+  }
+
+  _onDateSelected(val) {
+    setState(() {
+      _dateController.text = val;
+    });
+  }
+
+  _onGenderSelected(val) {
+    setState(() {
+      _selectedGender = val;
+    });
   }
 
   _updateProfile() async {
@@ -52,7 +72,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
     Map _payload = {
       "name": _nameController.text,
-      "phone": _phoneController.text
+      "phone": _phoneController.text,
+      "dob": _dateController.text,
+      "gender": _selectedGender.toLowerCase()
     };
 
     try {
@@ -62,15 +84,14 @@ class _PersonalInfoState extends State<PersonalInfo> {
       _controller.setLoading(false);
       if (response.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(response.body);
-        WalletPINResponse data = WalletPINResponse.fromJson(map);
-        //Update shared preference
-        UserModel? model = data.data;
-        String userData = jsonEncode(model);
-        widget.manager.setUserData(userData);
-        widget.manager.setIsLoggedIn(true);
-        _controller.setUserData('${data.data}');
 
-        Constants.toast("${data.message}");
+        String userData = jsonEncode(map['data']);
+        widget.manager.setUserData(userData);
+        _controller.setUserData(map['data']);
+
+        Constants.toast("Profile updated successfully");
+
+        _controller.onInit();
       } else {
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
@@ -83,147 +104,214 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0.0,
-        foregroundColor: Colors.white,
-        backgroundColor: Constants.primaryColor,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: TextPoppins(
-          text: "Personal Information".toUpperCase(),
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (!_scaffoldKey.currentState!.isEndDrawerOpen) {
-                _scaffoldKey.currentState!.openEndDrawer();
-              }
-            },
-            icon: SvgPicture.asset(
-              'assets/images/menu_icon.svg',
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      endDrawer: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: CustomDrawer(
-          manager: widget.manager,
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(21.0),
-          children: [
-            const SizedBox(
-              height: 21.0,
-            ),
-            RoundedInputDisabledField(
-              value: "${widget.manager.getUser()['ref']}",
-              hintText: "Account ID",
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            RoundedInputDisabledField(
-              value: "${widget.manager.getUser()['referral_code']}",
-              suffix: InkWell(
-                onTap: () {
-                  Clipboard.setData(ClipboardData(
-                      text: "${widget.manager.getUser()['referral_code']}"));
-                  Constants.toast("Referral code copied to clipboard!");
-                },
-                child: const Icon(Icons.copy, size: 21.0),
-              ),
-              hintText: 'Referral Code',
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            RoundedInputDisabledField(
-              value: widget.manager.getUser()['email'],
-              hintText: "Email",
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            const Divider(
-              thickness: 1.0,
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
+    return Obx(
+      () => LoadingOverlayPro(
+        isLoading: _controller.isLoading.value,
+        backgroundColor: Colors.black54,
+        progressIndicator: const CircularProgressIndicator.adaptive(),
+        child: Scaffold(
+          backgroundColor: Constants.accentColor,
+          body: Column(
+            children: [
+              const SizedBox(height: 48),
+              Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  RoundedInputField(
-                    hintText: "Name",
-                    icon: Icons.person,
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your fullname';
-                      }
-                      return null;
-                    },
-                    controller: _nameController,
-                    inputType: TextInputType.name,
+                  Center(
+                    child: TextPoppins(
+                      text: "Personal information",
+                      fontSize: 21,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  RoundedPhoneField(
-                    hintText: "Phone",
-                    onChanged: (value) {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      if (!RegExp('^(?:[+0]234)?[0-9]{10}').hasMatch(value)) {
-                        return 'Please enter a valid phone number';
-                      }
-                      if (value.length < 10) {
-                        return 'Phone number not valid';
-                      }
-                      return null;
-                    },
-                    inputType: TextInputType.phone,
-                    controller: _phoneController,
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      child: TextPoppins(text: "SAVE PROFILE", fontSize: 16),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _updateProfile();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(10.0),
+                  Positioned(
+                    left: 8.0,
+                    top: -5,
+                    bottom: -5,
+                    child: Center(
+                      child: ClipOval(
+                        child: IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Constants.primaryColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 36.0),
+              Expanded(
+                child: Card(
+                  color: Colors.white.withOpacity(.9),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(36.0),
+                      topRight: Radius.circular(36.0),
+                    ),
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
+                                  ClipOval(
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        "assets/images/personal_icon.svg",
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  widget.shouldEdit
+                                      ? const SizedBox()
+                                      : Center(
+                                          child: RoundedButtonWrapped(
+                                            text: "Edit",
+                                            press: () {},
+                                          ),
+                                        )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 24.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedInputDisabledField(
+                                  hintText: "Account Ref",
+                                  suffix: const Icon(
+                                      CupertinoIcons.check_mark_circled_solid,
+                                      color: Colors.green),
+                                  value: "${widget.manager.getUser()['ref']}",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedInputField(
+                                  labelText: "Name",
+                                  validator: (val) {
+                                    if (val.toString().isEmpty || val == null) {
+                                      return "Name is required";
+                                    }
+                                    return null;
+                                  },
+                                  height: 10.0,
+                                  controller: _nameController,
+                                  inputType: TextInputType.text,
+                                  capitalization: TextCapitalization.words,
+                                  onChanged: (value) {},
+                                  hintText: "Enter your name",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedDropdownGender(
+                                  items: const ["Male", "Female"],
+                                  validator: (val) {
+                                    if (val.toString().isEmpty || val == null) {
+                                      return "Gender is required";
+                                    }
+                                    return null;
+                                  },
+                                  onSelected: _onGenderSelected,
+                                  placeholder: "Select gender",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedDatePicker(
+                                  hintText: "dd/mm/yyyy",
+                                  onSelected: _onDateSelected,
+                                  controller: _dateController,
+                                  validator: (val) {
+                                    if (val.toString().isEmpty || val == null) {
+                                      return "Date of birth is required";
+                                    }
+                                    return null;
+                                  },
+                                  height: 10.0,
+                                  labelText: "Date of Birth",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedInputField(
+                                  labelText: "Phone number",
+                                  validator: (val) {
+                                    if (val.toString().isEmpty || val == null) {
+                                      return "Phone number is required";
+                                    }
+                                    return null;
+                                  },
+                                  height: 10.0,
+                                  controller: _phoneController,
+                                  inputType: TextInputType.number,
+                                  onChanged: (value) {},
+                                  hintText:
+                                      "${widget.manager.getUser()['phone']}",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 21.0),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16.0),
+                                width: double.infinity,
+                                child: RoundedButton(
+                                  text: "Continue",
+                                  press: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      _updateProfile();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

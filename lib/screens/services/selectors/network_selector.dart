@@ -88,6 +88,29 @@ class _NetworkSelectorState extends State<NetworkSelector> {
       case "airtime":
         _controller.selectedAirtimeProvider.value = network;
         break;
+      case "airtime-swap":
+        _controller.selectedAirtimeProvider.value = network;
+        //Perform other calculations here
+        if (_controller.airtimeSwapData.value.isNotEmpty) {
+          final arr = _controller.airtimeSwapData.value.where(
+            (element) => element['key'].toString().toLowerCase().startsWith(
+                  network['name'].toLowerCase(),
+                ),
+          );
+
+          final arrRate = arr.where((element) =>
+              element['key'].toString().toLowerCase() ==
+              "${network['name'].toLowerCase()}_percentage");
+
+          final arrNumber = arr.where((element) =>
+              element['key'].toString().toLowerCase() ==
+              "${network['name'].toLowerCase()}_number");
+
+          _controller.airtimeSwapRate.value = arrRate.first['value'];
+          _controller.airtimeSwapNumber.value = arrNumber.first['value'];
+        }
+
+        break;
       case "electricity":
         _controller.selectedElectricityProvider.value = network;
         break;

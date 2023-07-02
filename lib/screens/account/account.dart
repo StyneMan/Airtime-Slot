@@ -1,10 +1,8 @@
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button_wrapped.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/account/components/kyc.dart';
 import 'package:airtimeslot_app/screens/account/components/personal_info.dart';
 import 'package:airtimeslot_app/screens/account/components/security.dart';
 import 'package:airtimeslot_app/screens/welcome/welcome.dart';
@@ -12,8 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
 
 class Account extends StatelessWidget {
   final PreferenceManager manager;
@@ -60,7 +56,15 @@ class Account extends StatelessWidget {
               Center(
                 child: RoundedButtonWrapped(
                   text: "Edit Profile",
-                  press: () {},
+                  press: () {
+                    Get.to(
+                      PersonalInfo(
+                        manager: manager,
+                        shouldEdit: true,
+                      ),
+                      transition: Transition.cupertino,
+                    );
+                  },
                 ),
               )
             ],
@@ -95,7 +99,15 @@ class Account extends StatelessWidget {
                             height: 16.0,
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(
+                                PersonalInfo(
+                                  manager: manager,
+                                  shouldEdit: true,
+                                ),
+                                transition: Transition.cupertino,
+                              );
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,7 +166,9 @@ class Account extends StatelessWidget {
                             height: 21.0,
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _controller.tabController.jumpToTab(2);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,8 +185,8 @@ class Account extends StatelessWidget {
                                         height: 36,
                                         child: Center(
                                           child: SvgPicture.asset(
-                                            "assets/images/lock_line_icon.svg",
-                                          ),
+                                              "assets/images/headphone_icon.svg",
+                                              color: Colors.white),
                                         ),
                                       ),
                                     ),
@@ -186,7 +200,7 @@ class Account extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         TextRoboto(
-                                          text: "Change PIN",
+                                          text: "Help Center",
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -209,7 +223,14 @@ class Account extends StatelessWidget {
                             height: 21.0,
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(
+                                Security(
+                                  manager: manager,
+                                ),
+                                transition: Transition.cupertino,
+                              );
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,

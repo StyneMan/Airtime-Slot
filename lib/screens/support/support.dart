@@ -1,4 +1,3 @@
-
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class Support extends StatefulWidget {
   final PreferenceManager? manager;
@@ -31,13 +30,41 @@ class _SupportState extends State<Support> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scrollController = ScrollController();
 
+  Future<void>? _launched;
+  var emailLaunchUri;
 
+  _makePhoneCall(String phoneNumber) {
+    // Use `Uri` to ensure that `phoneNumber` is properly URL-encoded.
+    // Just using 'tel:$phoneNumber' would create invalid URLs in some cases,
+    // such as spaces in the input, which would cause `launch` to fail on some
+    // platforms.
+    canLaunch('tel:123').then((bool result) async {
+      final Uri launchUri = Uri(
+        scheme: 'tel',
+        path: phoneNumber,
+      );
+      await launch(launchUri.toString());
+    });
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
 
   @override
   void initState() {
     super.initState();
+    emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'support@airtimeslot.com',
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Contact Support'
+      }),
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +109,7 @@ class _SupportState extends State<Support> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                         Padding(
+                        Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             children: const [
@@ -111,10 +138,7 @@ class _SupportState extends State<Support> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Get.to(
-                            //   const InternetData(),
-                            //   transition: Transition.cupertino,
-                            // );
+                            _makePhoneCall("08071239914");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,10 +198,9 @@ class _SupportState extends State<Support> {
                         const SizedBox(
                           height: 21.0,
                         ),
-                        
                         TextButton(
                           onPressed: () {
-                            
+                            launch(emailLaunchUri.toString());
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,8 +271,6 @@ class _SupportState extends State<Support> {
       ),
     );
   }
-
-
 
   @override
   void dispose() {

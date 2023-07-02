@@ -6,20 +6,16 @@ import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime_cash.dart';
+import 'package:airtimeslot_app/screens/services/airtime_swap.dart';
 import 'package:airtimeslot_app/screens/services/bill_payment.dart';
 import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
-import 'package:airtimeslot_app/screens/transaction/transaction_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import "package:collection/collection.dart";
-
-import 'components/transaction_row.dart';
 
 class Pay extends StatefulWidget {
   final PreferenceManager? manager;
@@ -33,20 +29,15 @@ class Pay extends StatefulWidget {
 }
 
 class _PayState extends State<Pay> {
-  final _searchController = TextEditingController();
   final _controller = Get.find<StateController>();
   final _refreshController = RefreshController(initialRefresh: false);
 
-  var _filtered = [];
   bool _isLoaded = false, isSpinning = false;
-  var _allMeals;
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scrollController = ScrollController();
 
   List<dynamic> _list = [];
   int _currentPage = 1;
-  List<Widget> _mWidgets = [];
   bool _hasMoreTransactions = false;
 
   void _paginateTransaction() async {
@@ -94,93 +85,6 @@ class _PayState extends State<Pay> {
 
   String timeUntil(DateTime date) {
     return timeago.format(date, locale: "en", allowFromNow: true);
-  }
-
-  List<Widget> _buildList() {
-    List<Widget> _widg = [];
-    Map<String?, List<dynamic>> groupByDate =
-        groupBy(_list, (dynamic obj) => obj['created_at']?.substring(0, 10));
-
-    groupByDate.forEach((date, list) {
-      // print("$date");
-
-      // Group
-      var _wid = Column(
-        children: [
-          Container(
-            color: Constants.accentColor,
-            padding: const EdgeInsets.all(10.0),
-            width: double.infinity,
-            child: TextPoppins(
-              text: DateFormat.yMMMEd('en_US').format(DateTime.parse("$date")),
-              fontSize: 17,
-              align: TextAlign.center,
-              fontWeight: FontWeight.w600,
-              color: Constants.primaryColor,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, i) => TextButton(
-              onPressed: () {
-                showBarModalBottomSheet(
-                  expand: false,
-                  context: context,
-                  topControl: ClipOval(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                            16,
-                          ),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.close,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  backgroundColor: Colors.white,
-                  builder: (context) => SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.75,
-                    child: TransactionDetails(
-                      model: list[i],
-                      guestModel: null,
-                      manager: widget.manager!,
-                    ),
-                  ),
-                );
-              },
-              child: TransactionRow(
-                model: list[i],
-                guestModel: null,
-              ),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 0.0),
-              ),
-            ),
-            separatorBuilder: (context, i) => const Divider(),
-            itemCount: list.length,
-          ),
-          const SizedBox(height: 16.0),
-        ],
-      );
-
-      _widg.add(_wid);
-    });
-
-    return _widg;
   }
 
   @override
@@ -372,7 +276,14 @@ class _PayState extends State<Pay> {
                           height: 21.0,
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(
+                              AirtimeCash(
+                                manager: widget.manager!,
+                              ),
+                              transition: Transition.cupertino,
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,

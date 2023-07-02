@@ -53,7 +53,7 @@ class _AirtimeFormFormState extends State<AirtimeForm> {
             ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
               child: RoundedPhoneField(
-                inputType: TextInputType.number,
+                inputType: TextInputType.phone,
                 hintText: "Phone number",
                 onChanged: (val) {},
                 controller: _phoneController,
@@ -199,7 +199,11 @@ class _AirtimeFormFormState extends State<AirtimeForm> {
 
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "airtime", data: map['data']),
+          TransactionSummary(
+            type: "airtime",
+            data: map['data'],
+            manager: widget.manager,
+          ),
           transition: Transition.cupertino,
         );
       } else {

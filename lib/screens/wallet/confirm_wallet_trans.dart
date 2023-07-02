@@ -38,7 +38,7 @@ class _ConfirmWalletTransState extends State<ConfirmWalletTrans> {
 
   @override
   void initState() {
-    plugin.initialize(publicKey: Constants.payKey);
+    // plugin.initialize(publicKey: Constants.payKey);
     super.initState();
   }
 

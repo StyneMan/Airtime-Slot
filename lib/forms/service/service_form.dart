@@ -486,6 +486,7 @@ class _ServiceFormState extends State<ServiceForm> {
                 placeholder: "Select network",
                 networks: widget.product?.networks,
                 onSelected: setSelected,
+                validator: (val) {},
               ),
               const SizedBox(
                 height: 10.0,

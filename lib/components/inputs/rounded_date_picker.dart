@@ -1,4 +1,3 @@
-
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,15 +11,17 @@ class RoundedDatePicker extends StatelessWidget {
   // final ValueChanged<String> onChanged;
   final TextEditingController controller;
   var validator;
-  RoundedDatePicker({
-    Key? key,
-    required this.hintText,
-    required this.labelText,
-    required this.controller,
-    required this.validator,
-    required this.onSelected,
-    this.borderRadius = 6.0
-  }) : super(key: key);
+  final double height;
+  RoundedDatePicker(
+      {Key? key,
+      required this.hintText,
+      required this.labelText,
+      required this.controller,
+      required this.validator,
+      required this.onSelected,
+      this.borderRadius = 6.0,
+      this.height = 18.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,31 +31,16 @@ class RoundedDatePicker extends StatelessWidget {
       validator: validator,
       readOnly: true,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 12.0,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: height,
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-          gapPadding: 4.0,
-        ),
-        filled: false,
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
         hintText: hintText,
-        labelText: labelText,
+        labelText: labelText.isEmpty ? null : labelText,
         focusColor: Constants.accentColor,
         hintStyle: const TextStyle(
           fontFamily: "Poppins",
@@ -62,13 +48,7 @@ class RoundedDatePicker extends StatelessWidget {
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
-        labelStyle: const TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w500,
-          fontSize: 18,
-        ),
         isDense: true,
-          
       ),
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
@@ -87,7 +67,8 @@ class RoundedDatePicker extends StatelessWidget {
                 ),
                 textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
-                    foregroundColor: Constants.primaryColor, // button text color
+                    foregroundColor:
+                        Constants.primaryColor, // button text color
                   ),
                 ),
               ),

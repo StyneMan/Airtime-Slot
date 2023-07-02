@@ -9,10 +9,14 @@ import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
 import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
+import 'package:airtimeslot_app/screens/history/history.dart';
 import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime_cash.dart';
 import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
 import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
 import 'package:airtimeslot_app/screens/services/television/television.dart';
+import 'package:airtimeslot_app/screens/wallet/fund_wallet.dart';
+import 'package:airtimeslot_app/screens/wallet/withdraw.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,16 +36,13 @@ class _HomeState extends State<Home> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
 
-  String _bal = "0.00", _email = "";
+  String _bal = "0.00", _swapBal = "0.0", _email = "";
   String _name = "Guest User";
   bool _isAuthenticated = false;
+  bool _isHidden = false;
   final _refreshController = RefreshController(initialRefresh: false);
 
   final List<UserTransaction> _transactionList = [];
-  List<GuestTransactionModel> _transactionListGuest = [];
-
-  // Widget _mWidget = const SizedBox();
-  // Widget _nWidget = const SizedBox();
 
   _init() async {
     try {
@@ -56,6 +57,7 @@ class _HomeState extends State<Home> {
         _bal = mod['wallet_balance']!;
         _name = mod['name'];
         _email = mod['email'];
+        _swapBal = mod['withdrawable_balance'];
       });
       // }
 
@@ -65,12 +67,6 @@ class _HomeState extends State<Home> {
         for (var v in data) {
           _transactionList.add(UserTransaction.fromJson(v));
         }
-      } else {
-        //Fetch from sqlite
-        final resp = await DatabaseHandler().transactions();
-        setState(() {
-          _transactionListGuest = resp;
-        });
       }
       await APIService()
           .getTransactions(_token)
@@ -254,9 +250,9 @@ class _HomeState extends State<Home> {
                                                 const Text(
                                                   "Wallet Balance",
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 15,
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
+                                                    fontWeight: FontWeight.w400,
                                                   ),
                                                 ),
                                               ],
@@ -265,7 +261,9 @@ class _HomeState extends State<Home> {
                                               height: 8.0,
                                             ),
                                             Text(
-                                              "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance']) ?? 0.0)}",
+                                              _isHidden
+                                                  ? "******"
+                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance']))}",
                                               style: const TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.white,
@@ -279,6 +277,8 @@ class _HomeState extends State<Home> {
                                               "${_controller.userData.value['email'] ?? "email@domain.com"}",
                                               style: const TextStyle(
                                                 color: Colors.white,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w300
                                               ),
                                             ),
                                           ],
@@ -295,16 +295,18 @@ class _HomeState extends State<Home> {
                                             const Text(
                                               "Swap Balance",
                                               style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 15,
                                                 color: Colors.white,
-                                                fontWeight: FontWeight.w500,
+                                                fontWeight: FontWeight.w400,
                                               ),
                                             ),
                                             const SizedBox(
                                               height: 8.0,
                                             ),
                                             Text(
-                                              "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(50.07)}.00",
+                                              _isHidden
+                                                  ? "******"
+                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['withdrawable_balance']))}",
                                               style: const TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.white,
@@ -335,10 +337,18 @@ class _HomeState extends State<Home> {
                                                                 .all(6.0),
                                                         color: Colors.black,
                                                         child: InkWell(
-                                                          onTap: () {},
-                                                          child: const Icon(
-                                                            CupertinoIcons
-                                                                .eye_slash,
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _isHidden =
+                                                                  !_isHidden;
+                                                            });
+                                                          },
+                                                          child: Icon(
+                                                            _isHidden
+                                                                ? CupertinoIcons
+                                                                    .eye
+                                                                : CupertinoIcons
+                                                                    .eye_slash,
                                                             color: Colors.white,
                                                             size: 14,
                                                           ),
@@ -365,37 +375,45 @@ class _HomeState extends State<Home> {
                                           borderRadius:
                                               BorderRadius.circular(24.0),
                                           child: Container(
+                                            height: 42,
                                             color: Colors.white,
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                ClipOval(
-                                                  child: Container(
-                                                    color: Colors.black,
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            2.0),
-                                                    child: const Icon(
-                                                      CupertinoIcons.add,
-                                                      color: Colors.white,
-                                                      size: 18,
-                                                    ),
+                                            child: TextButton.icon(
+                                              onPressed: () {
+                                                Get.to(
+                                                  FundWallet(
+                                                      manager: widget.manager!),
+                                                  transition:
+                                                      Transition.cupertino,
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                CupertinoIcons
+                                                    .add_circled_solid,
+                                                color: Colors.black,
+                                              ),
+                                              label: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  const SizedBox(
+                                                    width: 4.0,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 4.0,
-                                                ),
-                                                TextRoboto(
-                                                  text: "Fund Wallet",
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ],
+                                                  TextRoboto(
+                                                    text: "Fund Wallet",
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ],
+                                              ),
+                                              style: TextButton.styleFrom(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 1.0,
+                                                        horizontal: 10.0),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -406,36 +424,45 @@ class _HomeState extends State<Home> {
                                           borderRadius:
                                               BorderRadius.circular(24.0),
                                           child: Container(
+                                            height: 42,
                                             color: Colors.white,
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                ClipOval(
-                                                  child: Container(
-                                                    color: Colors.black,
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            2.0),
-                                                    child: SvgPicture.asset(
-                                                      "assets/images/withdraw_icon.svg",
-                                                      width: 21,
-                                                    ),
+                                            child: TextButton.icon(
+                                              onPressed: () {
+                                                Get.to(
+                                                  Withdraw(
+                                                      manager: widget.manager!),
+                                                  transition:
+                                                      Transition.cupertino,
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                CupertinoIcons
+                                                    .download_circle_fill,
+                                                color: Colors.black,
+                                              ),
+                                              label: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  const SizedBox(
+                                                    width: 4.0,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 4.0,
-                                                ),
-                                                TextRoboto(
-                                                  text: "Withdraw",
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ],
+                                                  TextRoboto(
+                                                    text: "Withdraw",
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ],
+                                              ),
+                                              style: TextButton.styleFrom(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 1.0,
+                                                        horizontal: 10.0),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -589,45 +616,57 @@ class _HomeState extends State<Home> {
                                   const SizedBox(
                                     width: 16.0,
                                   ),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        padding: const EdgeInsets.all(16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade300,
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.to(
+                                        AirtimeCash(
+                                          manager: widget.manager!,
                                         ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/images/hand_exchange_money.svg",
-                                            width: 108,
-                                            color: Constants.primaryColor,
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.18,
+                                          padding: const EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/images/hand_exchange_money.svg",
+                                              width: 108,
+                                              color: Constants.primaryColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      const Text(
-                                        "Airtime to \nCash",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                        const SizedBox(
+                                          height: 5.0,
                                         ),
-                                      )
-                                    ],
+                                        const Text(
+                                          "Airtime to \nCash",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
@@ -715,7 +754,9 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Get.to(
-                                         Electricity(manager: widget.manager!,),
+                                        Electricity(
+                                          manager: widget.manager!,
+                                        ),
                                         transition: Transition.cupertino,
                                       );
                                     },
@@ -766,7 +807,14 @@ class _HomeState extends State<Home> {
                                     width: 16.0,
                                   ),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.to(
+                                        const History(
+                                            // manager: widget.manager!,
+                                            ),
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,

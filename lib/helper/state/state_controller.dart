@@ -48,6 +48,7 @@ class StateController extends GetxController {
   var navColor = Constants.primaryColor.obs;
   var userData = {}.obs;
 
+  var airtimeSwapData = [].obs;
   var airtimeSwapRate = "".obs;
   var airtimeSwapNumber = "".obs;
   var airtimeSwapResultantAmt = "0.0".obs;

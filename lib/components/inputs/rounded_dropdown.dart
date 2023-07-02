@@ -1,4 +1,5 @@
 import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/model/networks/network_product.dart';
 import 'package:flutter/material.dart';
 
@@ -7,16 +8,20 @@ typedef void InitCallback(String value, NetworkProducts selectedNetwork);
 class RoundedDropdown extends StatefulWidget {
   final InitCallback onSelected;
   final String placeholder;
-  List<NetworkProducts>? networks;
+  var networks;
+  var validator;
   final String type;
   final double borderRadius;
+  final Color fillColor;
   RoundedDropdown({
     Key? key,
     required this.placeholder,
     required this.networks,
     required this.onSelected,
     required this.type,
+    required this.validator,
     this.borderRadius = 6.0,
+    this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
   @override
@@ -66,67 +71,79 @@ class _RoundedDropdownState extends State<RoundedDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(widget.borderRadius),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: Colors.black45,
-          ),
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+    return DropdownButtonFormField(
+      hint: Text(widget.placeholder),
+      validator: widget.validator,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 17.0,
+          vertical: 16.0,
         ),
-        child: DropdownButton(
-          hint: Text(widget.placeholder),
-          items: widget.networks?.map((e) {
-            return DropdownMenuItem(
-              value: e.name,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.network(
-                    _returnIcon(e.name, e.icon),
-                    width: 32,
-                    height: 32,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stack) => Image.asset(
-                      "assets/images/placeholder.png",
-                      width: 32,
-                      height: 32,
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  TextRoboto(
-                    text: widget.type.toLowerCase() == "electricity"
-                        ? e.name.replaceAll("Electricity Distribution", "-")
-                        : e.name,
-                    fontSize: 14,
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-          value: _value,
-          onChanged: (newValue) {
-            setState(
-              () {
-                _value = newValue as String?;
-              },
-            );
-            widget.onSelected(
-              newValue as String,
-              widget.networks!
-                  .firstWhere((element) => element.name == newValue),
-            );
-          },
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          iconSize: 30,
-          isExpanded: true,
-          underline: const SizedBox(),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: widget.fillColor,
+        hintText: widget.placeholder,
+        focusColor: widget.fillColor,
+        hintStyle: const TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.black38,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
         ),
+        labelStyle: const TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w500,
+          fontSize: 18,
+        ),
+        isDense: true,
       ),
+      items: widget.networks?.map((e) {
+        return DropdownMenuItem(
+          value: e['name'],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                _returnIcon(e['name'], e['icon']),
+                width: 32,
+                height: 32,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stack) => Image.asset(
+                  "assets/images/placeholder.png",
+                  width: 32,
+                  height: 32,
+                ),
+              ),
+              const SizedBox(width: 10.0),
+              TextRoboto(
+                text: widget.type.toLowerCase() == "electricity"
+                    ? e['name'].replaceAll("Electricity Distribution", "-")
+                    : e['name'],
+                fontSize: 14,
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+      value: _value,
+      onChanged: (newValue) {
+        setState(
+          () {
+            _value = newValue as String?;
+          },
+        );
+        widget.onSelected(
+          newValue as String,
+          widget.networks!
+              .firstWhere((element) => element['name'] == newValue),
+        );
+      },
+      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconSize: 30,
+      isExpanded: true,
     );
   }
 }

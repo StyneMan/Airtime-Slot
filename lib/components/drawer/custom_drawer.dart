@@ -38,8 +38,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
         DrawerModel(
           icon: 'assets/images/meal_plan_drawer.svg',
           title: 'About Us',
-          isAction: false,
-          widget: Container(),
+          isAction: true,
+          url: "https://www.airtimeslot.com/",
         ),
         DrawerModel(
           icon: 'assets/images/maccount_drawer.svg',
@@ -53,13 +53,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/faq_drawer.svg',
           title: 'FAQs',
           isAction: true,
-          url: "https://google.com",
+          url: "https://www.airtimeslot.com/",
         ),
         DrawerModel(
           icon: 'assets/images/contact_drawer.svg',
           title: 'Contact us',
           isAction: true,
-          url: "https://google.com",
+          url: "https://www.airtimeslot.com/",
         ),
       ];
     });
@@ -178,7 +178,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               onTap: () {
                                 if (i == 1) {
                                   Navigator.of(context).pop();
-                                  // _controller.jumpTo(3);
+                                  _controller.tabController.jumpToTab(3);
                                 } else {
                                   if (drawerList[i].isAction) {
                                     Navigator.of(context).pop();

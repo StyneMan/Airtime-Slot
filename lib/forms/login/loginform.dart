@@ -27,8 +27,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   bool _obscureText = true;
 
@@ -191,12 +191,9 @@ class _LoginFormState extends State<LoginForm> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                PageTransition(
-                  type: PageTransitionType.size,
-                  alignment: Alignment.bottomCenter,
-                  child: ForgotPassword(),
-                ),
+              Get.to(
+                ForgotPassword(),
+                transition: Transition.cupertino,
               );
             },
             child: Row(
@@ -250,8 +247,8 @@ class _LoginFormState extends State<LoginForm> {
                       }
                     },
                     child: TextPoppins(
-                      text: "Sign in",
-                      fontSize: 14,
+                      text: "Login",
+                      fontSize: 15,
                       color: Colors.white,
                     ),
                     style: ElevatedButton.styleFrom(
@@ -263,42 +260,29 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               const SizedBox(
-                width: 21.0,
+                width: 16.0,
               ),
               Expanded(
+                flex: 1,
                 child: Container(
                   width: double.infinity,
+                  padding: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(3.5),
                   decoration: const BoxDecoration(
                     color: Constants.accentColor,
                     borderRadius: BorderRadius.all(
                       Radius.circular(8.0),
                     ),
                   ),
-                  child: TextButton(
-                    onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   _login();
-                      // }
-                      // Get.to(
-                      //   Dashboard(
-                      //     manager: widget.manager,
-                      //   ),
-                      // );
-                    },
-                    child: Image.asset(
-                      "assets/images/fingerprint.png",
-                    ),
-                    style: TextButton.styleFrom(
-                      backgroundColor: Constants.accentColor,
-                      elevation: 0.0,
-                    ),
+                  child: Image.asset(
+                    "assets/images/fingerprint.png",
                   ),
                 ),
               ),
             ],
           ),
           const SizedBox(
-            height: 24.0,
+            height: 21.0,
           ),
         ],
       ),

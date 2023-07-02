@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 // import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
@@ -33,9 +34,16 @@ class _DashboardState extends State<Dashboard> {
 
   int indx = 0;
 
+  _init() async {
+    if (_controller.transactions.value.isEmpty) {
+      APIService().fetchTransactions(widget.manager.getAccessToken());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _init();
   }
 
   @override
@@ -167,9 +175,7 @@ class _DashboardState extends State<Dashboard> {
       PersistentBottomNavBarItem(
         icon: SvgPicture.asset(
           "assets/images/headset_icon.svg",
-          color: indx == 2
-              ? Constants.primaryColor
-              : Colors.grey,
+          color: indx == 2 ? Constants.primaryColor : Colors.grey,
         ),
         title: "Support",
         activeColorPrimary: Constants.primaryColor,

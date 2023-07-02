@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
+  final String labelText;
   final IconData icon;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
@@ -14,10 +15,12 @@ class RoundedInputField extends StatelessWidget {
   var validator;
   final bool? isEnabled;
   final double borderRadius;
+  final double height;
 
   RoundedInputField({
     Key? key,
     required this.hintText,
+    this.labelText = "",
     this.icon = Icons.person,
     this.capitalization = TextCapitalization.none,
     required this.onChanged,
@@ -26,6 +29,7 @@ class RoundedInputField extends StatelessWidget {
     required this.inputType,
     this.borderRadius = 6.0,
     this.isEnabled = true,
+    this.height = 18.0,
     this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
@@ -36,11 +40,11 @@ class RoundedInputField extends StatelessWidget {
       cursorColor: Constants.primaryColor,
       controller: controller,
       validator: validator,
-      enabled: true,
+      enabled: isEnabled,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 12.0,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: height,
         ),
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
@@ -48,20 +52,16 @@ class RoundedInputField extends StatelessWidget {
         filled: true,
         fillColor: fillColor,
         hintText: hintText,
-        // labelText: hintText,
+        labelText: labelText.isEmpty ? null : labelText,
         focusColor: fillColor,
-        prefixIcon: Icon(icon),
+        // prefixIcon: Icon(icon),
         hintStyle: const TextStyle(
           fontFamily: "Poppins",
           color: Colors.black38,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
-        // labelStyle: const TextStyle(
-        //   fontFamily: "Poppins",
-        //   fontWeight: FontWeight.w500,
-        //   fontSize: 18,
-        // ),
+        
       ),
       keyboardType: inputType,
       textCapitalization: capitalization,

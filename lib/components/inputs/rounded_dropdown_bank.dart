@@ -1,3 +1,4 @@
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 typedef void InitCallback(String value);
@@ -7,6 +8,8 @@ class RoundedDropdownBank extends StatefulWidget {
   final String placeholder;
   final List<dynamic> items;
   final double borderRadius;
+  final Color fillColor;
+   var validator;
 
   RoundedDropdownBank({
     Key? key,
@@ -14,6 +17,8 @@ class RoundedDropdownBank extends StatefulWidget {
     required this.onSelected,
     required this.items,
     this.borderRadius = 6.0,
+    required this.validator,
+    this.fillColor = Constants.accentColor,
   }) : super(key: key);
 
   @override
@@ -30,42 +35,54 @@ class _RoundedDropdownState extends State<RoundedDropdownBank> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(widget.borderRadius),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 0.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: Colors.black45,
-          ),
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+    return DropdownButtonFormField(
+      hint: Text(widget.placeholder),
+      validator: widget.validator,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 17.0,
+          vertical: 14.0,
         ),
-        child: DropdownButton(
-          hint: Text(widget.placeholder),
-          items: widget.items.map((e) {
-            return DropdownMenuItem(
-              value: e['name'],
-              child: Text(e['name']),
-            );
-          }).toList(),
-          value: _modelValue,
-          onChanged: (newValue) async {
-            widget.onSelected(
-              newValue as String,
-            );
-            setState(
-              () {
-                _modelValue = newValue;
-              },
-            );
-          },
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          iconSize: 30,
-          isExpanded: true,
-          underline: const SizedBox(),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: widget.fillColor,
+        hintText: widget.placeholder,
+        focusColor: widget.fillColor,
+        hintStyle: const TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.black38,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
         ),
+        labelStyle: const TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w500,
+          fontSize: 18,
+        ),
+        isDense: true,
       ),
+      items: widget.items.map((e) {
+        return DropdownMenuItem(
+          value: e['name'],
+          child: Text(e['name']),
+        );
+      }).toList(),
+      value: _modelValue,
+      onChanged: (newValue) async {
+        widget.onSelected(
+          newValue as String,
+        );
+        setState(
+          () {
+            _modelValue = newValue;
+          },
+        );
+      },
+      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconSize: 30,
+      isExpanded: true,
     );
   }
 }

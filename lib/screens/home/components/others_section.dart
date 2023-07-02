@@ -110,7 +110,7 @@ class _OthersSectionState extends State<OthersSection> {
                       child: AirtimeSwap(
                         manager: widget.manager,
                         service: "airtime",
-                        product: product,
+                        // product: product,
                       ),
                     ),
                   );

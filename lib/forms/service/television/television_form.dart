@@ -350,7 +350,11 @@ class _TelevisionFormState extends State<TelevisionForm> {
 
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "cable_tv", data: map['data']),
+          TransactionSummary(
+            type: "cable_tv",
+            data: map['data'],
+            manager: widget.manager,
+          ),
           transition: Transition.cupertino,
         );
       } else {
