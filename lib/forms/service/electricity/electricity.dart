@@ -236,13 +236,19 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
         //update profile
         _controller.onInit();
+        //revalidate transactions
+        _controller.transactions.value.clear();
+        await APIService().fetchTransactions(widget.manager.getAccessToken());
 
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "electricity", data: map['data'], manager: widget.manager,),
+          TransactionSummary(
+            type: "electricity",
+            data: map['data'],
+            manager: widget.manager,
+          ),
           transition: Transition.cupertino,
         );
-        
       } else {
         Map<String, dynamic> error = jsonDecode(response.body);
         Constants.toast(error['message']);

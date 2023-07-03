@@ -36,7 +36,7 @@ class HistoryItemRow extends StatelessWidget {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
-                  child: TextRoboto(
+                  child: TextPoppins(
                     text: "${data['description']}",
                     fontSize: 14,
                     color: Colors.black,

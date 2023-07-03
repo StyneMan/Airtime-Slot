@@ -178,7 +178,7 @@ class KYC extends StatelessWidget {
                   ),
                   RoundedInputField(
                     hintText: "BVN",
-                    icon: Icons.person,
+                    icon: const Icon(Icons.person),
                     onChanged: (value) {},
                     validator: (value) {
                       if (value == null || value.isEmpty) {

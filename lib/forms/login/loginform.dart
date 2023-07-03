@@ -11,12 +11,10 @@ import 'package:airtimeslot_app/model/error/error.dart';
 import 'package:airtimeslot_app/model/error/validation_error.dart';
 import 'package:airtimeslot_app/screens/account/verify_account.dart';
 import 'package:airtimeslot_app/screens/auth/forgotpass/forgotPass.dart';
-import 'package:airtimeslot_app/screens/wallet/set_wallet_pin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
 
 class LoginForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -132,7 +130,7 @@ class _LoginFormState extends State<LoginForm> {
             borderRadius: BorderRadius.circular(10.0),
             child: RoundedInputField(
               hintText: "Email",
-              icon: CupertinoIcons.person,
+              icon: SvgPicture.asset("assets/images/user.svg"),
               onChanged: (val) {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -228,58 +226,31 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(
             height: 32.0,
           ),
-          Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Constants.primaryColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login();
-                      }
-                    },
-                    child: TextPoppins(
-                      text: "Login",
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Constants.primaryColor,
-                      elevation: 0.2,
-                    ),
-                  ),
-                ),
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Constants.primaryColor,
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
               ),
-              const SizedBox(
-                width: 16.0,
+            ),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _login();
+                }
+              },
+              child: TextPoppins(
+                text: "Login",
+                fontSize: 15,
+                color: Colors.white,
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(3.5),
-                  decoration: const BoxDecoration(
-                    color: Constants.accentColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                  ),
-                  child: Image.asset(
-                    "assets/images/fingerprint.png",
-                  ),
-                ),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Constants.primaryColor,
+                elevation: 0.2,
               ),
-            ],
+            ),
           ),
           const SizedBox(
             height: 21.0,

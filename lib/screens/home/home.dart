@@ -15,6 +15,7 @@ import 'package:airtimeslot_app/screens/services/airtime/airtime_cash.dart';
 import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
 import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
 import 'package:airtimeslot_app/screens/services/television/television.dart';
+import 'package:airtimeslot_app/screens/wallet/components/bank_option.dart';
 import 'package:airtimeslot_app/screens/wallet/fund_wallet.dart';
 import 'package:airtimeslot_app/screens/wallet/withdraw.dart';
 import 'package:flutter/cupertino.dart';
@@ -429,8 +430,7 @@ class _HomeState extends State<Home> {
                                             child: TextButton.icon(
                                               onPressed: () {
                                                 Get.to(
-                                                  Withdraw(
-                                                      manager: widget.manager!),
+                                                  WithdrawToBnnk(),
                                                   transition:
                                                       Transition.cupertino,
                                                 );

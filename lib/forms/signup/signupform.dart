@@ -81,7 +81,7 @@ class _SignupFormState extends State<SignupForm> {
       "email": _emailController.text,
       "phone": _phoneController.text,
       "password": _passwordController.text,
-      "referal_code": _referalController.text,
+      "referal_code": "",
       "password_confirmation": _passwordController.text,
     };
     _controller.setLoading(true);
@@ -210,24 +210,24 @@ class _SignupFormState extends State<SignupForm> {
               controller: _emailController,
             ),
           ),
-          const SizedBox(
-            height: 12.0,
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                filled: true,
-                fillColor: Constants.accentColor,
-                hintText: 'Referral',
-              ),
-              controller: _referalController,
-              keyboardType: TextInputType.text,
-            ),
-          ),
+          // const SizedBox(
+          //   height: 12.0,
+          // ),
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(10.0),
+          //   child: TextFormField(
+          //     decoration: const InputDecoration(
+          //       border: InputBorder.none,
+          //       enabledBorder: InputBorder.none,
+          //       focusedBorder: InputBorder.none,
+          //       filled: true,
+          //       fillColor: Constants.accentColor,
+          //       hintText: 'Referral',
+          //     ),
+          //     controller: _referalController,
+          //     keyboardType: TextInputType.text,
+          //   ),
+          // ),
           const SizedBox(
             height: 12.0,
           ),

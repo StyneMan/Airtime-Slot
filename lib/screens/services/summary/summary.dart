@@ -43,14 +43,34 @@ class TransactionSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 48),
+               const SizedBox(height: 48),
               Stack(
+                clipBehavior: Clip.none,
                 children: [
                   Center(
-                    child: TextRoboto(
-                      text: "$type".capitalize,
+                    child: TextPoppins(
+                      text: type.capitalize,
                       fontSize: 21,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Positioned(
+                    left: 8.0,
+                    top: -5,
+                    bottom: -5,
+                    child: Center(
+                      child: ClipOval(
+                        child: IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Constants.primaryColor,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -258,7 +278,7 @@ class TransactionSummary extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.15,
+                          height: MediaQuery.of(context).size.height * 7.5,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.98,

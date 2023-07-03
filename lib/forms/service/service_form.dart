@@ -376,7 +376,7 @@ class _ServiceFormState extends State<ServiceForm> {
                       children: [
                         RoundedInputField(
                           hintText: "Enter your email",
-                          icon: Icons.email_rounded,
+                          icon: const Icon(Icons.email_rounded),
                           onChanged: (value) {},
                           validator: (value) {
                             if (value == null || value.isEmpty) {

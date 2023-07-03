@@ -120,7 +120,7 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
       debugPrint("AIRTIME RESPONSE <<<>>> ${resp.body}");
       _controller.setLoading(false);
       if (resp.statusCode == 200) {
-         Map<String, dynamic> map = jsonDecode(resp.body);
+        Map<String, dynamic> map = jsonDecode(resp.body);
         Constants.toast(map['message']);
       } else if (resp.statusCode == 422) {
         Map<String, dynamic> map = jsonDecode(resp.body);
@@ -143,11 +143,12 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
           future: _init(),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
-              return Container(
+              return SizedBox(
                 width: double.infinity,
                 height: double.infinity,
-                child:
-                    const Center(child: CircularProgressIndicator.adaptive()),
+                child: Center(
+                  child: TextPoppins(text: "Loading ...", fontSize: 16),
+                ),
               );
             }
 
@@ -393,7 +394,6 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
                         },
                       ),
                     ),
-                    
                     const SizedBox(
                       height: 21,
                     ),

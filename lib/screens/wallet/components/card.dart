@@ -39,7 +39,7 @@ class _CardWalletState extends State<CardWallet> {
   void initState() {
     super.initState();
     MonnifyFlutterSdkPlus.initialize(
-        Constants.apiKeyTest, Constants.contractCode, ApplicationMode.TEST);
+        Constants.apiKey, Constants.contractCode, ApplicationMode.TEST);
   }
 
   @override

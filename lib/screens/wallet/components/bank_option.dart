@@ -99,20 +99,20 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                     children: [
                       TextPoppins(
                         text: "Withdrawable Balance",
-                        fontSize: 20,
+                        fontSize: 21,
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                       ),
                       Text(
                         "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse("${_controller.userData.value['withdrawable_balance'] ?? "0.0"}"))}",
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.black54,
                         ),
                       ),
                       TextPoppins(
                         text: "Withdraw from your withdrawable wallet",
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: Colors.black54,
                       ),
                       const SizedBox(
                         height: 24.0,
@@ -221,7 +221,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 21.0),
                     ],
                   ),
                 ),

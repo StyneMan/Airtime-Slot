@@ -1,16 +1,11 @@
-import 'dart:convert';
 
 import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/banks/banks.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/wallet/components/bank_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Withdraw extends StatefulWidget {
   final PreferenceManager manager;

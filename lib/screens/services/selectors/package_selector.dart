@@ -153,7 +153,7 @@ class _PackageSelectorState extends State<PackageSelector> {
                     hintText: "Search",
                     onChanged: (val) => _filterList(val),
                     fillColor: Colors.white,
-                    icon: Icons.search,
+                    icon: const Icon(Icons.search),
                     controller: _searchController,
                     validator: (val) {},
                     inputType: TextInputType.text,

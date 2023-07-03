@@ -22,8 +22,8 @@ class Constants {
   static const apiKey = String.fromEnvironment("MONNIFY_API_KEY");
 
   // static String pstk = "pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";
-  static String contractCode = "7784467686";
-  static String apiKeyTest = "MK_TEST_44M9YWM4L4";
+  static String contractCode = "249774588253";
+  // static String apiKeyTest = "MK_PROD_SAFKYTMYLM"; //"MK_TEST_44M9YWM4L4";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(

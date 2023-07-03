@@ -348,6 +348,10 @@ class _TelevisionFormState extends State<TelevisionForm> {
         //update profile
         _controller.onInit();
 
+        //revalidate transactions
+        _controller.transactions.value.clear();
+        await APIService().fetchTransactions(widget.manager.getAccessToken());
+
         //Navigate to transaction info screen
         Get.to(
           TransactionSummary(

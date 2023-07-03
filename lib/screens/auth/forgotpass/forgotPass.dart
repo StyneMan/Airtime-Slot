@@ -129,7 +129,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: RoundedInputField(
                                   hintText: "Email",
-                                  icon: CupertinoIcons.person,
+                                  icon: const Icon(CupertinoIcons.person),
                                   onChanged: (val) {},
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {

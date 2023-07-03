@@ -48,7 +48,7 @@ class _WelcomeState extends State<Welcome> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Image.asset("assets/images/welcome.png"),
+                    Image.asset("assets/images/welcome.jpeg"),
                     const SizedBox(
                       height: 16.0,
                     ),
@@ -62,9 +62,11 @@ class _WelcomeState extends State<Welcome> {
                     const SizedBox(
                       height: 8.0,
                     ),
-                    const Text(
-                      "The easiest way to make your online payments for Internet, Data, Airtime, Cable TV",
-                      textAlign: TextAlign.center,
+                    TextPoppins(
+                      text:
+                          "The easiest way to make your online payments for Internet, Data, Airtime, Cable TV",
+                      align: TextAlign.center,
+                      fontSize: 14,
                     )
                   ],
                 ),
@@ -91,7 +93,7 @@ class _WelcomeState extends State<Welcome> {
                       RoundedButton(
                         text: "Sign in",
                         press: () {
-                          Get.to(Login(), transition: Transition.downToUp);
+                          Get.to(const Login(), transition: Transition.downToUp);
                         },
                         color: Constants.primaryColor,
                         textColor: Colors.white,
@@ -120,6 +122,4 @@ class _WelcomeState extends State<Welcome> {
       ),
     );
   }
-
- 
 }

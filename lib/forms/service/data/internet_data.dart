@@ -194,9 +194,10 @@ class _InternetDataFormState extends State<InternetDataForm> {
                                 Text(
                                   "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoney(_controller.selectedDataPlan.value['amount'])}",
                                   style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black87,
-                                      fontFamily: "Inter"),
+                                    fontSize: 15,
+                                    color: Colors.black87,
+                                    fontFamily: "Inter",
+                                  ),
                                 )
                               ],
                             ),
@@ -231,59 +232,56 @@ class _InternetDataFormState extends State<InternetDataForm> {
               height: 16.0,
             ),
             // const SizedBox(height: 21.0),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    RoundedButton(
-                      text: "Next",
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (_controller.selectedDataProvider.value.isEmpty) {
-                            setState(() {
-                              _isNetworkErr = true;
-                              _isPlanErr = true;
-                            });
-                          } else if (_controller
-                              .selectedDataPlan.value.isEmpty) {
-                            setState(() {
-                              _isNetworkErr = false;
-                              _isPlanErr = true;
-                            });
-                          } else {
-                            setState(() {
-                              _isNetworkErr = false;
-                              _isPlanErr = false;
-                            });
-                            _initiateTransaction();
-                          }
-                        }
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  RoundedButton(
+                    text: "Next",
+                    press: () {
+                      if (_formKey.currentState!.validate()) {
                         if (_controller.selectedDataProvider.value.isEmpty) {
                           setState(() {
                             _isNetworkErr = true;
                             _isPlanErr = true;
                           });
+                        } else if (_controller.selectedDataPlan.value.isEmpty) {
+                          setState(() {
+                            _isNetworkErr = false;
+                            _isPlanErr = true;
+                          });
                         } else {
                           setState(() {
                             _isNetworkErr = false;
+                            _isPlanErr = false;
                           });
-                          if (_controller.selectedDataPlan.value.isEmpty) {
-                            setState(() {
-                              _isPlanErr = true;
-                            });
-                          } else {
-                            setState(() {
-                              _isPlanErr = false;
-                            });
-                          }
+                          _initiateTransaction();
                         }
-                      },
-                    ),
-                  ],
-                ),
+                      }
+                      if (_controller.selectedDataProvider.value.isEmpty) {
+                        setState(() {
+                          _isNetworkErr = true;
+                          _isPlanErr = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isNetworkErr = false;
+                        });
+                        if (_controller.selectedDataPlan.value.isEmpty) {
+                          setState(() {
+                            _isPlanErr = true;
+                          });
+                        } else {
+                          setState(() {
+                            _isPlanErr = false;
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ],
               ),
             )
           ],
@@ -314,9 +312,17 @@ class _InternetDataFormState extends State<InternetDataForm> {
         //update profile
         _controller.onInit();
 
+        //revalidate transactions
+        _controller.transactions.value.clear();
+        await APIService().fetchTransactions(widget.manager.getAccessToken());
+
         //Navigate to transaction info screen
         Get.to(
-          TransactionSummary(type: "data", data: map['data'], manager: widget.manager,),
+          TransactionSummary(
+            type: "data",
+            data: map['data'],
+            manager: widget.manager,
+          ),
           transition: Transition.cupertino,
         );
       } else {

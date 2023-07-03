@@ -53,17 +53,17 @@ class _PersonalInfoState extends State<PersonalInfo> {
     _phoneController.text = widget.manager.getUser()['phone'] ?? "";
   }
 
-  _onDateSelected(val) {
-    setState(() {
-      _dateController.text = val;
-    });
-  }
+  // _onDateSelected(val) {
+  //   setState(() {
+  //     _dateController.text = val;
+  //   });
+  // }
 
-  _onGenderSelected(val) {
-    setState(() {
-      _selectedGender = val;
-    });
-  }
+  // _onGenderSelected(val) {
+  //   setState(() {
+  //     _selectedGender = val;
+  //   });
+  // }
 
   _updateProfile() async {
     _controller.setLoading(true);
@@ -224,42 +224,42 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                   hintText: "Enter your name",
                                 ),
                               ),
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedDropdownGender(
-                                  items: const ["Male", "Female"],
-                                  validator: (val) {
-                                    if (val.toString().isEmpty || val == null) {
-                                      return "Gender is required";
-                                    }
-                                    return null;
-                                  },
-                                  onSelected: _onGenderSelected,
-                                  placeholder: "Select gender",
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedDatePicker(
-                                  hintText: "dd/mm/yyyy",
-                                  onSelected: _onDateSelected,
-                                  controller: _dateController,
-                                  validator: (val) {
-                                    if (val.toString().isEmpty || val == null) {
-                                      return "Date of birth is required";
-                                    }
-                                    return null;
-                                  },
-                                  height: 10.0,
-                                  labelText: "Date of Birth",
-                                ),
-                              ),
+                              // const SizedBox(
+                              //   height: 16.0,
+                              // ),
+                              // ClipRRect(
+                              //   borderRadius: BorderRadius.circular(16.0),
+                              //   child: RoundedDropdownGender(
+                              //     items: const ["Male", "Female"],
+                              //     validator: (val) {
+                              //       if (val.toString().isEmpty || val == null) {
+                              //         return "Gender is required";
+                              //       }
+                              //       return null;
+                              //     },
+                              //     onSelected: _onGenderSelected,
+                              //     placeholder: "Select gender",
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   height: 16.0,
+                              // ),
+                              // ClipRRect(
+                              //   borderRadius: BorderRadius.circular(16.0),
+                              //   child: RoundedDatePicker(
+                              //     hintText: "dd/mm/yyyy",
+                              //     onSelected: _onDateSelected,
+                              //     controller: _dateController,
+                              //     validator: (val) {
+                              //       if (val.toString().isEmpty || val == null) {
+                              //         return "Date of birth is required";
+                              //       }
+                              //       return null;
+                              //     },
+                              //     height: 10.0,
+                              //     labelText: "Date of Birth",
+                              //   ),
+                              // ),
                               const SizedBox(
                                 height: 16.0,
                               ),
