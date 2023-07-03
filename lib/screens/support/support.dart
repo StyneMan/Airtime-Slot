@@ -138,7 +138,7 @@ class _SupportState extends State<Support> {
                         ),
                         TextButton(
                           onPressed: () {
-                            _makePhoneCall("+2349045852364");
+                            _makePhoneCall("09045852364");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
