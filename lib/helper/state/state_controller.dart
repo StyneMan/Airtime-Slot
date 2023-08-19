@@ -7,6 +7,7 @@ import 'package:airtimeslot_app/main.dart';
 import 'package:airtimeslot_app/screens/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +27,9 @@ class StateController extends GetxController {
   var hasMoreTransactions = false.obs;
   var hasMoreNotifications = false.obs;
   var hasMoreInvites = false.obs;
-  var transactionCurrentPage = 1.obs;
+  var transactionCurrentPage = 0.obs;
+
+  var emptyLogic = "".obs;
 
   var products = [].obs;
   var internetData = {}.obs;
@@ -63,10 +66,17 @@ class StateController extends GetxController {
   var isMoreDataAvailable = true.obs;
   var accessToken = "".obs;
   String _token = "";
+  RxString appVersion = "2.0".obs;
 
   RxString dbItem = 'Awaiting data'.obs;
 
   var tabController = PersistentTabController(initialIndex: 0);
+
+  PackageInfo? packageInfo;
+
+  // init() async {
+  //   packageInfo = await PackageInfo.fromPlatform();
+  // }
 
   getProducts() async {
     try {
@@ -91,7 +101,7 @@ class StateController extends GetxController {
       }
     } on SocketException {
       Constants.toast("No Internet Connection!");
-      setHasInternet(false);
+      hasInternetAccess.value = false;
     } on Error catch (e) {
       debugPrint(e.toString());
     }
@@ -100,29 +110,39 @@ class StateController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    packageInfo = await PackageInfo.fromPlatform();
+    appVersion.value = "${packageInfo?.version}";
+    // print("PACKAGE INFO IS ${packageInfo?.version}");
     initDao();
     // Get products
+    try {
+      //Fetch user data
+      final _prefs = await SharedPreferences.getInstance();
+      _token = _prefs.getString("accessToken") ?? "";
+      // bool _isAuthenticated = prefs.getBool("loggedIn") ?? false;
 
-    //Fetch user data
-    final _prefs = await SharedPreferences.getInstance();
-    _token = _prefs.getString("accessToken") ?? "";
-    // bool _isAuthenticated = prefs.getBool("loggedIn") ?? false;
+      if (_token.isNotEmpty) {
+        APIService().getProfile(_token).then((value) {
+          // print("STATE GET PROFILE >>> ${value.body}");
+          Map<String, dynamic> data = jsonDecode(value.body);
+          userData.value = data['data'];
+          _prefs.setString("user", jsonEncode(data['data']));
 
-    if (_token.isNotEmpty) {
-      APIService().getProfile(_token).then((value) {
-        print("STATE GET PROFILE >>> ${value.body}");
-        Map<String, dynamic> data = jsonDecode(value.body);
-        userData.value = data['data'];
-        _prefs.setString("user", jsonEncode(data['data']));
-
-        //Update preference here
-      }).catchError((onError) {
-        debugPrint("STATE GET PROFILE ERROR >>> $onError");
-        if (onError.toString().contains("rk is unreachable")) {
-          hasInternetAccess.value = false;
-        }
-      });
-      paginateTransaction(_token);
+          //Update preference here
+        }).catchError((onError) {
+          debugPrint("STATE GET PROFILE ERROR >>> $onError");
+          if (onError.toString().contains("rk is unreachable")) {
+            hasInternetAccess.value = false;
+          }
+        });
+        hasInternetAccess.value = true;
+        paginateTransaction(_token);
+      }
+    } on SocketException {
+      //No internet here
+      hasInternetAccess.value = false;
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
@@ -136,21 +156,27 @@ class StateController extends GetxController {
     transactionsScrollController.addListener(() {
       if (transactionsScrollController.position.pixels ==
           transactionsScrollController.position.maxScrollExtent) {
-        debugPrint("reached end");
+        // print("reached end");
 
         //Now load more items
         if (hasMoreTransactions.value) {
           setSpinning(true);
           transactionCurrentPage.value++;
-          Future.delayed(const Duration(seconds: 3), () {
-            APIService().fetchNextTransactions(
-                accessToken, transactionCurrentPage.value);
+          Future.delayed(const Duration(seconds: 3), () async {
+            try {
+              await APIService().fetchNextTransactions(
+                  accessToken, transactionCurrentPage.value);
+              setSpinning(false);
+            } catch (e) {
+              setSpinning(false);
+              debugPrint(e.toString());
+            }
           });
         } else {
           setSpinning(false);
         }
       } else {
-        debugPrint("still moving to end");
+        // print("still moving to end");
       }
     });
   }

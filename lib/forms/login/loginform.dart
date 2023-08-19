@@ -49,7 +49,9 @@ class _LoginFormState extends State<LoginForm> {
     _controller.setLoading(true);
     try {
       final response = await APIService().login(_payload);
-      debugPrint("LOGIN RESP:: ${response.body}");
+      // debugPrint("LOGIN RESP:: ${response.body}");
+
+      _controller.setLoading(false);
 
       if (response.statusCode == 200) {
         Map<String, dynamic> loginMap = jsonDecode(response.body);
@@ -63,7 +65,7 @@ class _LoginFormState extends State<LoginForm> {
 
         // UserModel? model = login.data?.user;
 
-        if (loginMap['data']['user']['is_account_verified']) {
+        // if (loginMap['data']['user']['is_account_verified']) {
           //Account has been verified. Now check if wallet pin is set.
           // if (loginMap['data']['user']['is_wallet_pin']) {
           //Wallet pin has been set, go to dashboard from here.
@@ -84,29 +86,28 @@ class _LoginFormState extends State<LoginForm> {
               builder: (context) => Dashboard(manager: widget.manager),
             ),
           );
-        } else {
+        // } else {
           //Verify account from here...
-          _controller.setLoading(false);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => VerifyAccount(
-                manager: widget.manager,
-                token: '${loginMap['data']['token']}',
-                email: _emailController.text,
-              ),
-            ),
-          );
-        }
+        //   _controller.setLoading(false);
+        //   Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => VerifyAccount(
+        //         manager: widget.manager,
+        //         token: '${loginMap['data']['token']}',
+        //         email: _emailController.text,
+        //       ),
+        //     ),
+        //   );
+        // }
       } else if (response.statusCode == 422) {
-        _controller.setLoading(false);
+        
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ValidationError error = ValidationError.fromJson(errorMap);
         Constants.toast("${error.errors?.email[0] ?? error.message}");
       } else {
         //Error occurred on login
-        _controller.setLoading(false);
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
         Constants.toast("${error.message}");
@@ -130,15 +131,14 @@ class _LoginFormState extends State<LoginForm> {
             borderRadius: BorderRadius.circular(10.0),
             child: RoundedInputField(
               hintText: "Email",
-              icon: SvgPicture.asset("assets/images/user.svg"),
+              height: 14.0,
+              isIconed: true,
+              icon: const Icon(CupertinoIcons.person),
               onChanged: (val) {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email address';
                 }
-                //if email
-                // if (value.contains(RegExp(r'[a-z]'))) {
-                //Email is entere now check if the email is valid
                 if (!RegExp('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
                     .hasMatch(value)) {
                   return 'Please enter a valid email';

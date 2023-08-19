@@ -421,41 +421,7 @@ class _PayState extends State<Pay> {
     );
   }
 
-  _refreshHome() async {
-    _controller.setLoading(true);
-    _refreshController.requestRefresh();
-
-    //Update user data
-    try {
-      final _prefs = await SharedPreferences.getInstance();
-      final _token = _prefs.getString("accessToken") ?? "";
-
-      if (_token.isNotEmpty) {
-        _list.clear();
-
-        final resp = APIService().getTransactions(_token).then((value) {
-          Map<String, dynamic> map = jsonDecode(value.body);
-          setState(() {
-            _list = map['data']['data'];
-          });
-        });
-
-        Future.delayed(
-          const Duration(seconds: 3),
-          () {
-            _controller.setLoading(false);
-            _refreshController.refreshCompleted();
-          },
-        );
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      _controller.setLoading(false);
-      _refreshController.refreshFailed();
-    }
-  }
-
-  @override
+ @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();

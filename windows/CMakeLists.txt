@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(easyfit_app LANGUAGES CXX)
+project(airtimeslot_app LANGUAGES CXX)
 
-set(BINARY_NAME "easyfit_app")
+set(BINARY_NAME "airtimeslot_app")
 
 cmake_policy(SET CMP0063 NEW)
 

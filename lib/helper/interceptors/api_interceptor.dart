@@ -54,7 +54,7 @@ class MyApiInterceptor implements InterceptorContract {
     try {
       final _prefs = await SharedPreferences.getInstance();
 
-      if (data.statusCode == 401 || data.statusCode == 403) {
+      if (data.statusCode == 401) {
         //Unauthorized. Logout user here...
         debugPrint("LOG THIS USER OUT. SESSION EXPIRED!!!");
         //Clear preference

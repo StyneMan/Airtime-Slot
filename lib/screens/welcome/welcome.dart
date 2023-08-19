@@ -48,7 +48,7 @@ class _WelcomeState extends State<Welcome> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Image.asset("assets/images/welcome.jpeg"),
+                    Image.asset("assets/images/welcome.jpeg", fit: BoxFit.contain, width: MediaQuery.of(context).size.width * 0.70,),
                     const SizedBox(
                       height: 16.0,
                     ),
@@ -77,11 +77,11 @@ class _WelcomeState extends State<Welcome> {
             flex: 2,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(36.0),
-                topRight: Radius.circular(36.0),
+                topLeft: Radius.circular(56.0),
+                topRight: Radius.circular(56.0),
               ),
               child: Card(
-                elevation: 2.0,
+                elevation: 0.0,
                 child: Container(
                   width: double.infinity,
                   height: double.infinity,

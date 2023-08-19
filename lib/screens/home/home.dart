@@ -1,13 +1,10 @@
-import 'dart:convert';
 
 import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/database/database_handler.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
 import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
 import 'package:airtimeslot_app/screens/history/history.dart';
 import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
@@ -17,7 +14,6 @@ import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
 import 'package:airtimeslot_app/screens/services/television/television.dart';
 import 'package:airtimeslot_app/screens/wallet/components/bank_option.dart';
 import 'package:airtimeslot_app/screens/wallet/fund_wallet.dart';
-import 'package:airtimeslot_app/screens/wallet/withdraw.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,7 +49,7 @@ class _HomeState extends State<Home> {
       // var model = prefs.get('user');
       // if (model != null) {
       var mod = widget.manager!.getUser();
-      debugPrint("APROKO:: ${mod['name']}");
+      // debugPrint("APROKO:: ${mod['name']}");
       setState(() {
         _bal = mod['wallet_balance']!;
         _name = mod['name'];
@@ -202,11 +198,11 @@ class _HomeState extends State<Home> {
                           children: [
                             Center(
                               child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.98,
+                                width: MediaQuery.of(context).size.width * 0.96,
                                 child: Image.asset(
                                   "assets/images/dash_bg.png",
                                   fit: BoxFit.cover,
-                                  height: 224,
+                                  height: 250,
                                 ),
                               ),
                             ),
@@ -264,7 +260,7 @@ class _HomeState extends State<Home> {
                                             Text(
                                               _isHidden
                                                   ? "******"
-                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance']))}",
+                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance'] ?? "0.0"))}",
                                               style: const TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.white,
@@ -277,10 +273,9 @@ class _HomeState extends State<Home> {
                                             Text(
                                               "${_controller.userData.value['email'] ?? "email@domain.com"}",
                                               style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w300
-                                              ),
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w300),
                                             ),
                                           ],
                                         ),
@@ -302,12 +297,12 @@ class _HomeState extends State<Home> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 8.0,
+                                              height: 10.0,
                                             ),
                                             Text(
                                               _isHidden
                                                   ? "******"
-                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['withdrawable_balance']))}",
+                                                  : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['withdrawable_balance'] ?? "0.0"))}",
                                               style: const TextStyle(
                                                 fontSize: 24,
                                                 color: Colors.white,
@@ -887,30 +882,15 @@ class _HomeState extends State<Home> {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString("accessToken") ?? "";
 
+      _controller.onInit();
+
       if (_token.isNotEmpty) {
-        final userResp = await APIService().getProfile(_token);
-        debugPrint("USER PROFILE ::: ${userResp.body}");
-
-        if (userResp.statusCode == 200) {
-          Map<String, dynamic> userMap = jsonDecode(userResp.body);
-
-          String userData = jsonEncode(userMap['data']);
-          widget.manager?.updateUserData(userData);
-        } else {}
-
-        // _controller.setRecentTransactions([]);
-        _controller.recentTransactions.value = [];
         _controller.transactions.value = [];
 
-        await Future.delayed(
-          const Duration(seconds: 2),
-          () {
-            APIService().fetchTransactions(_token);
-          },
-        );
+        await APIService().fetchTransactions(_token);
 
         Future.delayed(
-          const Duration(seconds: 3),
+          const Duration(seconds: 2),
           () {
             _controller.setLoading(false);
             _refreshController.refreshCompleted();

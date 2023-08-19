@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
@@ -102,6 +103,7 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
   }
 
   _airtimeSwap() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
@@ -113,21 +115,72 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
       Map _payload = {
         "amount": amt.replaceAll(",", ""),
         "network_id": "1",
-        "phone": "08071239914"
+        "phone": _phoneController.text
       };
 
       final resp = await APIService().airtimeCashRequest(_payload, _token);
-      debugPrint("AIRTIME RESPONSE <<<>>> ${resp.body}");
+      // debugPrint("AIRTIME RESPONSE <<<>>> ${resp.body}");
       _controller.setLoading(false);
       if (resp.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
+
+        // setState(() {
+        _amountController.clear();
+        _phoneController.clear();
+        // });
+
+        _controller.selectedAirtimeProvider.value = {};
+        _controller.airtimeSwapData.value = [];
+        _controller.airtimeSwapRate.value = "";
+        _controller.airtimeSwapNumber.value = "";
+        _controller.airtimeSwapResultantAmt.value = "0.0";
+
+
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: map['message'],
+              ),
+            );
+          },
+        );
+
+        _controller.onInit();
       } else if (resp.statusCode == 422) {
         Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: map['message'],
+              ),
+            );
+          },
+        );
       } else {
         Map<String, dynamic> map = jsonDecode(resp.body);
-        Constants.toast(map['message']);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: map['message'],
+              ),
+            );
+          },
+        );
       }
     } catch (e) {
       _controller.setLoading(false);
@@ -153,6 +206,9 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
             }
 
             if (snap.hasError) {
+              Future.delayed(const Duration(seconds: 2), () {
+                _controller.hasInternetAccess.value = false;
+              });
               return Container(
                 color: Constants.accentColor,
                 width: double.infinity,

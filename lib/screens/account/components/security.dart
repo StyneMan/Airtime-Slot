@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
 import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_password_field.dart';
@@ -87,7 +89,20 @@ class _SecurityState extends State<Security> {
         widget.manager.setUserData(userData);
         _controller.setUserData(map['data']);
 
-        Constants.toast("Password updated successfully");
+         showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: "Password updated successfully",
+              ),
+            );
+          },
+        );
+
         _controller.onInit();
         Get.back();
       } else {
@@ -95,7 +110,10 @@ class _SecurityState extends State<Security> {
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
         Constants.toast("${error.message}");
       }
-    } catch (e) {
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
+    }
+    catch (e) {
       _controller.setLoading(false);
     }
   }

@@ -12,6 +12,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/splash_img" />
+            android:src="@mipmap/logo_white" />
     </item>
 </layer-list>

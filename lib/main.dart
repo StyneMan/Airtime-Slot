@@ -4,12 +4,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:airtimeslot_app/helper/theme/app_theme.dart';
+import 'package:airtimeslot_app/screens/welcome/splasher.dart';
 import 'package:airtimeslot_app/screens/welcome/welcome.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/dashboard/dashboard.dart';
+import 'helper/connectivity/net_conectivity.dart';
 import 'helper/constants/constants.dart';
 import 'helper/preferences/preference_manager.dart';
 import 'helper/state/state_controller.dart';
@@ -58,11 +61,35 @@ class _MyAppState extends State<MyApp> {
   Widget? component;
   PreferenceManager? _manager;
 
+  Map _source = {ConnectivityResult.none: false};
+  final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
+  String string = '';
+
   @override
   void initState() {
     super.initState();
     _manager = PreferenceManager(context);
     _controller.getProducts();
+
+    _networkConnectivity.initialize();
+    _networkConnectivity.myStream.listen((source) {
+      _source = source;
+      debugPrint('source $_source');
+      // 1.
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          string =
+              _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
+          break;
+        case ConnectivityResult.wifi:
+          string =
+              _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+          break;
+        case ConnectivityResult.none:
+        default:
+          string = 'Offline';
+      }
+    });
   }
 
   // This widget is the root of your application.
@@ -70,13 +97,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Obx(
       () => _controller.hasInternetAccess.value == false
-          ? const NoInternet()
+          ? const GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: NoInternet(),
+            )
           : FutureBuilder(
               future: Init.instance.initialize(),
               builder: (context, AsyncSnapshot snapshot) {
                 // Show splash screen while waiting for app resources to load:
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return GetMaterialApp(
+                  return MaterialApp(
                       debugShowCheckedModeBanner: false,
                       home: Splash(
                         controller: _controller,
@@ -88,17 +118,18 @@ class _MyAppState extends State<MyApp> {
                   // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
                   return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
-                    title: 'Airtime Slot',
+                    title: 'Airtimeslot',
                     theme: appTheme,
                     home: _controller.hasInternetAccess.value
                         ? _token.isNotEmpty
                             ? Dashboard(manager: _manager!)
-                            : const Welcome()
+                            : const Splasher()
                         : const NoInternet(),
                   );
                 }
 
-                ///Users/thankgodokoro/Desktop/code    /Users/thankgodokoro/Desktop/code/Stanley
+                ///Users/thankgodokoro/Desktop/code
+                ///Users/thankgodokoro/Desktop/code/Stanley
               },
             ),
     );

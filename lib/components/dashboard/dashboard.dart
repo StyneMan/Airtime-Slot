@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:airtimeslot_app/helper/connectivity/net_conectivity.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 // import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -9,7 +10,8 @@ import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:airtimeslot_app/screens/network/no_internet.dart';
 import 'package:airtimeslot_app/screens/support/support.dart';
-import 'package:airtimeslot_app/screens/transaction/pay.dart';
+import 'package:airtimeslot_app/screens/pay/pay.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +19,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   final PreferenceManager manager;
@@ -34,9 +37,20 @@ class _DashboardState extends State<Dashboard> {
 
   int indx = 0;
 
+  Map _source = {ConnectivityResult.none: false};
+  final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
+  String string = '';
+
   _init() async {
     if (_controller.transactions.value.isEmpty) {
-      APIService().fetchTransactions(widget.manager.getAccessToken());
+      try {
+        final _prefs = await SharedPreferences.getInstance();
+        final _token = _prefs.getString("accessToken") ?? "";
+
+        APIService().fetchTransactions(_token);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     }
   }
 
@@ -44,6 +58,27 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     _init();
+
+    _networkConnectivity.initialize();
+    _networkConnectivity.myStream.listen((source) {
+      _source = source;
+      debugPrint('source $_source');
+      // 1.
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          string =
+              _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
+          break;
+        case ConnectivityResult.wifi:
+          string =
+              _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+          break;
+        case ConnectivityResult.none:
+        default:
+          string = 'Offline';
+          _controller.hasInternetAccess.value = false;
+      }
+    });
   }
 
   @override
@@ -207,7 +242,6 @@ class _DashboardState extends State<Dashboard> {
       ),
       Support(manager: widget.manager),
       Account(manager: widget.manager)
-      // AuthController(component: Account(manager: widget.manager)),
     ];
   }
 }

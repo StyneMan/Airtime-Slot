@@ -1,6 +1,6 @@
 {
-    "name": "easyfit_app",
-    "short_name": "easyfit_app",
+    "name": "airtimeslot_app",
+    "short_name": "airtimeslot_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

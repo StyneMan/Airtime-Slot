@@ -174,7 +174,8 @@ class _PackageSelectorState extends State<PackageSelector> {
               ),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
                 child: ListView(
                   shrinkWrap: true,
                   children: [
@@ -192,6 +193,9 @@ class _PackageSelectorState extends State<PackageSelector> {
                             onPressed: () {
                               _setSelected(index);
                               _selectPackage(_filteredList[index]);
+                              Future.delayed(const Duration(milliseconds: 200), () {
+                                Get.back();
+                              });
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,30 +252,7 @@ class _PackageSelectorState extends State<PackageSelector> {
                       ),
                       itemCount: _filteredList.length,
                     ),
-                    _filteredList.length > 4
-                        ? const SizedBox(height: 21.0)
-                        : SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.12,
-                          ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          RoundedButton(
-                            text: "Continue",
-                            press: () {
-                              if (_selectedIndex > 0) {
-                                Get.back();
-                              } else {
-                                Constants.toast("Select a package!");
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    )
+                    
                   ],
                 ),
               ),

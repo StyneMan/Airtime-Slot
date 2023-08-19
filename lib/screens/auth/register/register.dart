@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                           const SizedBox(
                             height: 10.0,
                           ),
-                          Image.asset("assets/images/welcome.png"),
+                          Image.asset("assets/images/welcome.jpeg"),
                           const SizedBox(
                             height: 16.0,
                           ),
@@ -233,8 +233,8 @@ class _RegisterState extends State<Register> {
       removeTop: true,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(18),
-          topRight: Radius.circular(18),
+          topLeft: Radius.circular(36),
+          topRight: Radius.circular(36),
         ),
         child: Container(
           color: Colors.white,

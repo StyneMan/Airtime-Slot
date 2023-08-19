@@ -10,7 +10,7 @@ class ResetPasswordForm extends StatefulWidget {
   ResetPasswordForm({Key? key}) : super(key: key);
 
   @override
-  State<ResetPasswordForm> createState() => _ResetPasswordFormState();
+  State<ResetPasswordForm> createState() => _ResetPasswordFormState(); 
 }
 
 class _ResetPasswordFormState extends State<ResetPasswordForm> {

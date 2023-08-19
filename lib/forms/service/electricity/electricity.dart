@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
@@ -211,6 +212,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
   }
 
   _initiateTransaction() async {
+     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
@@ -253,6 +255,8 @@ class _ElectricityFormState extends State<ElectricityForm> {
         Map<String, dynamic> error = jsonDecode(response.body);
         Constants.toast(error['message']);
       }
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
     } catch (e) {
       debugPrint(e.toString());
       _controller.setLoading(false);

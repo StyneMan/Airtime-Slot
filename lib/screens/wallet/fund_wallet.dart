@@ -4,6 +4,8 @@ import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/wallet/components/abt.dart';
 import 'package:airtimeslot_app/screens/wallet/components/card.dart';
+import 'package:airtimeslot_app/screens/wallet/components/mbt.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -232,6 +234,72 @@ class _FundWalletState extends State<FundWallet>
                                         TextPoppins(
                                           text:
                                               "Pay with your debit or credit card",
+                                          fontSize: 13,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                const Icon(Icons.chevron_right),
+                              ],
+                            ),
+                            style: TextButton.styleFrom(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              foregroundColor: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(
+                                MBT(
+                                  manager: widget.manager,
+                                ),
+                                transition: Transition.cupertino,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      child: Container(
+                                        color: Constants.primaryColor,
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: const Center(
+                                          child: Icon(CupertinoIcons.arrowshape_turn_up_left_2_fill, color: Colors.white, size: 21,
+                                          )
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextPoppins(
+                                          text: "MBT",
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        TextPoppins(
+                                          text:
+                                              "Pay with Manual Bank Transfer",
                                           fontSize: 13,
                                         ),
                                       ],

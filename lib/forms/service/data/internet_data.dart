@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
@@ -40,6 +41,9 @@ class _InternetDataFormState extends State<InternetDataForm> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 16.0,
+            ),
             ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
               child: Container(
@@ -76,6 +80,12 @@ class _InternetDataFormState extends State<InternetDataForm> {
                                   child: Image.network(
                                     "${Constants.baseURL}${_controller.selectedDataProvider.value['icon']}",
                                     width: 24,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Image.asset(
+                                      'assets/images/logo_big.png',
+                                      width: 24,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(
@@ -135,19 +145,42 @@ class _InternetDataFormState extends State<InternetDataForm> {
                     children: [
                       _controller.selectedDataPlan.value.isEmpty
                           ? TextPoppins(
-                              text: "Data plan",
+                              text: "Data Plans",
                               fontSize: 15,
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                TextPoppins(
-                                  text:
-                                      "[${_controller.selectedDataProvider.value['name']}] ${_controller.selectedDataPlan.value['name']}",
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                )
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.68,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text:
+                                          "[${_controller.selectedDataPlan.value['name']}] ",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "${_controller.selectedDataPlan.value['name']}"
+                                                      .length >
+                                                  32
+                                              ? "${_controller.selectedDataPlan.value['name']}"
+                                                      .substring(0, 31) +
+                                                  "..."
+                                              : "${_controller.selectedDataPlan.value['name']}",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                       Icon(
@@ -231,57 +264,59 @@ class _InternetDataFormState extends State<InternetDataForm> {
             const SizedBox(
               height: 16.0,
             ),
-            // const SizedBox(height: 21.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  RoundedButton(
-                    text: "Next",
-                    press: () {
-                      if (_formKey.currentState!.validate()) {
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    RoundedButton(
+                      text: "Next",
+                      press: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (_controller.selectedDataProvider.value.isEmpty) {
+                            setState(() {
+                              _isNetworkErr = true;
+                              _isPlanErr = true;
+                            });
+                          } else if (_controller
+                              .selectedDataPlan.value.isEmpty) {
+                            setState(() {
+                              _isNetworkErr = false;
+                              _isPlanErr = true;
+                            });
+                          } else {
+                            setState(() {
+                              _isNetworkErr = false;
+                              _isPlanErr = false;
+                            });
+                            _initiateTransaction();
+                          }
+                        }
                         if (_controller.selectedDataProvider.value.isEmpty) {
                           setState(() {
                             _isNetworkErr = true;
                             _isPlanErr = true;
                           });
-                        } else if (_controller.selectedDataPlan.value.isEmpty) {
-                          setState(() {
-                            _isNetworkErr = false;
-                            _isPlanErr = true;
-                          });
                         } else {
                           setState(() {
                             _isNetworkErr = false;
-                            _isPlanErr = false;
                           });
-                          _initiateTransaction();
+                          if (_controller.selectedDataPlan.value.isEmpty) {
+                            setState(() {
+                              _isPlanErr = true;
+                            });
+                          } else {
+                            setState(() {
+                              _isPlanErr = false;
+                            });
+                          }
                         }
-                      }
-                      if (_controller.selectedDataProvider.value.isEmpty) {
-                        setState(() {
-                          _isNetworkErr = true;
-                          _isPlanErr = true;
-                        });
-                      } else {
-                        setState(() {
-                          _isNetworkErr = false;
-                        });
-                        if (_controller.selectedDataPlan.value.isEmpty) {
-                          setState(() {
-                            _isPlanErr = true;
-                          });
-                        } else {
-                          setState(() {
-                            _isPlanErr = false;
-                          });
-                        }
-                      }
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             )
           ],
@@ -291,6 +326,7 @@ class _InternetDataFormState extends State<InternetDataForm> {
   }
 
   _initiateTransaction() async {
+     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     Map _payload = {
       "network_id": _controller.selectedDataProvider.value['id'],
@@ -329,6 +365,8 @@ class _InternetDataFormState extends State<InternetDataForm> {
         Map<String, dynamic> error = jsonDecode(response.body);
         Constants.toast(error['message']);
       }
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
     } catch (e) {
       debugPrint(e.toString());
       _controller.setLoading(false);

@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button_wrapped.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_date_picker.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_disabled.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
@@ -11,12 +11,9 @@ import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/auth/wallet_pin.dart';
 import 'package:airtimeslot_app/model/error/error.dart';
-import 'package:airtimeslot_app/model/user/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -53,19 +50,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
     _phoneController.text = widget.manager.getUser()['phone'] ?? "";
   }
 
-  // _onDateSelected(val) {
-  //   setState(() {
-  //     _dateController.text = val;
-  //   });
-  // }
-
-  // _onGenderSelected(val) {
-  //   setState(() {
-  //     _selectedGender = val;
-  //   });
-  // }
-
   _updateProfile() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     final prefs = await SharedPreferences.getInstance();
     String _token = prefs.getString("accessToken") ?? "";
@@ -89,7 +75,21 @@ class _PersonalInfoState extends State<PersonalInfo> {
         widget.manager.setUserData(userData);
         _controller.setUserData(map['data']);
 
-        Constants.toast("Profile updated successfully");
+        // Constants.toast("Profile updated successfully");
+
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: "Profile updated successfully",
+              ),
+            );
+          },
+        );
 
         _controller.onInit();
       } else {
@@ -97,6 +97,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
         Constants.toast("${error.message}");
       }
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
     } catch (e) {
       _controller.setLoading(false);
     }

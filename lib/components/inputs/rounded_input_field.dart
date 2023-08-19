@@ -14,7 +14,7 @@ class RoundedInputField extends StatelessWidget {
   final Color fillColor;
   var validator;
   final bool? isEnabled;
-  final bool? isIconed;
+  final bool isIconed;
   final double borderRadius;
   final double height;
 
@@ -43,7 +43,7 @@ class RoundedInputField extends StatelessWidget {
       controller: controller,
       validator: validator,
       enabled: isEnabled,
-      decoration: InputDecoration(
+      decoration: isIconed ? InputDecoration(
         contentPadding: EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: height,
@@ -64,6 +64,25 @@ class RoundedInputField extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
         
+      ) : InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: height,
+        ),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: true,
+        fillColor: fillColor,
+        hintText: hintText,
+        labelText: labelText.isEmpty ? null : labelText,
+        focusColor: fillColor,
+        hintStyle: const TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.black38,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
       ),
       keyboardType: inputType,
       textCapitalization: capitalization,

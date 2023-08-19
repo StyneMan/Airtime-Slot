@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
@@ -47,31 +48,31 @@ class _SignupFormState extends State<SignupForm> {
     });
   }
 
-  _sendOTP(var token) async {
-    try {
-      final response = await APIService().resendOTP(token);
-      debugPrint("FIRST OTP:RESPONSE:: ${response.body}");
+  // _sendOTP(var token) async {
+  //   try {
+  //     final response = await APIService().resendOTP(token);
+  //     debugPrint("FIRST OTP:RESPONSE:: ${response.body}");
 
-      _controller.setLoading(false);
+  //     _controller.setLoading(false);
 
-      if (response.statusCode == 200) {
-        //Now navigate to next screen here
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VerifyAccount(
-              manager: widget.manager,
-              token: '$token',
-              email: _emailController.text,
-            ),
-          ),
-        );
-      } else {}
-    } catch (e) {
-      _controller.setLoading(false);
-      Constants.toast("$e");
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       //Now navigate to next screen here
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => VerifyAccount(
+  //             manager: widget.manager,
+  //             token: '$token',
+  //             email: _emailController.text,
+  //           ),
+  //         ),
+  //       );
+  //     } else {}
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //     Constants.toast("$e");
+  //   }
+  // }
 
   _signup() async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -81,9 +82,9 @@ class _SignupFormState extends State<SignupForm> {
       "email": _emailController.text,
       "phone": _phoneController.text,
       "password": _passwordController.text,
-      "referal_code": "",
       "password_confirmation": _passwordController.text,
     };
+
     _controller.setLoading(true);
 
     try {
@@ -93,31 +94,28 @@ class _SignupFormState extends State<SignupForm> {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> registerMap = jsonDecode(response.body);
-        LoginModel login = LoginModel.fromJson(registerMap);
 
-        debugPrint("CHECKING::: ${login.data?.token}");
-
-        _controller.setAccessToken('${login.data?.token}');
-        widget.manager.saveAccessToken('${login.data?.token}');
+        _controller.setAccessToken('${registerMap['data']['token']}');
+        widget.manager.saveAccessToken('${registerMap['data']['token']}');
         _controller.setUserData(registerMap['data']['user']);
+        widget.manager.setIsLoggedIn(true);
 
-        // _controller.setUserData('${login.data?.user}');
+        _controller.onInit();
 
-        //Verify account from here...
-        //Send verification email first
-        _sendOTP("${login.data?.token}");
-      } else if (response.statusCode == 422) {
-        _controller.setLoading(false);
-        //Error occurred on login
-        Map<String, dynamic> errorMap = jsonDecode(response.body);
-        ValidationError error = ValidationError.fromJson(errorMap);
-        Constants.toast("${error.errors?.email[0] ?? error.message}");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(
+              manager: widget.manager,
+            ),
+          ),
+        );
+
       } else {
         //Error occurred on login
         _controller.setLoading(false);
         Map<String, dynamic> errorMap = jsonDecode(response.body);
-        ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
+        Constants.toast("${errorMap['message']}");
       }
     } catch (e) {
       _controller.setLoading(false);
@@ -138,6 +136,8 @@ class _SignupFormState extends State<SignupForm> {
             borderRadius: BorderRadius.circular(10.0),
             child: RoundedInputField(
               hintText: "Full name",
+              isIconed: true,
+              icon: const Icon(CupertinoIcons.person),
               onChanged: (val) {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -195,6 +195,8 @@ class _SignupFormState extends State<SignupForm> {
             borderRadius: BorderRadius.circular(10.0),
             child: RoundedInputField(
               hintText: "Email",
+              isIconed: true,
+              icon: const Icon(CupertinoIcons.mail),
               onChanged: (val) {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -241,6 +243,7 @@ class _SignupFormState extends State<SignupForm> {
                 filled: true,
                 fillColor: Constants.accentColor,
                 hintText: 'Password',
+                prefixIcon: const Icon(CupertinoIcons.lock),
                 suffixIcon: IconButton(
                   onPressed: () => _togglePass(),
                   icon: Icon(
@@ -265,7 +268,7 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ),
           const SizedBox(
-            height: 24.0,
+            height: 36.0,
           ),
           Container(
             width: double.infinity,

@@ -6,7 +6,7 @@ import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
 import 'package:airtimeslot_app/screens/account/account.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:airtimeslot_app/screens/messages/my_messages.dart';
-import 'package:airtimeslot_app/screens/transaction/pay.dart';
+import 'package:airtimeslot_app/screens/pay/pay.dart';
 import 'package:flutter/material.dart';
 
 import 'auth_controller.dart';

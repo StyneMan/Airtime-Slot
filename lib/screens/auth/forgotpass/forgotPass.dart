@@ -22,12 +22,14 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _controller = Get.find<StateController>();
   final _formKey = GlobalKey<FormState>();
-
+  bool _isLoading = false;
   final _emailController = TextEditingController();
 
   _forgotPass() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    _controller.setLoading(true);
+    setState(() {
+      _isLoading = true;
+    });
     Map _payload = {
       "email": _emailController.text,
     };
@@ -35,7 +37,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     try {
       final response = await APIService().forgotPass(_payload);
       debugPrint("PASSWORD RESET :: ${response.body}");
-      _controller.setLoading(false);
+      setState(() {
+        _isLoading = false;
+      });
       if (response.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(response.body);
         Constants.toast("${map['message']}");
@@ -45,139 +49,139 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         Constants.toast("${errorMap['message']}");
       }
     } catch (e) {
-      _controller.setLoading(false);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => LoadingOverlayPro(
-        isLoading: _controller.isLoading.value,
-        backgroundColor: Colors.black54,
-        progressIndicator: const CircularProgressIndicator.adaptive(),
-        child: Scaffold(
-          backgroundColor: Constants.accentColor,
-          body: Column(
-            children: [
-              const SizedBox(height: 48),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Center(
-                    child: TextPoppins(
-                      text: "Forgot password",
-                      fontSize: 21,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return LoadingOverlayPro(
+      isLoading: _isLoading,
+      backgroundColor: Colors.black54,
+      progressIndicator: const CircularProgressIndicator.adaptive(),
+      child: Scaffold(
+        backgroundColor: Constants.accentColor,
+        body: Column(
+          children: [
+            const SizedBox(height: 48),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Center(
+                  child: TextPoppins(
+                    text: "Forgot password",
+                    fontSize: 21,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Positioned(
-                    left: 8.0,
-                    top: -5,
-                    bottom: -5,
-                    child: Center(
-                      child: ClipOval(
-                        child: IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Constants.primaryColor,
-                          ),
+                ),
+                Positioned(
+                  left: 8.0,
+                  top: -5,
+                  bottom: -5,
+                  child: Center(
+                    child: ClipOval(
+                      child: IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Constants.primaryColor,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 36.0),
-              Expanded(
-                child: Card(
-                  color: Colors.white.withOpacity(.9),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(36.0),
-                      topRight: Radius.circular(36.0),
-                    ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 36.0),
+            Expanded(
+              child: Card(
+                color: Colors.white.withOpacity(.9),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(36.0),
+                    topRight: Radius.circular(36.0),
                   ),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              TextPoppins(
-                                text:
-                                    "A password reset link will be sent to your email address.",
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                              const SizedBox(
-                                height: 24.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: RoundedInputField(
-                                  hintText: "Email",
-                                  icon: const Icon(CupertinoIcons.person),
-                                  onChanged: (val) {},
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your email address';
-                                    }
-                                    if (!RegExp(
-                                            '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
-                                        .hasMatch(value)) {
-                                      return 'Please enter a valid email';
-                                    }
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 16.0,
+                            ),
+                            TextPoppins(
+                              text:
+                                  "A password reset link will be sent to your email address.",
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(
+                              height: 24.0,
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: RoundedInputField(
+                                hintText: "Email",
+                                icon: const Icon(CupertinoIcons.person),
+                                onChanged: (val) {},
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email address';
+                                  }
+                                  if (!RegExp(
+                                          '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                                      .hasMatch(value)) {
+                                    return 'Please enter a valid email';
+                                  }
 
-                                    return null;
-                                  },
-                                  inputType: TextInputType.emailAddress,
-                                  controller: _emailController,
-                                ),
+                                  return null;
+                                },
+                                inputType: TextInputType.emailAddress,
+                                controller: _emailController,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 21.0),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16.0),
-                                width: double.infinity,
-                                child: RoundedButton(
-                                  text: "Continue",
-                                  press: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      _forgotPass();
-                                    }
-                                  },
-                                ),
+                      ),
+                      const SizedBox(height: 21.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16.0),
+                              width: double.infinity,
+                              child: RoundedButton(
+                                text: "Continue",
+                                press: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _forgotPass();
+                                  }
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

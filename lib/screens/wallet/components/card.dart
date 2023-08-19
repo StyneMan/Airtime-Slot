@@ -39,7 +39,7 @@ class _CardWalletState extends State<CardWallet> {
   void initState() {
     super.initState();
     MonnifyFlutterSdkPlus.initialize(
-        Constants.apiKey, Constants.contractCode, ApplicationMode.TEST);
+        Constants.spike, Constants.contractCode, ApplicationMode.LIVE);
   }
 
   @override
@@ -209,8 +209,12 @@ class _CardWalletState extends State<CardWallet> {
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();
 
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    return String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
+      ),
+    );
   }
 
   _submit() async {

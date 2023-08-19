@@ -19,7 +19,7 @@ class TextPoppins extends StatelessWidget {
     this.overflow,
   });
 
-  final fontFamily = "PT Serif";
+  final fontFamily = "Poppins";
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +53,37 @@ class TextRoboto extends StatelessWidget {
       this.align});
 
   final fontFamily = "Roboto";
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text!,
+      textAlign: align,
+      style: TextStyle(
+        color: color,
+        fontSize: fontSize,
+        fontFamily: fontFamily,
+        fontWeight: fontWeight,
+      ),
+    );
+  }
+}
+
+class TextPTSerif extends StatelessWidget {
+  late final String? text;
+  late final double? fontSize;
+  late final Color? color;
+  late final FontWeight? fontWeight;
+  late final TextAlign? align;
+
+  TextPTSerif(
+      {required this.text,
+      this.color,
+      required this.fontSize,
+      this.fontWeight,
+      this.align});
+
+  final fontFamily = "PT Serif";
 
   @override
   Widget build(BuildContext context) {

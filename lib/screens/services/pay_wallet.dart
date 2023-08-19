@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/divider/text_divider.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';

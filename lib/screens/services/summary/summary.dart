@@ -6,6 +6,7 @@ import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/history/history_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -43,7 +44,6 @@ class TransactionSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 48),
-               const SizedBox(height: 48),
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -87,14 +87,10 @@ class TransactionSummary extends StatelessWidget {
                   ),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView(
+                      shrinkWrap: true,
                       children: [
-                        const SizedBox(
-                          height: 8.0,
-                        ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -104,7 +100,7 @@ class TransactionSummary extends StatelessWidget {
                               child: Column(
                                 children: const [
                                   Text(
-                                    "Transaction completed sucessfully",
+                                    "Transaction Summary",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 21,
@@ -137,7 +133,8 @@ class TransactionSummary extends StatelessWidget {
                                 Text(
                                   "${data['type']}".capitalize!,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -157,9 +154,10 @@ class TransactionSummary extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                                 Text(
-                                  "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoney(int.parse(data['amount']))}",
+                                  "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoney(int.parse("${data['amount'] ?? "0"}"))}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -181,7 +179,8 @@ class TransactionSummary extends StatelessWidget {
                                 Text(
                                   "${data['transaction_ref']}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -203,7 +202,8 @@ class TransactionSummary extends StatelessWidget {
                                 Text(
                                   "${data['email']}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -225,7 +225,8 @@ class TransactionSummary extends StatelessWidget {
                                 Text(
                                   "${data['discount_text']}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -236,6 +237,45 @@ class TransactionSummary extends StatelessWidget {
                             const SizedBox(
                               height: 10.0,
                             ),
+                            data['type'] == "electricity" &&
+                                    data['transaction_meta']['meter_type'] ==
+                                        "prepaid" &&
+                                    "${data['transaction_meta']['purchased_token']}"
+                                            .toLowerCase() !=
+                                        "null"
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Token",
+                                            fontSize: 14,
+                                          ),
+                                          Text(
+                                            "${data['transaction_meta']['purchased_token']}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -249,7 +289,8 @@ class TransactionSummary extends StatelessWidget {
                                       .replaceAll("about", "")
                                       .replaceAll("minute", "min"),
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -268,17 +309,40 @@ class TransactionSummary extends StatelessWidget {
                                   text: "Status",
                                   fontSize: 14,
                                 ),
-                                Text(
-                                  "${data['status']}".capitalize!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        color: data['status'] == "initiated"
+                                            ? Colors.amber
+                                            : data['status'] == "success"
+                                                ? Colors.green
+                                                : Colors.red,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 4.0,
+                                    ),
+                                    Text(
+                                      "${data['status']}".capitalize!,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 7.5,
+                          height: MediaQuery.of(context).size.height * 0.11,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.98,
@@ -316,10 +380,22 @@ class TransactionSummary extends StatelessWidget {
       if (resp.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(resp.body);
         Constants.toast("Transaction completed successfully");
-        _controller.onInit();
 
-        Get.back();
-        Get.back();
+        _controller.onInit();
+        _controller.transactions.value = [];
+        await APIService().fetchTransactions(manager.getAccessToken());
+
+        // Get.back();
+        // Get.back();
+
+        //Go to transaction info screen
+        Get.to(
+          HistoryDetail(
+            data: map['data']['transaction'],
+            caller: "summary",
+          ),
+          transition: Transition.cupertino,
+        );
       } else {
         Map<String, dynamic> errorMap = jsonDecode(resp.body);
         Constants.toast(errorMap['message']);

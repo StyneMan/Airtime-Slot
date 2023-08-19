@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 
 import "../interceptors/api_interceptor.dart";
 import "../interceptors/token_retry.dart";
@@ -20,10 +20,11 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  PackageInfo? packageInfo;
+  // PackageInfo? packageInfo;
+  // String packageInfo = _controller.appVersion.value;÷
 
   init() async {
-    packageInfo = await PackageInfo.fromPlatform();
+    // packageInfo = await PackageInfo.fromPlatform();
   }
 
   APIService() {
@@ -35,7 +36,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/auth/register'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -46,7 +47,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/auth/login'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -57,7 +58,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/password/email'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -68,7 +69,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/verification/verify'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
@@ -81,7 +82,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
@@ -92,7 +93,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -103,10 +104,10 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/withdraw'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
         "Authorization": "Bearer " + accessToken,
       },
-      body: jsonEncode(body), 
+      body: jsonEncode(body),
     );
   }
 
@@ -115,7 +116,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/user/wallet/change_pin'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
@@ -127,7 +128,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/user/wallet/reset'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
         "Authorization": "Bearer " + accessToken,
       },
     );
@@ -138,7 +139,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/user/wallet/confirm_reset'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
         "Authorization": "Bearer " + accessToken,
       },
       body: jsonEncode(body),
@@ -146,12 +147,12 @@ class APIService {
   }
 
   Future<http.Response> getProfile(String accessToken) async {
-    return await client.get( 
+    return await client.get(
       Uri.parse('${Constants.baseURL}backend/user/profile'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
@@ -162,7 +163,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
@@ -172,7 +173,7 @@ class APIService {
       Uri.parse('${Constants.baseURL}backend/products'),
       headers: {
         "Content-type": "application/json",
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
@@ -183,29 +184,32 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
 
-  Future<http.Response> getTransactionsPaginated(String accessToken, int currentPage) async {
+  Future<http.Response> getTransactionsPaginated(
+      String accessToken, int currentPage) async {
     return await client.get(
-      Uri.parse('${Constants.baseURL}backend/user/transactions?page=$currentPage'),
+      Uri.parse(
+          '${Constants.baseURL}backend/user/transactions?page=$currentPage'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
 
   fetchTransactions(String accessToken) async {
+
     final response = await client.get(
       Uri.parse('${Constants.baseURL}backend/user/transactions'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
 
@@ -217,7 +221,7 @@ class APIService {
       var arr = tmap['data']['data']?.map((v) => v).toList();
 
       _controller.setTransactions(arr);
-      _controller.setRecentTransactions(arr);
+      // _controller.setRecentTransactions(arr);
       _controller.setHasMoreTransactions(
           tmap['data']['next_page_url'] == null ? false : true);
     } else {
@@ -227,20 +231,28 @@ class APIService {
 
   fetchNextTransactions(String accessToken, int currentPage) async {
     final response = await client.get(
-      Uri.parse('${Constants.baseURL}backend/user/transactions?page=$currentPage'),
+      Uri.parse(
+          '${Constants.baseURL}backend/user/transactions?page=$currentPage'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
 
     debugPrint("RESPONSE -> TRANSACTION :: ${response.body}");
 
+    _controller.setSpinning(false);
+
     if (response.statusCode == 200) {
       Map<String, dynamic> tmap = jsonDecode(response.body);
 
       var arr = tmap['data']['data']?.map((v) => v).toList();
+      _controller.setHasMoreTransactions(
+          tmap['data']['next_page_url'] == null ||
+                  tmap['data']['next_page_url']?.isEmpty
+              ? false
+              : true);
 
       _controller.setTransactions(arr);
     } else {
@@ -254,7 +266,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -266,7 +278,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -278,7 +290,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
@@ -289,7 +301,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         // "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -301,7 +313,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         // "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -313,7 +325,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         // "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -325,7 +337,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -337,7 +349,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -349,7 +361,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -361,7 +373,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -373,7 +385,7 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
     );
@@ -388,7 +400,7 @@ class APIService {
 
     req.headers['Content-type'] = "application/json";
     req.headers['Authorization'] = "Bearer " + accessToken;
-    req.headers['HTTP-REQUEST-SOURCE'] = "mobile:${packageInfo?.version}";
+    req.headers['HTTP-REQUEST-SOURCE'] = "mobile:${_controller.appVersion.value}";
 
     return req;
   }
@@ -399,20 +411,31 @@ class APIService {
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
     );
   }
 
-   Future<http.Response> airtimeCashRequest(Map body, String accessToken) async {
+  Future<http.Response> airtimeCashRequest(Map body, String accessToken) async {
     return await client.post(
       Uri.parse('${Constants.baseURL}backend/transaction/airtime-to-cash'),
       headers: {
         "Content-type": "application/json",
         "Authorization": "Bearer " + accessToken,
-        "HTTP-REQUEST-SOURCE": "mobile:${packageInfo?.version}",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
       body: jsonEncode(body),
+    );
+  }
+
+  Future<http.Response> generateVirtualAccount(String accessToken) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}backend/user/virtual_account'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
+      },
     );
   }
 }

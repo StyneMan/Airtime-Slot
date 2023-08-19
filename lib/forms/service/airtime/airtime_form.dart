@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
@@ -172,6 +173,7 @@ class _AirtimeFormFormState extends State<AirtimeForm> {
   }
 
   _initiateTransaction() async {
+     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
@@ -213,6 +215,8 @@ class _AirtimeFormFormState extends State<AirtimeForm> {
         Map<String, dynamic> error = jsonDecode(response.body);
         Constants.toast(error['message']);
       }
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
     } catch (e) {
       debugPrint(e.toString());
       _controller.setLoading(false);

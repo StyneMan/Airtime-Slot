@@ -6,7 +6,7 @@ import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class NoInternet extends StatefulWidget {
@@ -17,7 +17,7 @@ class NoInternet extends StatefulWidget {
 }
 
 class _NoInternetState extends State<NoInternet> {
-  bool? _isConnectionSuccessful;
+  // bool? _isConnectionSuccessful;
   final _controller = Get.find<StateController>();
 
   Future<void> _tryConnection() async {
@@ -25,25 +25,37 @@ class _NoInternetState extends State<NoInternet> {
 
     try {
       final response = await InternetAddress.lookup('www.google.com');
-      setState(() {
-        _isConnectionSuccessful = response.isNotEmpty;
-      });
+      _controller.hasInternetAccess.value = false;
+      // setState(() {
+      //   _isConnectionSuccessful = response.isNotEmpty;
+      // });
 
       _controller.setLoading(false);
+      _controller.onInit();
       //Now go to where necessary from here...
       Future.delayed(const Duration(milliseconds: 50), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyApp(),
-          ),
-        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyApp(),
+            ),
+          );
+        }
+        // Get.off(MyApp(), transition: Transition.cupertino);
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => MyApp(),
+        //   ),
+        // );
       });
     } on SocketException catch (e) {
       _controller.setLoading(false);
-      setState(() {
-        _isConnectionSuccessful = false;
-      });
+      _controller.hasInternetAccess.value = false;
+      // setState(() {
+      //   _isConnectionSuccessful = false;
+      // });
       Constants.toast("Check your internet connection.");
     }
   }

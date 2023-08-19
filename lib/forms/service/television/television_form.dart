@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_meter_num.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -327,6 +327,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
   }
 
   _initiateTransaction() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     Map _payload = {
       "network_id": _controller.selectedTelevisionProvider.value['id'],
@@ -365,6 +366,8 @@ class _TelevisionFormState extends State<TelevisionForm> {
         Map<String, dynamic> error = jsonDecode(response.body);
         Constants.toast(error['message']);
       }
+    } on SocketException {
+      _controller.hasInternetAccess.value = false;
     } catch (e) {
       debugPrint(e.toString());
       _controller.setLoading(false);

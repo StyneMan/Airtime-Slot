@@ -1,4 +1,3 @@
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/forms/service/data/internet_data.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
@@ -27,7 +26,7 @@ class _InternetDataState extends State<InternetData> {
     return Obx(
       () => LoadingOverlayPro(
         isLoading: _controller.isLoading.value,
-        backgroundColor: Colors.black45,
+        backgroundColor: Colors.black54,
         progressIndicator: const CircularProgressIndicator.adaptive(),
         child: Scaffold(
           backgroundColor: Constants.accentColor,
@@ -77,12 +76,10 @@ class _InternetDataState extends State<InternetData> {
                   ),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 24),
+                    padding: const EdgeInsets.all(16.0),
                     child: InternetDataForm(
                       manager: widget.manager,
                     ),
-                    
                   ),
                 ),
               ),

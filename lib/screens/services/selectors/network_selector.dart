@@ -225,6 +225,9 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                             onPressed: () {
                               _setSelected(index);
                               _selectNetwork(_filteredList[index]);
+                              Future.delayed(const Duration(milliseconds: 100), () {
+                                Get.back();
+                              });
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,26 +293,26 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                       ),
                       itemCount: _filteredList.length,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          RoundedButton(
-                            text: "Continue",
-                            press: () {
-                              if (_selectedIndex > 0) {
-                                Get.back();
-                              } else {
-                                Constants.toast("Select a network provider");
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    )
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.end,
+                    //     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //     children: [
+                    //       RoundedButton(
+                    //         text: "Continue",
+                    //         press: () {
+                    //           if (_selectedIndex > 0) {
+                    //             Get.back();
+                    //           } else {
+                    //             Constants.toast("Select a network provider");
+                    //           }
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),
