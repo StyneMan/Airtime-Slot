@@ -1,5 +1,5 @@
-import 'package:airtimeslot_app/screens/auth/login/login.dart';
-import 'package:airtimeslot_app/screens/auth/login/login2.dart';
+import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:data_extra_app/screens/auth/login/login2.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';

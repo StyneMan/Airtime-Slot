@@ -1,18 +1,15 @@
 import 'dart:io';
 
-import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/forms/login/loginform.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/auth/register/register.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/forms/login/loginform.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/auth/register/register.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -70,9 +67,8 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(10.0),
                         child: Container(
                           padding: const EdgeInsets.all(2.0),
-                          color: Constants.primaryColor,
                           child: Image.asset(
-                            "assets/images/logo_big.png",
+                            "assets/images/ic_launcher.png",
                             width: 56,
                           ),
                         ),

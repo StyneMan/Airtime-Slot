@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/forms/login/loginform.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/auth/register/register.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/forms/login/loginform.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/auth/register/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,6 @@ class _LoginState extends State<Login2> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    
                   ],
                 ),
               ),

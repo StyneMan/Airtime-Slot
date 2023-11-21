@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/model/networks/mproducts.dart';
+import 'package:data_extra_app/model/networks/mproducts.dart';
 import 'package:flutter/material.dart';
 
 typedef void InitCallback(

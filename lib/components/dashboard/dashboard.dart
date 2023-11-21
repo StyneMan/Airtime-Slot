@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:airtimeslot_app/helper/connectivity/net_conectivity.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-// import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/account/account.dart';
-import 'package:airtimeslot_app/screens/home/home.dart';
-import 'package:airtimeslot_app/screens/network/no_internet.dart';
-import 'package:airtimeslot_app/screens/support/support.dart';
-import 'package:airtimeslot_app/screens/pay/pay.dart';
+import 'package:data_extra_app/helper/connectivity/net_conectivity.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+// import 'package:data_extra_app/helper/navigator/auth_controller.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/account/account.dart';
+import 'package:data_extra_app/screens/home/home.dart';
+import 'package:data_extra_app/screens/network/no_internet.dart';
+import 'package:data_extra_app/screens/support/support.dart';
+import 'package:data_extra_app/screens/pay/pay.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,4 @@
-
-import 'package:airtimeslot_app/model/user/user_model.dart';
+import 'package:data_extra_app/model/user/user_model.dart';
 
 class DataModel {
   String? token;
@@ -14,5 +13,4 @@ class DataModel {
     token = json['token'];
     user = UserModel.fromJson(json['user']);
   }
-
 }

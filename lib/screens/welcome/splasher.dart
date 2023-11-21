@@ -1,8 +1,8 @@
-import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/screens/welcome/welcome.dart';
+import 'package:data_extra_app/components/dialogs/info_dialog.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/screens/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -24,17 +24,14 @@ class Splasher extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    "assets/images/logo_white.png",
-                  ),
-                  TextPoppins(
-                    text: "Airtimeslot",
-                    fontSize: 26,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Image.asset(
+                      "assets/images/logo_white.png",
+                    ),
                   ),
                   const SizedBox(
-                    height: 4.0,
+                    height: 24.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -62,7 +59,6 @@ class Splasher extends StatelessWidget {
               right: 12,
               child: ElevatedButton(
                 onPressed: () {
-                 
                   Get.to(
                     const Welcome(),
                     transition: Transition.cupertino,

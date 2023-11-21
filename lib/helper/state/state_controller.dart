@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/main.dart';
-import 'package:airtimeslot_app/screens/Home/home.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/main.dart';
+import 'package:data_extra_app/screens/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';

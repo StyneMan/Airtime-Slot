@@ -1,5 +1,4 @@
-
-import 'package:airtimeslot_app/model/user/user_model.dart';
+import 'package:data_extra_app/model/user/user_model.dart';
 
 class WalletPINResponse {
   String? message;
@@ -24,5 +23,4 @@ class WalletPINResponse {
   //     data['success'] =  this.success;
   //     data['data'] = DataModel.toJson(this.data);
   //  }
-
 }

@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 typedef void InitCallback(String value);
@@ -9,7 +9,7 @@ class RoundedDropdownBank extends StatefulWidget {
   final List<dynamic> items;
   final double borderRadius;
   final Color fillColor;
-   var validator;
+  var validator;
 
   RoundedDropdownBank({
     Key? key,

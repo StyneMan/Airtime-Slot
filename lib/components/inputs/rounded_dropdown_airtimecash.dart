@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:data_extra_app/components/text_components.dart';
 import 'package:flutter/material.dart';
 
 typedef void InitCallback(String value, selectedNetwork);

@@ -1,10 +1,10 @@
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/wallet/components/abt.dart';
-import 'package:airtimeslot_app/screens/wallet/components/card.dart';
-import 'package:airtimeslot_app/screens/wallet/components/mbt.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/wallet/components/abt.dart';
+import 'package:data_extra_app/screens/wallet/components/card.dart';
+import 'package:data_extra_app/screens/wallet/components/mbt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -277,9 +277,12 @@ class _FundWalletState extends State<FundWallet>
                                         color: Constants.primaryColor,
                                         padding: const EdgeInsets.all(5.0),
                                         child: const Center(
-                                          child: Icon(CupertinoIcons.arrowshape_turn_up_left_2_fill, color: Colors.white, size: 21,
-                                          )
-                                        ),
+                                            child: Icon(
+                                          CupertinoIcons
+                                              .arrowshape_turn_up_left_2_fill,
+                                          color: Colors.white,
+                                          size: 21,
+                                        )),
                                       ),
                                     ),
                                     const SizedBox(
@@ -298,8 +301,7 @@ class _FundWalletState extends State<FundWallet>
                                           fontWeight: FontWeight.w600,
                                         ),
                                         TextPoppins(
-                                          text:
-                                              "Pay with Manual Bank Transfer",
+                                          text: "Pay with Manual Bank Transfer",
                                           fontSize: 13,
                                         ),
                                       ],

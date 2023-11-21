@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(airtimeslot_app LANGUAGES CXX)
+project(data_extra_app LANGUAGES CXX)
 
-set(BINARY_NAME "airtimeslot_app")
+set(BINARY_NAME "data_extra_app")
 
 cmake_policy(SET CMP0063 NEW)
 

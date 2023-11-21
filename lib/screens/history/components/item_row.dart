@@ -1,5 +1,5 @@
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,14 +22,16 @@ class HistoryItemRow extends StatelessWidget {
                 width: 32,
                 height: 32,
                 child: Image.asset(
-                  "assets/images/logo_big.png",
+                  "assets/images/ic_launcher.png",
                   width: 32,
                   height: 32,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            const SizedBox(width: 8.0,),
+            const SizedBox(
+              width: 8.0,
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

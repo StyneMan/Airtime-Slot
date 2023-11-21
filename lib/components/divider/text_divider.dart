@@ -1,6 +1,5 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
-
 
 class TextDivider extends StatelessWidget {
   final String text;

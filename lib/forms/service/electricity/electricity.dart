@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_meter_num.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/services/selectors/network_selector.dart';
-import 'package:airtimeslot_app/screens/services/summary/summary.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/inputs/rounded_dropdown_gender.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_meter_num.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_money.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/services/selectors/network_selector.dart';
+import 'package:data_extra_app/screens/services/summary/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -212,7 +212,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
   }
 
   _initiateTransaction() async {
-     FocusManager.instance.primaryFocus?.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");

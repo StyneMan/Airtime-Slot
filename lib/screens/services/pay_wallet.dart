@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -67,7 +67,6 @@ class _PayWalletState extends State<PayWallet> {
 
       if (resp.statusCode == 200) {
         //Now use token sent to perform next request
-
       } else {
         Map<String, dynamic> _errorMap = jsonDecode(resp.body);
         Constants.toast(_errorMap['message']);

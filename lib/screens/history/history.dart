@@ -1,9 +1,9 @@
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/screens/history/components/item_row.dart';
-import 'package:airtimeslot_app/screens/history/history_detail.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/history/components/item_row.dart';
+import 'package:data_extra_app/screens/history/history_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -181,191 +181,174 @@ class _HistoryState extends State<History> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/card_chip.png"),
-                                ),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.98,
-                                      child: Image.asset(
-                                        "assets/images/dash_bg.png",
-                                        fit: BoxFit.cover,
-                                        height: 144,
-                                      ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.98,
+                                    child: Image.asset(
+                                      "assets/images/dash_bg.png",
+                                      fit: BoxFit.cover,
+                                      height: 144,
                                     ),
                                   ),
-                                  Positioned(
-                                    top: 24,
-                                    left: 16,
-                                    right: 16,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        "assets/images/wallet_icon.svg",
-                                                      ),
-                                                      const SizedBox(
-                                                          width: 8.0),
-                                                      const Text(
-                                                        "Wallet Balance",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 8.0,
-                                                  ),
-                                                  Text(
-                                                    _isHidden
-                                                        ? "******"
-                                                        : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance']))}",
-                                                    style: const TextStyle(
-                                                      fontSize: 24,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                ),
+                                Positioned(
+                                  top: 24,
+                                  left: 16,
+                                  right: 16,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/images/wallet_icon.svg",
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 1.0,
-                                                  ),
-                                                  Text(
-                                                    "${_controller.userData.value['email'] ?? "email@domain.com"}",
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
+                                                    const SizedBox(width: 8.0),
+                                                    const Text(
+                                                      "Wallet Balance",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 8.0,
+                                                ),
+                                                Text(
+                                                  _isHidden
+                                                      ? "******"
+                                                      : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['wallet_balance']))}",
+                                                  style: const TextStyle(
+                                                    fontSize: 24,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 1.0,
+                                                ),
+                                                Text(
+                                                  "${_controller.userData.value['email'] ?? "email@domain.com"}",
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(width: 21.0),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    "Swap Balance",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
+                                          ),
+                                          const SizedBox(width: 21.0),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  "Swap Balance",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
                                                   ),
-                                                  const SizedBox(
-                                                    height: 8.0,
+                                                ),
+                                                const SizedBox(
+                                                  height: 8.0,
+                                                ),
+                                                Text(
+                                                  _isHidden
+                                                      ? "******"
+                                                      : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['withdrawable_balance']))}.00",
+                                                  style: const TextStyle(
+                                                    fontSize: 24,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  Text(
-                                                    _isHidden
-                                                        ? "******"
-                                                        : "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(_controller.userData.value['withdrawable_balance']))}.00",
-                                                    style: const TextStyle(
-                                                      fontSize: 24,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 1.0,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const SizedBox(),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          ClipOval(
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(6.0),
-                                                              color:
-                                                                  Colors.black,
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    _isHidden =
-                                                                        !_isHidden;
-                                                                  });
-                                                                },
-                                                                child: Icon(
-                                                                  _isHidden
-                                                                      ? CupertinoIcons
-                                                                          .eye
-                                                                      : CupertinoIcons
-                                                                          .eye_slash,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 14,
-                                                                ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 1.0,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const SizedBox(),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        ClipOval(
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(6.0),
+                                                            color: Colors.black,
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  _isHidden =
+                                                                      !_isHidden;
+                                                                });
+                                                              },
+                                                              child: Icon(
+                                                                _isHidden
+                                                                    ? CupertinoIcons
+                                                                        .eye
+                                                                    : CupertinoIcons
+                                                                        .eye_slash,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 14,
                                                               ),
                                                             ),
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 21.0),
-                                      ],
-                                    ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 21.0),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -379,7 +362,6 @@ class _HistoryState extends State<History> {
                                   ),
                                 )
                               : Column(
-                                  //_controller.transactionsScrollController,
                                   children: _buildList(),
                                 ),
                           //Loader here

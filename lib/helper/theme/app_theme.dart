@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -32,7 +32,6 @@ ThemeData appTheme = ThemeData(
       ),
     ),
   ),
-  
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Constants.primaryColor,
     foregroundColor: Constants.primaryColor,

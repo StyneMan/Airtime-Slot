@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -15,17 +15,17 @@ class RoundedInputMeterNumber extends StatelessWidget {
   final double borderRadius;
   final Color fillColor;
 
-  RoundedInputMeterNumber({
-    Key? key,
-    required this.hintText,
-    this.icon = Icons.money,
-    this.enabled = true,
-    required this.onChanged,
-    required this.controller,
-    required this.validator,
-    this.borderRadius = 6.0,
-    this.fillColor = Constants.accentColor
-  }) : super(key: key);
+  RoundedInputMeterNumber(
+      {Key? key,
+      required this.hintText,
+      this.icon = Icons.money,
+      this.enabled = true,
+      required this.onChanged,
+      required this.controller,
+      required this.validator,
+      this.borderRadius = 6.0,
+      this.fillColor = Constants.accentColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class RoundedInputMeterNumber extends StatelessWidget {
       ],
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-       contentPadding: const EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: 22.0,
           vertical: 16.0,
         ),
@@ -67,7 +67,6 @@ class RoundedInputMeterNumber extends StatelessWidget {
           fontSize: 18,
         ),
       ),
-      
     );
   }
 }

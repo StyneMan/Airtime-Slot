@@ -1,10 +1,10 @@
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
-import 'package:airtimeslot_app/screens/home/home.dart';
+import 'package:data_extra_app/components/drawer/custom_drawer.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/transactions/guest_transaction_model.dart';
+import 'package:data_extra_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';

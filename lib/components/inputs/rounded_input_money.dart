@@ -1,8 +1,7 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 class RoundedInputMoney extends StatelessWidget {
   final String hintText;
@@ -43,8 +42,8 @@ class RoundedInputMoney extends StatelessWidget {
         ),
       ],
       keyboardType: TextInputType.number,
-     decoration: InputDecoration(
-       contentPadding: const EdgeInsets.symmetric(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: 18.0,
           vertical: 16.0,
         ),

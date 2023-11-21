@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/auth/login_model.dart';
-import 'package:airtimeslot_app/model/error/error.dart';
-import 'package:airtimeslot_app/model/error/validation_error.dart';
-import 'package:airtimeslot_app/screens/account/verify_account.dart';
+import 'package:data_extra_app/components/dashboard/dashboard.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/auth/login_model.dart';
+import 'package:data_extra_app/model/error/error.dart';
+import 'package:data_extra_app/model/error/validation_error.dart';
+import 'package:data_extra_app/screens/account/verify_account.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +110,6 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ),
         );
-
       } else {
         //Error occurred on login
         _controller.setLoading(false);

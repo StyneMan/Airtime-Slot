@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

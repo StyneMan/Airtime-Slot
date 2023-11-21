@@ -1,13 +1,11 @@
 import 'dart:math';
 
-import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/components/dashboard/dashboard.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-
-
 
 class AccountSuccess extends StatefulWidget {
   const AccountSuccess({Key? key}) : super(key: key);

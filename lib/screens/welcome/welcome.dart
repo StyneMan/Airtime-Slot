@@ -1,12 +1,12 @@
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/screens/auth/login/login.dart';
-import 'package:airtimeslot_app/screens/auth/register/register.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:data_extra_app/screens/auth/register/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+// import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../components/text_components.dart';
 
@@ -48,12 +48,16 @@ class _WelcomeState extends State<Welcome> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Image.asset("assets/images/welcome.jpeg", fit: BoxFit.contain, width: MediaQuery.of(context).size.width * 0.70,),
+                    Image.asset(
+                      "assets/images/welcome.png",
+                      fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width * 0.70,
+                    ),
                     const SizedBox(
                       height: 16.0,
                     ),
                     TextPoppins(
-                      text: "Airtimeslot Services",
+                      text: "Data Extra",
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -93,7 +97,8 @@ class _WelcomeState extends State<Welcome> {
                       RoundedButton(
                         text: "Sign in",
                         press: () {
-                          Get.to(const Login(), transition: Transition.downToUp);
+                          Get.to(const Login(),
+                              transition: Transition.downToUp);
                         },
                         color: Constants.primaryColor,
                         textColor: Colors.white,

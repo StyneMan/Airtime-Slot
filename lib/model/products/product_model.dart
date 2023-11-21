@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/model/networks/network_product.dart';
+import 'package:data_extra_app/model/networks/network_product.dart';
 
 class ProductModel {
   int? id;

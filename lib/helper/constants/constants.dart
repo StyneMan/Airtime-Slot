@@ -9,9 +9,9 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 // import 'package:logger/logger.dart';
 
 class Constants {
-  static const Color primaryColor = Color(0xFF009EF7);
-  static const Color accentColor = Color(0xFFE5EEFD);
-  static const Color checkBg = Color(0xFFD1E4FF);
+  static const Color primaryColor = Color(0xdb81007a);
+  static const Color accentColor = Color.fromARGB(255, 237, 230, 237);
+  static const Color checkBg = Color.fromARGB(255, 248, 234, 247);
   static const Color secondaryColor = Color(0xFF000000);
   static const Color backgroundColor = Color(0xFFEBEBEB);
 

@@ -1,4 +1,4 @@
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 
 import 'text_field_container.dart';
 import 'package:flutter/material.dart';
@@ -43,47 +43,48 @@ class RoundedInputField extends StatelessWidget {
       controller: controller,
       validator: validator,
       enabled: isEnabled,
-      decoration: isIconed ? InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: height,
-        ),
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        filled: true,
-        fillColor: fillColor,
-        hintText: hintText,
-        labelText: labelText.isEmpty ? null : labelText,
-        focusColor: fillColor,
-        prefixIcon: icon,
-        hintStyle: const TextStyle(
-          fontFamily: "Poppins",
-          color: Colors.black38,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
-        
-      ) : InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: height,
-        ),
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        filled: true,
-        fillColor: fillColor,
-        hintText: hintText,
-        labelText: labelText.isEmpty ? null : labelText,
-        focusColor: fillColor,
-        hintStyle: const TextStyle(
-          fontFamily: "Poppins",
-          color: Colors.black38,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
+      decoration: isIconed
+          ? InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: height,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: true,
+              fillColor: fillColor,
+              hintText: hintText,
+              labelText: labelText.isEmpty ? null : labelText,
+              focusColor: fillColor,
+              prefixIcon: icon,
+              hintStyle: const TextStyle(
+                fontFamily: "Poppins",
+                color: Colors.black38,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            )
+          : InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: height,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: true,
+              fillColor: fillColor,
+              hintText: hintText,
+              labelText: labelText.isEmpty ? null : labelText,
+              focusColor: fillColor,
+              hintStyle: const TextStyle(
+                fontFamily: "Poppins",
+                color: Colors.black38,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
       keyboardType: inputType,
       textCapitalization: capitalization,
     );

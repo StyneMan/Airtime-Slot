@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "airtimeslot_app" "\0"
+            VALUE "FileDescription", "data_extra_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "airtimeslot_app" "\0"
+            VALUE "InternalName", "data_extra_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "airtimeslot_app.exe" "\0"
-            VALUE "ProductName", "airtimeslot_app" "\0"
+            VALUE "OriginalFilename", "data_extra_app.exe" "\0"
+            VALUE "ProductName", "data_extra_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

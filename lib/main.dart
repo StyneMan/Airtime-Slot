@@ -3,9 +3,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:airtimeslot_app/helper/theme/app_theme.dart';
-import 'package:airtimeslot_app/screens/welcome/splasher.dart';
-import 'package:airtimeslot_app/screens/welcome/welcome.dart';
+import 'package:data_extra_app/helper/theme/app_theme.dart';
+import 'package:data_extra_app/screens/welcome/splasher.dart';
+import 'package:data_extra_app/screens/welcome/welcome.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,6 +1,6 @@
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/model/networks/network_product.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/model/networks/network_product.dart';
 import 'package:flutter/material.dart';
 
 typedef void InitCallback(String value, NetworkProducts selectedNetwork);
@@ -137,8 +137,7 @@ class _RoundedDropdownState extends State<RoundedDropdown> {
         );
         widget.onSelected(
           newValue as String,
-          widget.networks!
-              .firstWhere((element) => element['name'] == newValue),
+          widget.networks!.firstWhere((element) => element['name'] == newValue),
         );
       },
       icon: const Icon(Icons.keyboard_arrow_down_rounded),

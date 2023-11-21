@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
-import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_password_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/auth/wallet_pin.dart';
-import 'package:airtimeslot_app/model/error/error.dart';
-import 'package:airtimeslot_app/model/user/user_model.dart';
-import 'package:airtimeslot_app/screens/wallet/components/change_wallet_pin.dart';
+import 'package:data_extra_app/components/dialogs/info_dialog.dart';
+import 'package:data_extra_app/components/drawer/custom_drawer.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/inputs/rounded_password_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/auth/wallet_pin.dart';
+import 'package:data_extra_app/model/error/error.dart';
+import 'package:data_extra_app/model/user/user_model.dart';
+import 'package:data_extra_app/screens/wallet/components/change_wallet_pin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -89,7 +89,7 @@ class _SecurityState extends State<Security> {
         widget.manager.setUserData(userData);
         _controller.setUserData(map['data']);
 
-         showDialog(
+        showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) {
@@ -112,8 +112,7 @@ class _SecurityState extends State<Security> {
       }
     } on SocketException {
       _controller.hasInternetAccess.value = false;
-    }
-    catch (e) {
+    } catch (e) {
       _controller.setLoading(false);
     }
   }

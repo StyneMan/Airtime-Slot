@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_dropdown.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_dropdown_product.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_meter_num.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/database/database_handler.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/error/error.dart';
-import 'package:airtimeslot_app/model/networks/mproducts.dart';
-import 'package:airtimeslot_app/model/networks/network_product.dart';
-import 'package:airtimeslot_app/model/products/product_model.dart';
-import 'package:airtimeslot_app/model/transactions/transaction_response.dart';
-import 'package:airtimeslot_app/screens/services/confirm_transaction.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/inputs/rounded_dropdown.dart';
+import 'package:data_extra_app/components/inputs/rounded_dropdown_gender.dart';
+import 'package:data_extra_app/components/inputs/rounded_dropdown_product.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_meter_num.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_money.dart';
+import 'package:data_extra_app/components/inputs/rounded_phone_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/database/database_handler.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/error/error.dart';
+import 'package:data_extra_app/model/networks/mproducts.dart';
+import 'package:data_extra_app/model/networks/network_product.dart';
+import 'package:data_extra_app/model/products/product_model.dart';
+import 'package:data_extra_app/model/transactions/transaction_response.dart';
+import 'package:data_extra_app/screens/services/confirm_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
@@ -36,7 +36,7 @@ class ServiceForm extends StatefulWidget {
     this.mAmount,
     required this.token,
     required this.service,
-     this.product,
+    this.product,
     required this.isAuthenticated,
   }) : super(key: key);
 
@@ -130,7 +130,9 @@ class _ServiceFormState extends State<ServiceForm> {
     // _controller.discountAmount.value = 0.0;
 
     if (discount.isNotEmpty && discount != "null") {
-      double percent = double.tryParse(discount.contains(".") ? discount : "$discount.0")! / 100;
+      double percent =
+          double.tryParse(discount.contains(".") ? discount : "$discount.0")! /
+              100;
       double calc = amount * percent;
       _controller.discountAmount.value = amount - calc;
 
@@ -154,8 +156,6 @@ class _ServiceFormState extends State<ServiceForm> {
     // debugPrint("PRDUCT DATA: ${widget.product.createdAt}");
     _controller.discountAmount.value = 0.0;
   }
-
-
 
   // _buyTv() async {
   //   _controller.setLoading(true);
@@ -352,7 +352,7 @@ class _ServiceFormState extends State<ServiceForm> {
       // } else {
       //   _buyTv();
       // }
-    } 
+    }
   }
 
   @override
@@ -607,7 +607,6 @@ class _ServiceFormState extends State<ServiceForm> {
                               _controller.discountAmount.value =
                                   int.parse(amt.replaceAll(",", "")) - reduce;
                             }
-                            
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {

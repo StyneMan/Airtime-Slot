@@ -1,15 +1,18 @@
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
-import 'package:airtimeslot_app/screens/services/television/television.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/screens/services/electricity/electricity.dart';
+import 'package:data_extra_app/screens/services/television/television.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class BillPayment extends StatelessWidget {
   final PreferenceManager manager;
-  const BillPayment({Key? key, required this.manager,}) : super(key: key);
+  const BillPayment({
+    Key? key,
+    required this.manager,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +84,9 @@ class BillPayment extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Get.to(
-                                 Electricity(manager: manager,),
+                                Electricity(
+                                  manager: manager,
+                                ),
                                 transition: Transition.cupertino,
                               );
                             },

@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/error/error.dart';
-import 'package:airtimeslot_app/model/error/validation_error.dart';
-import 'package:airtimeslot_app/screens/account/verify_account.dart';
-import 'package:airtimeslot_app/screens/auth/forgotpass/forgotPass.dart';
+import 'package:data_extra_app/components/dashboard/dashboard.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/error/error.dart';
+import 'package:data_extra_app/model/error/validation_error.dart';
+import 'package:data_extra_app/screens/account/verify_account.dart';
+import 'package:data_extra_app/screens/auth/forgotpass/forgotPass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,28 +66,28 @@ class _LoginFormState extends State<LoginForm> {
         // UserModel? model = login.data?.user;
 
         // if (loginMap['data']['user']['is_account_verified']) {
-          //Account has been verified. Now check if wallet pin is set.
-          // if (loginMap['data']['user']['is_wallet_pin']) {
-          //Wallet pin has been set, go to dashboard from here.
-          //Save user data and preferences
-          String userData = jsonEncode(loginMap['data']['user']);
-          widget.manager.setUserData(userData);
+        //Account has been verified. Now check if wallet pin is set.
+        // if (loginMap['data']['user']['is_wallet_pin']) {
+        //Wallet pin has been set, go to dashboard from here.
+        //Save user data and preferences
+        String userData = jsonEncode(loginMap['data']['user']);
+        widget.manager.setUserData(userData);
 
-          _controller.setUserData(loginMap['data']['user']);
+        _controller.setUserData(loginMap['data']['user']);
 
-          // await APIService().fetchTransactions(_toks);
+        // await APIService().fetchTransactions(_toks);
 
-          widget.manager.setIsLoggedIn(true);
-          _controller.setLoading(false);
+        widget.manager.setIsLoggedIn(true);
+        _controller.setLoading(false);
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Dashboard(manager: widget.manager),
-            ),
-          );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(manager: widget.manager),
+          ),
+        );
         // } else {
-          //Verify account from here...
+        //Verify account from here...
         //   _controller.setLoading(false);
         //   Navigator.pushReplacement(
         //     context,
@@ -101,7 +101,6 @@ class _LoginFormState extends State<LoginForm> {
         //   );
         // }
       } else if (response.statusCode == 422) {
-        
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ValidationError error = ValidationError.fromJson(errorMap);

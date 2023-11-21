@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
-import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/constants/constants.dart';
-import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
-import 'package:airtimeslot_app/helper/service/api_service.dart';
-import 'package:airtimeslot_app/helper/state/state_controller.dart';
-import 'package:airtimeslot_app/model/networks/network_product.dart';
+import 'package:data_extra_app/components/dialogs/info_dialog.dart';
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
+import 'package:data_extra_app/components/inputs/rounded_input_money.dart';
+import 'package:data_extra_app/components/inputs/rounded_phone_field.dart';
+import 'package:data_extra_app/components/text_components.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
+import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/networks/network_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -134,7 +134,6 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
         _controller.airtimeSwapRate.value = "";
         _controller.airtimeSwapNumber.value = "";
         _controller.airtimeSwapResultantAmt.value = "0.0";
-
 
         showDialog(
           context: context,

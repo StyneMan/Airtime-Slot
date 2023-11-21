@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -203,7 +203,6 @@ class APIService {
   }
 
   fetchTransactions(String accessToken) async {
-
     final response = await client.get(
       Uri.parse('${Constants.baseURL}backend/user/transactions'),
       headers: {
@@ -400,7 +399,8 @@ class APIService {
 
     req.headers['Content-type'] = "application/json";
     req.headers['Authorization'] = "Bearer " + accessToken;
-    req.headers['HTTP-REQUEST-SOURCE'] = "mobile:${_controller.appVersion.value}";
+    req.headers['HTTP-REQUEST-SOURCE'] =
+        "mobile:${_controller.appVersion.value}";
 
     return req;
   }
