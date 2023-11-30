@@ -30,7 +30,7 @@ class _WithdrawState extends State<Withdraw> {
             children: [
               Center(
                 child: TextPoppins(
-                  text: "Withdraw funds",
+                  text: "Withdraw Funds",
                   fontSize: 21,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -56,7 +56,7 @@ class _WithdrawState extends State<Withdraw> {
               ),
             ],
           ),
-          const SizedBox(height: 36.0),
+          const SizedBox(height: 24.0),
           Expanded(
             child: Card(
               color: Colors.white.withOpacity(.9),
@@ -195,7 +195,7 @@ class _WithdrawState extends State<Withdraw> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         TextPoppins(
-                                          text: "Airtime slot tag",
+                                          text: "DataExtra tag",
                                           fontSize: 16,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600,

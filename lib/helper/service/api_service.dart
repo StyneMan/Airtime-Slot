@@ -438,4 +438,24 @@ class APIService {
       },
     );
   }
+
+  Future<http.Response> getMonnifyToken({var apiKey}) async {
+    return await client.post(
+      Uri.parse('https://api.monnify.com/api/v1/auth/login'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Basic ${apiKey}"
+      },
+    );
+  }
+
+  Future<http.Response> verifyAccount({var accountNumber, var bankCode}) async {
+    return await client.get(
+      Uri.parse(
+          'https://api.monnify.com/api/v1/disbursements/account/validate?accountNumber=${accountNumber}&bankCode=${bankCode}'),
+      headers: {
+        "Content-type": "application/json",
+      },
+    );
+  }
 }

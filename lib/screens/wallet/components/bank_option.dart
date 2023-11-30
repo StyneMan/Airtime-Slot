@@ -13,6 +13,8 @@ import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:monnify_flutter_sdk_plus/TransactionResponse.dart';
+import 'package:monnify_flutter_sdk_plus/monnify_flutter_sdk_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WithdrawToBnnk extends StatefulWidget {
@@ -62,7 +64,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                   children: [
                     Center(
                       child: TextPoppins(
-                        text: "Withdraw funds",
+                        text: "Withdraw Funds",
                         fontSize: 21,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -88,7 +90,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 36.0),
+                const SizedBox(height: 24.0),
                 Expanded(
                   child: Card(
                     elevation: 0.0,
@@ -101,7 +103,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                     ),
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: ListView(
                         children: [
                           TextPoppins(
@@ -110,15 +112,9 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
-                          // Text(
-                          //   "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse("${_controller.userData.value['withdrawable_balance'] ?? "0.0"}"))}",
-                          //   style: const TextStyle(
-                          //     color: Colors.black54,
-                          //   ),
-                          // ),
                           TextPoppins(
                             text: "Withdraw from your withdrawable wallet",
-                            fontSize: 16,
+                            fontSize: 14,
                             color: Colors.black54,
                           ),
                           const SizedBox(
@@ -170,6 +166,15 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                                     }
                                     return null;
                                   },
+                                  suffix: InkWell(
+                                    onTap: () {
+                                      _verifyAccount();
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(Icons.check_circle),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(
@@ -256,6 +261,39 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
         ),
       ),
     );
+  }
+
+  _verifyAccount() async {
+    try {
+      //   TransactionResponse transactionResponse =
+      //       await MonnifyFlutterSdkPlus.initializePayment(Transaction(
+      //           2000,
+      //           "NGN",
+      //           "Customer Name",
+      //           "mail.cus@tome.er",
+      //           "PAYMENT_REF",
+      //           "Description of payment",
+      //           metaData: {
+      //             "ip": "196.168.45.22",
+      //             "device": "mobile_flutter"
+      //             // any other info
+      //           },
+      //           paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
+      //           incomeSplitConfig: [
+      //             SubAccountDetails("MFY_SUB_319452883968", 10.5, 500, true),
+      //             SubAccountDetails("MFY_SUB_259811283666", 10.5, 1000, false)]
+      //       )
+      // );
+
+      // transactionResponse.
+      final resp = await APIService().getMonnifyToken(apiKey: Constants.spike);
+      debugPrint("GH YTY :: ${resp.body}");
+      // final response = await APIService().verifyAccount(
+      //     accountNumber: _accNumController.text, bankCode: _selectedBankCode);
+      // debugPrint("VERIFY ACC RESPONSE :: ${response.body}");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   _withdrawFunds() async {

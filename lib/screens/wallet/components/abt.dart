@@ -113,7 +113,7 @@ class _BankTransferState extends State<BankTransfer> {
                               Center(
                                 child: TextPoppins(
                                   text:
-                                      "Use the details below to send money to your AirtimeSlot wallet from any bank's app or through internet banking.",
+                                      "Use the details below to send money to your DataExtra wallet from any bank's app or through internet banking.",
                                   fontSize: 17,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
@@ -291,7 +291,7 @@ class _BankTransferState extends State<BankTransfer> {
                         text: "Share",
                         press: () {
                           Share.share('${_share()}',
-                              subject: 'AirtimeSlot Bank Detail');
+                              subject: 'DataExtra Bank Detail');
                         },
                       ),
                     ),

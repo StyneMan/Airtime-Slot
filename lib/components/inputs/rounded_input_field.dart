@@ -7,6 +7,7 @@ class RoundedInputField extends StatelessWidget {
   final String hintText;
   final String labelText;
   final Widget icon;
+  final Widget suffix;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
   final TextInputType inputType;
@@ -23,6 +24,7 @@ class RoundedInputField extends StatelessWidget {
     required this.hintText,
     this.labelText = "",
     this.icon = const SizedBox(),
+    this.suffix = const SizedBox(),
     this.capitalization = TextCapitalization.none,
     required this.onChanged,
     required this.controller,
@@ -84,6 +86,7 @@ class RoundedInputField extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
+              suffixIcon: suffix,
             ),
       keyboardType: inputType,
       textCapitalization: capitalization,

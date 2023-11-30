@@ -39,7 +39,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/meal_plan_drawer.svg',
           title: 'About Us',
           isAction: true,
-          url: "https://www.airtimeslot.com/",
+          url: "https://dataextra.vercel.app/",
         ),
         DrawerModel(
           icon: 'assets/images/maccount_drawer.svg',
@@ -53,13 +53,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/faq_drawer.svg',
           title: 'FAQs',
           isAction: true,
-          url: "https://www.airtimeslot.com/",
+          url: "https://dataextra.vercel.app/",
         ),
         DrawerModel(
           icon: 'assets/images/contact_drawer.svg',
           title: 'Contact us',
           isAction: true,
-          url: "https://www.airtimeslot.com/",
+          url: "https://dataextra.vercel.app/contact",
         ),
       ];
     });

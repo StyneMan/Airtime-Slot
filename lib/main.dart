@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                   // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
                   return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
-                    title: 'Airtimeslot',
+                    title: 'Data Extra',
                     theme: appTheme,
                     home: _controller.hasInternetAccess.value
                         ? _token.isNotEmpty
@@ -127,9 +127,6 @@ class _MyAppState extends State<MyApp> {
                         : const NoInternet(),
                   );
                 }
-
-                ///Users/thankgodokoro/Desktop/code
-                ///Users/thankgodokoro/Desktop/code/Stanley
               },
             ),
     );

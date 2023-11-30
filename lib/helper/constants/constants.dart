@@ -21,12 +21,12 @@ class Constants {
   static const Color shimmerBaseColor = Color.fromARGB(255, 203, 203, 203);
   static const Color shimmerHighlightColor = Colors.white;
 
-  static const baseURL = "https://cloud.airtimeslot.com/";
+  static const baseURL = "https://backend.dataextra.ng/";
   // static const apiKey = String.fromEnvironment("MONNIFY_API_KEY");
 
   // static String pstk = "pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";
-  static String contractCode = "249774588253";
-  static String spike = "MK_PROD_SAFKYTMYLM"; //"MK_TEST_44M9YWM4L4";
+  static String contractCode = "227549465723";
+  static String spike = "MK_PROD_PPWB6XAGDQ"; //"MK_TEST_44M9YWM4L4";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(

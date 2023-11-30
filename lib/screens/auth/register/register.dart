@@ -75,7 +75,7 @@ class _RegisterState extends State<Register> {
                             height: 16.0,
                           ),
                           TextPoppins(
-                            text: "Airtimeslot Services",
+                            text: "Data Extra",
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
@@ -92,108 +92,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-
-                  // Expanded(
-                  //   flex: 3,
-                  //   child: Stack(
-                  //     children: [
-                  //       const SizedBox(),
-                  //       Positioned(
-                  //         top: 32,
-                  //         right: 0,
-                  //         bottom: 18,
-                  //         child: Image.asset(
-                  //           "assets/images/login_img2.png",
-                  //           fit: BoxFit.cover,
-                  //         ),
-                  //       ),
-                  //       Positioned(
-                  //         top: 40,
-                  //         left: 8.0,
-                  //         child: IconButton(
-                  //           onPressed: () {
-                  //             Navigator.pop(context);
-                  //           },
-                  //           icon: const Icon(
-                  //             CupertinoIcons.arrow_left_circle_fill,
-                  //             color: Colors.black,
-                  //             size: 36,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Expanded(
-                  //   flex: 5,
-                  //   child: ListView(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  //     shrinkWrap: true,
-                  //     children: [
-                  //       TextPoppins(
-                  //         text: "Sign Up",
-                  //         fontSize: 24,
-                  //         color: Colors.black,
-                  //         fontWeight: FontWeight.bold,
-                  //       ),
-                  //       TextPoppins(
-                  //         text:
-                  //             "Create an account to able to pay bills online on the go.",
-                  //         fontSize: 14,
-                  //       ),
-                  //       const SizedBox(
-                  //         height: 18.0,
-                  //       ),
-                  //       SignupForm(
-                  //         manager: _manager!,
-                  //       ),
-                  //       const SizedBox(
-                  //         height: 8.0,
-                  //       ),
-                  //       Center(
-                  //         child: RichText(
-                  //           textAlign: TextAlign.center,
-                  //           text: TextSpan(
-                  //             text: "By signing up, you agree to our ",
-                  //             style: const TextStyle(
-                  //               color: Colors.black,
-                  //             ),
-                  //             children: [
-                  //               TextSpan(
-                  //                 text: "Terms of Use",
-                  //                 style: const TextStyle(
-                  //                   color: Constants.primaryColor,
-                  //                   fontWeight: FontWeight.w500,
-                  //                 ),
-                  //                 recognizer: TapGestureRecognizer()
-                  //                   ..onTap = () =>
-                  //                       _launchInBrowser("https://www.google.com/"),
-                  //                 // ..onTap = _showTermsOfService,
-                  //               ),
-                  //               const TextSpan(
-                  //                 text: " and ",
-                  //                 style: TextStyle(
-                  //                   color: Colors.black,
-                  //                 ),
-                  //               ),
-                  //               TextSpan(
-                  //                 text: "Privacy Policy",
-                  //                 style: const TextStyle(
-                  //                   color: Constants.primaryColor,
-                  //                   fontWeight: FontWeight.w500,
-                  //                 ),
-                  //                 recognizer: TapGestureRecognizer()
-                  //                   ..onTap = () =>
-                  //                       _launchInBrowser("https://www.google.com"),
-                  //                 // ..onTap = _showTermsOfService,
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
               Positioned(

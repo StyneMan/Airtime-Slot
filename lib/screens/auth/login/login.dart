@@ -76,12 +76,12 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 21.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const [
+                    children: [
                       Text(
                         "Welcome back",
                         style: TextStyle(
@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.16,
+                        height: MediaQuery.of(context).size.height * 0.10,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -160,12 +160,12 @@ class _LoginState extends State<Login> {
                                   transition: Transition.downToUp,
                                 );
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const <Widget>[
+                                children: <Widget>[
                                   Text(
-                                    "New to Airtimeslot? ",
+                                    "New to DataExtra? ",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: "Poppins",
