@@ -13,6 +13,7 @@ import 'package:data_extra_app/screens/services/selectors/package_selector.dart'
 import 'package:data_extra_app/screens/services/summary/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelevisionForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -31,6 +32,26 @@ class _TelevisionFormState extends State<TelevisionForm> {
 
   final _controller = Get.find<StateController>();
   bool _isNetworkErr = false, _isPlanErr = false;
+
+  _verifyTV() async {
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _token = _prefs.getString("accessToken") ?? "";
+
+      // print("BANK CODE :: ${_controller.selectedTelevisionProvider.value}");
+
+      Map _payload = {
+        "isn": _cardController.text,
+        "network_id": _controller.selectedTelevisionProvider.value['id']
+      };
+      final response =
+          await APIService().verifyCableTV(body: _payload, accessToken: _token);
+
+      print("BTV VERIFY RESPONSE  :: ${response.body}");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,6 +282,12 @@ class _TelevisionFormState extends State<TelevisionForm> {
             ),
             const SizedBox(
               height: 16.0,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _verifyTV();
+              },
+              child: Text('Verify'),
             ),
             Expanded(
               child: Padding(

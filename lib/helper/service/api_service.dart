@@ -439,23 +439,42 @@ class APIService {
     );
   }
 
-  Future<http.Response> getMonnifyToken({var apiKey}) async {
+  Future<http.Response> verifyCableTV(
+      {required Map body, required String accessToken}) async {
     return await client.post(
-      Uri.parse('https://api.monnify.com/api/v1/auth/login'),
+      Uri.parse('${Constants.baseURL}backend/verify/cable_tv'),
       headers: {
         "Content-type": "application/json",
-        "Authorization": "Basic ${apiKey}"
+        "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
+      body: jsonEncode(body),
     );
   }
 
-  Future<http.Response> verifyAccount({var accountNumber, var bankCode}) async {
-    return await client.get(
-      Uri.parse(
-          'https://api.monnify.com/api/v1/disbursements/account/validate?accountNumber=${accountNumber}&bankCode=${bankCode}'),
+  Future<http.Response> verifyElectricity(
+      {required Map body, required String accessToken}) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}backend/verify/electricity'),
       headers: {
         "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
       },
+      body: jsonEncode(body),
+    );
+  }
+
+  Future<http.Response> verifyAccount(
+      {required Map body, required String accessToken}) async {
+    return await client.post(
+      Uri.parse('${Constants.baseURL}backend/verify/account_number'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
+      },
+      body: jsonEncode(body),
     );
   }
 }

@@ -14,6 +14,7 @@ import 'package:data_extra_app/screens/services/selectors/network_selector.dart'
 import 'package:data_extra_app/screens/services/summary/summary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ElectricityForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -38,6 +39,27 @@ class _ElectricityFormState extends State<ElectricityForm> {
     setState(() {
       _meterType = val;
     });
+  }
+
+  _verifyElectricity() async {
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _token = _prefs.getString("accessToken") ?? "";
+
+      print("BANK CODE :: ${_controller.selectedElectricityProvider.value}");
+
+      Map _payload = {
+        "meter_number": _meterNumController.text.replaceAll(' ', ''),
+        "meter_type": _meterType.toLowerCase(),
+        "disco_id": _controller.selectedElectricityProvider.value['id']
+      };
+      final response = await APIService()
+          .verifyElectricity(body: _payload, accessToken: _token);
+
+      print("BTV VERIFY RESPONSE  :: ${response.body}");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -165,6 +187,12 @@ class _ElectricityFormState extends State<ElectricityForm> {
             ),
             const SizedBox(
               height: 16.0,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _verifyElectricity();
+              },
+              child: Text('Verify'),
             ),
             Expanded(
               child: Padding(
