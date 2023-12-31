@@ -31,10 +31,15 @@ class _TelevisionFormState extends State<TelevisionForm> {
   final _formKey = GlobalKey<FormState>();
 
   final _controller = Get.find<StateController>();
-  bool _isNetworkErr = false, _isPlanErr = false;
+  bool _isNetworkErr = false, _isPlanErr = false, _shouldContinue = false;
+  String _customerName = "",
+      _customerNumber = "",
+      _currentBouquet = "",
+      _dueDate = "";
 
   _verifyTV() async {
     try {
+      _controller.setLoading(true);
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString("accessToken") ?? "";
 
@@ -46,9 +51,36 @@ class _TelevisionFormState extends State<TelevisionForm> {
       };
       final response =
           await APIService().verifyCableTV(body: _payload, accessToken: _token);
-
+      _controller.setLoading(false);
       print("BTV VERIFY RESPONSE  :: ${response.body}");
+
+      Map<String, dynamic> mapper = jsonDecode(response.body);
+      debugPrint("MESSAGE :: ${mapper['message']}");
+      if (mapper['message'] != null) {
+        Constants.toast('${mapper['message']}');
+      }
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+
+        setState(() {
+          _customerNumber = map['data']['Customer_Number'];
+          _customerName = map['data']['Customer_Name'];
+          _currentBouquet = map['data']['Current_Bouquet'];
+          _dueDate = map['data']['Due_Date'];
+          _shouldContinue = true;
+        });
+      } else {
+        setState(() {
+          _customerNumber = "";
+          _customerName = "";
+          _currentBouquet = "";
+          _dueDate = "";
+          _shouldContinue = false;
+        });
+      }
     } catch (e) {
+      _controller.setLoading(false);
       debugPrint(e.toString());
     }
   }
@@ -278,26 +310,76 @@ class _TelevisionFormState extends State<TelevisionForm> {
                   }
                   return null;
                 },
+                suffix: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _verifyTV();
+                    },
+                    child: const Text(
+                      'Verify',
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    )),
+                  ),
+                ),
               ),
             ),
             const SizedBox(
               height: 16.0,
             ),
-            ElevatedButton(
-              onPressed: () {
-                _verifyTV();
-              },
-              child: Text('Verify'),
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    !_shouldContinue
+                        ? const SizedBox()
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8.0),
+                              TextRoboto(
+                                text: "Customer Name",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              TextRoboto(text: _customerName, fontSize: 13),
+                              const SizedBox(height: 16.0),
+                              const SizedBox(height: 8.0),
+                              TextRoboto(
+                                text: "Customer Number",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              TextRoboto(text: _customerNumber, fontSize: 13),
+                              const SizedBox(height: 16.0),
+                              const SizedBox(height: 8.0),
+                              TextRoboto(
+                                text: "Current Bouquet",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              TextRoboto(text: _currentBouquet, fontSize: 13),
+                              const SizedBox(height: 16.0),
+                              const SizedBox(height: 8.0),
+                              TextRoboto(
+                                text: "Due Date",
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              TextRoboto(text: _dueDate, fontSize: 13),
+                              const SizedBox(height: 16.0)
+                            ],
+                          ),
                     RoundedButton(
                       text: "Next",
+                      isEnabled: _shouldContinue,
                       press: () {
                         if (_formKey.currentState!.validate()) {
                           if (_controller

@@ -33,6 +33,8 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
   String _selectedBank = "";
   String _selectedBankCode = "";
 
+  bool shouldContinue = false;
+
   _onSelected(val) {
     var _mBank = banks.firstWhere(
       (element) => element['name'] == val,
@@ -164,13 +166,21 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                                     }
                                     return null;
                                   },
-                                  suffix: InkWell(
-                                    onTap: () {
-                                      _verifyAccount();
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Icon(Icons.check_circle),
+                                  suffix: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _verifyAccount();
+                                      },
+                                      child: const Text(
+                                        'Verify',
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                      )),
                                     ),
                                   ),
                                 ),
@@ -191,6 +201,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                                   hintText: "Enter account name",
                                   capitalization: TextCapitalization.words,
                                   onChanged: (val) {},
+                                  isEnabled: false,
                                   controller: _accNameController,
                                   validator: (val) {
                                     if (val == null || val.toString().isEmpty) {
@@ -246,6 +257,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                       vertical: 14.0, horizontal: 21.0),
                   child: RoundedButton(
                     text: "Continue",
+                    isEnabled: shouldContinue,
                     press: () {
                       if (_formKey.currentState!.validate()) {
                         _withdrawFunds();
@@ -263,6 +275,8 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
 
   _verifyAccount() async {
     try {
+      _controller.setLoading(true);
+
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString("accessToken") ?? "";
 
@@ -275,8 +289,25 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
       final resp =
           await APIService().verifyAccount(accessToken: _token, body: _payload);
       debugPrint("GH YTY :: ${resp.body}");
+      _controller.setLoading(false);
+
+      Map<String, dynamic> mapper = jsonDecode(resp.body);
+      debugPrint("MESSAGE :: ${mapper['message']}");
+      if (mapper['message'] != null) {
+        Constants.toast('${mapper['message']}');
+      }
+
+      if (resp.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(resp.body);
+
+        setState(() {
+          _accNameController.text = map['data']['accountName'];
+          shouldContinue = true;
+        });
+      }
     } catch (e) {
       debugPrint(e.toString());
+      _controller.setLoading(false);
     }
   }
 

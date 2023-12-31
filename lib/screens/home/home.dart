@@ -183,7 +183,8 @@ class _HomeState extends State<Home> {
           child: _controller.products.isEmpty
               ? const SizedBox()
               : ListView(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
@@ -191,11 +192,11 @@ class _HomeState extends State<Home> {
                         children: [
                           Center(
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.96,
+                              width: MediaQuery.of(context).size.width * 0.95,
                               child: Image.asset(
                                 "assets/images/dash_bg.png",
                                 fit: BoxFit.cover,
-                                height: 250,
+                                height: 220,
                               ),
                             ),
                           ),
@@ -204,7 +205,7 @@ class _HomeState extends State<Home> {
                             right: 21,
                             child: Image.asset(
                               "assets/images/chip_fade.png",
-                              width: 36,
+                              width: 33,
                             ),
                           ),
                           Positioned(
@@ -466,7 +467,7 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(
-                            height: 21.0,
+                            height: 16.0,
                           ),
                           Card(
                             shape: RoundedRectangleBorder(

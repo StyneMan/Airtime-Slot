@@ -14,18 +14,20 @@ class RoundedInputMeterNumber extends StatelessWidget {
   final bool? enabled;
   final double borderRadius;
   final Color fillColor;
+  final Widget suffix;
 
-  RoundedInputMeterNumber(
-      {Key? key,
-      required this.hintText,
-      this.icon = Icons.money,
-      this.enabled = true,
-      required this.onChanged,
-      required this.controller,
-      required this.validator,
-      this.borderRadius = 6.0,
-      this.fillColor = Constants.accentColor})
-      : super(key: key);
+  RoundedInputMeterNumber({
+    Key? key,
+    required this.hintText,
+    this.icon = Icons.money,
+    this.enabled = true,
+    required this.onChanged,
+    required this.controller,
+    required this.validator,
+    this.borderRadius = 6.0,
+    this.suffix = const SizedBox(),
+    this.fillColor = Constants.accentColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,7 @@ class RoundedInputMeterNumber extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 18,
         ),
+        suffixIcon: suffix,
       ),
     );
   }

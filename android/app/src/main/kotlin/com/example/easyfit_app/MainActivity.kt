@@ -1,4 +1,4 @@
-package com.airtimeslot.dataextra.app
+package com.detaextra.ng
 
 import io.flutter.embedding.android.FlutterActivity
 
