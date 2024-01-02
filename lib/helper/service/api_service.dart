@@ -477,4 +477,15 @@ class APIService {
       body: jsonEncode(body),
     );
   }
+
+  Future<http.Response> updateMobile() async {
+    return await client.get(
+      Uri.parse('${Constants.baseURL}backend/update/mobile_app'),
+      headers: {
+        "Content-type": "application/json",
+        // "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
+      },
+    );
+  }
 }

@@ -64,9 +64,12 @@ class StateController extends GetxController {
 
   var isDataProcessing = false.obs;
   var isMoreDataAvailable = true.obs;
+  var showForcedDialog = false.obs;
+  var showInfoUpdateDialog = false.obs;
   var accessToken = "".obs;
   String _token = "";
   RxString appVersion = "2.0".obs;
+  RxString androidAppUrl = "".obs;
 
   RxString dbItem = 'Awaiting data'.obs;
 
@@ -107,6 +110,30 @@ class StateController extends GetxController {
     }
   }
 
+  updateMobile() async {
+    try {
+      packageInfo = await PackageInfo.fromPlatform();
+      final response = await APIService().updateMobile();
+      debugPrint("UPDATE MOBILE RESPONSE ::: ${response.body}");
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response.body);
+        showForcedDialog.value = map['data']['should_update'];
+        androidAppUrl.value = map['data']['andriod_url'];
+        int latestBuildNum = int.parse(
+            "${map['data']['lastest__andriod_mobile_app_build_number']}");
+        if (latestBuildNum > int.parse("${packageInfo?.buildNumber}")) {
+          showInfoUpdateDialog.value = true;
+        } else {
+          showInfoUpdateDialog.value = false;
+        }
+      }
+      debugPrint("APP BUILD NUMBER INFO ::: ${packageInfo?.buildNumber}");
+      debugPrint("APP VERSION INFO ::: ${packageInfo?.version}");
+    } catch (e) {
+      debugPrint("$e");
+    }
+  }
+
   @override
   void onInit() async {
     super.onInit();
@@ -114,6 +141,8 @@ class StateController extends GetxController {
     appVersion.value = "${packageInfo?.version}";
     // print("PACKAGE INFO IS ${packageInfo?.version}");
     initDao();
+
+    updateMobile();
     // Get products
     try {
       //Fetch user data

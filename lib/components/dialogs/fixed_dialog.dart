@@ -1,14 +1,16 @@
+import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 typedef Presser();
 
-class ActionDialog extends StatelessWidget {
+class FixedDialog extends StatelessWidget {
   final String message;
   final Presser action;
-  // final String title;
-  ActionDialog({required this.message, required this.action});
+  final String btnText;
+  const FixedDialog(
+      {required this.message, required this.action, required this.btnText});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class ActionDialog extends StatelessWidget {
                       children: [
                         Center(
                           child: TextPoppins(
-                            text: " Message ",
+                            text: " Action Required ",
                             fontSize: 18,
                             color: Colors.white,
                           ),
@@ -103,24 +105,9 @@ class ActionDialog extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: TextPoppins(
-                                    text: "Cancel",
-                                    fontSize: 15,
-                                    color: Colors.white,
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.all(6.0)),
-                                ),
-                              ),
-                              const SizedBox(width: 6.0),
-                              Expanded(
-                                child: ElevatedButton(
                                   onPressed: action,
                                   child: TextPoppins(
-                                    text: "Proceed",
+                                    text: btnText,
                                     fontSize: 15,
                                     color: Colors.white,
                                   ),

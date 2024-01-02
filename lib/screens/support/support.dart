@@ -59,7 +59,7 @@ class _SupportState extends State<Support> {
     super.initState();
     emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'support@airtimeslot.com',
+      path: 'dataextraservices@gmail.com',
       query:
           encodeQueryParameters(<String, String>{'subject': 'Contact Support'}),
     );
@@ -108,10 +108,10 @@ class _SupportState extends State<Support> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
-                            children: const [
+                            children: [
                               Text(
                                 "Tell us how we can help",
                                 textAlign: TextAlign.center,
@@ -137,7 +137,7 @@ class _SupportState extends State<Support> {
                         ),
                         TextButton(
                           onPressed: () {
-                            _makePhoneCall("09045852364");
+                            _makePhoneCall("07018681127");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
