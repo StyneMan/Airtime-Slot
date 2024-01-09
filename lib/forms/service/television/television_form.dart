@@ -32,10 +32,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
 
   final _controller = Get.find<StateController>();
   bool _isNetworkErr = false, _isPlanErr = false, _shouldContinue = false;
-  String _customerName = "",
-      _customerNumber = "",
-      _currentBouquet = "",
-      _dueDate = "";
+  String _customerName = "", _customerNumber = "", _dueDate = "";
 
   _verifyTV() async {
     try {
@@ -66,7 +63,6 @@ class _TelevisionFormState extends State<TelevisionForm> {
         setState(() {
           _customerNumber = map['data']['Customer_Number'];
           _customerName = map['data']['Customer_Name'];
-          _currentBouquet = map['data']['Current_Bouquet'];
           _dueDate = map['data']['Due_Date'];
           _shouldContinue = true;
         });
@@ -74,7 +70,6 @@ class _TelevisionFormState extends State<TelevisionForm> {
         setState(() {
           _customerNumber = "";
           _customerName = "";
-          _currentBouquet = "";
           _dueDate = "";
           _shouldContinue = false;
         });
@@ -361,14 +356,6 @@ class _TelevisionFormState extends State<TelevisionForm> {
                               const SizedBox(height: 16.0),
                               const SizedBox(height: 8.0),
                               TextRoboto(
-                                text: "Current Bouquet",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              TextRoboto(text: _currentBouquet, fontSize: 13),
-                              const SizedBox(height: 16.0),
-                              const SizedBox(height: 8.0),
-                              TextRoboto(
                                 text: "Due Date",
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -468,6 +455,9 @@ class _TelevisionFormState extends State<TelevisionForm> {
             type: "cable_tv",
             data: map['data'],
             manager: widget.manager,
+            customerName: _customerName,
+            dueDate: _dueDate,
+            meterSmartcardNumber: _cardController.text,
           ),
           transition: Transition.cupertino,
         );

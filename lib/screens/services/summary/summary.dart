@@ -16,12 +16,20 @@ import 'package:timeago/timeago.dart' as timeago;
 class TransactionSummary extends StatelessWidget {
   final String type;
   var data;
+  final String? customerName;
+  final String? address;
+  final String? dueDate;
+  final String? meterSmartcardNumber;
   final PreferenceManager manager;
   TransactionSummary({
     Key? key,
     required this.type,
     required this.data,
     required this.manager,
+    this.meterSmartcardNumber,
+    this.address,
+    this.dueDate,
+    this.customerName,
   }) : super(key: key);
 
   final _controller = Get.find<StateController>();
@@ -95,10 +103,10 @@ class TransactionSummary extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Column(
-                                children: const [
+                                children: [
                                   Text(
                                     "Transaction Summary",
                                     textAlign: TextAlign.center,
@@ -273,9 +281,168 @@ class TransactionSummary extends StatelessWidget {
                                       const SizedBox(
                                         height: 10.0,
                                       ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Customer Name",
+                                            fontSize: 14,
+                                          ),
+                                          Text(
+                                            "$customerName",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Address",
+                                            fontSize: 14,
+                                          ),
+                                          Text(
+                                            "$address",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Meter Number",
+                                            fontSize: 14,
+                                          ),
+                                          Text(
+                                            "$meterSmartcardNumber",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
                                     ],
                                   )
-                                : const SizedBox(),
+                                : data['type'] == "cable_tv"
+                                    ? Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              TextPoppins(
+                                                text: "Smartcard Number",
+                                                fontSize: 14,
+                                              ),
+                                              Text(
+                                                "$meterSmartcardNumber",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          const Divider(),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              TextPoppins(
+                                                text: "Customer Name",
+                                                fontSize: 14,
+                                              ),
+                                              Text(
+                                                "$customerName",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          const Divider(),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              TextPoppins(
+                                                text: "Due Date",
+                                                fontSize: 14,
+                                              ),
+                                              Text(
+                                                "$dueDate",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          const Divider(),
+                                          const SizedBox(
+                                            height: 10.0,
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,

@@ -34,7 +34,10 @@ class _ElectricityFormState extends State<ElectricityForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isNetworkErr = false, _shouldContinue = false;
   String _meterType = "";
-  String _customerName = "", _customerAddress = "", _customerPhone = "";
+  String _customerName = "",
+      _customerAddress = "",
+      _customerPhone = "",
+      _meterNumber = "";
 
   void _onSelected(val) {
     setState(() {
@@ -74,6 +77,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
           _customerAddress = map['data']['Address'];
           _customerName = map['data']['Customer_Name'];
           _customerPhone = map['data']['Customer_Phone'];
+          _meterNumber = map['data']['MeterNumber'];
           _shouldContinue = true;
         });
       } else {
@@ -81,6 +85,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
           _customerAddress = "";
           _customerName = "";
           _customerPhone = "";
+          _meterNumber = "";
           _shouldContinue = false;
         });
       }
@@ -95,9 +100,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
     return Obx(
       () => Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
@@ -231,62 +234,49 @@ class _ElectricityFormState extends State<ElectricityForm> {
             const SizedBox(
               height: 16.0,
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    !_shouldContinue
-                        ? const SizedBox()
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 8.0),
-                              TextRoboto(
-                                text: "Customer Name",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              TextRoboto(text: _customerName, fontSize: 13),
-                              const SizedBox(height: 16.0),
-                              const SizedBox(height: 8.0),
-                              TextRoboto(
-                                text: "Address",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              TextRoboto(text: _customerAddress, fontSize: 13),
-                              const SizedBox(height: 16.0),
-                              const SizedBox(height: 8.0),
-                              TextRoboto(
-                                text: "Phone Number",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              TextRoboto(text: _customerPhone, fontSize: 13),
-                              const SizedBox(height: 16.0)
-                            ],
-                          ),
-                    RoundedButton(
-                      text: "Next",
-                      isEnabled: _shouldContinue,
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (_controller
-                              .selectedElectricityProvider.value.isEmpty) {
-                            setState(() {
-                              _isNetworkErr = true;
-                            });
-                          } else {
-                            setState(() {
-                              _isNetworkErr = false;
-                            });
-                            _initiateTransaction();
-                          }
-                        }
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  !_shouldContinue
+                      ? const SizedBox()
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8.0),
+                            TextRoboto(
+                              text: "Customer Name",
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            TextRoboto(text: _customerName, fontSize: 13),
+                            const SizedBox(height: 16.0),
+                            const SizedBox(height: 8.0),
+                            TextRoboto(
+                              text: "Address",
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            TextRoboto(text: _customerAddress, fontSize: 13),
+                            const SizedBox(height: 16.0),
+                            const SizedBox(height: 8.0),
+                            TextRoboto(
+                              text: "Phone Number",
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            TextRoboto(text: _customerPhone, fontSize: 13),
+                            const SizedBox(height: 16.0)
+                          ],
+                        ),
+                  RoundedButton(
+                    text: "Next",
+                    isEnabled: _shouldContinue,
+                    press: () {
+                      if (_formKey.currentState!.validate()) {
                         if (_controller
                             .selectedElectricityProvider.value.isEmpty) {
                           setState(() {
@@ -296,11 +286,22 @@ class _ElectricityFormState extends State<ElectricityForm> {
                           setState(() {
                             _isNetworkErr = false;
                           });
+                          _initiateTransaction();
                         }
-                      },
-                    ),
-                  ],
-                ),
+                      }
+                      if (_controller
+                          .selectedElectricityProvider.value.isEmpty) {
+                        setState(() {
+                          _isNetworkErr = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isNetworkErr = false;
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
             )
           ],
@@ -347,6 +348,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
             type: "electricity",
             data: map['data'],
             manager: widget.manager,
+            address: _customerAddress,
+            customerName: _customerName,
+            meterSmartcardNumber: _meterNumber,
           ),
           transition: Transition.cupertino,
         );

@@ -96,7 +96,7 @@ class _SupportState extends State<Support> {
               ),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,11 +108,11 @@ class _SupportState extends State<Support> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Tell us how we can help",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -121,12 +121,16 @@ class _SupportState extends State<Support> {
                                   color: Colors.black,
                                 ),
                               ),
-                              Text(
-                                "Our crew are standing by for \nservice and support",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black45,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: const Text(
+                                  "Our crew are standing by for service and support",
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black45,
+                                  ),
                                 ),
                               ),
                             ],

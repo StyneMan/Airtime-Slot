@@ -9,11 +9,9 @@ import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:data_extra_app/model/error/error.dart';
 import 'package:data_extra_app/model/error/validation_error.dart';
-import 'package:data_extra_app/screens/account/verify_account.dart';
 import 'package:data_extra_app/screens/auth/forgotpass/forgotPass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class LoginForm extends StatefulWidget {
@@ -61,21 +59,11 @@ class _LoginFormState extends State<LoginForm> {
         _controller.setAccessToken('${loginMap['data']['token']}');
         widget.manager.saveAccessToken('${loginMap['data']['token']}');
 
-        // final _toks = "${loginMap['data']['token']}";
-
-        // UserModel? model = login.data?.user;
-
-        // if (loginMap['data']['user']['is_account_verified']) {
-        //Account has been verified. Now check if wallet pin is set.
-        // if (loginMap['data']['user']['is_wallet_pin']) {
-        //Wallet pin has been set, go to dashboard from here.
         //Save user data and preferences
         String userData = jsonEncode(loginMap['data']['user']);
         widget.manager.setUserData(userData);
 
         _controller.setUserData(loginMap['data']['user']);
-
-        // await APIService().fetchTransactions(_toks);
 
         widget.manager.setIsLoggedIn(true);
         _controller.setLoading(false);
@@ -86,20 +74,6 @@ class _LoginFormState extends State<LoginForm> {
             builder: (context) => Dashboard(manager: widget.manager),
           ),
         );
-        // } else {
-        //Verify account from here...
-        //   _controller.setLoading(false);
-        //   Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => VerifyAccount(
-        //         manager: widget.manager,
-        //         token: '${loginMap['data']['token']}',
-        //         email: _emailController.text,
-        //       ),
-        //     ),
-        //   );
-        // }
       } else if (response.statusCode == 422) {
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
@@ -227,12 +201,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
           Container(
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Constants.primaryColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              ),
-            ),
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -248,6 +216,10 @@ class _LoginFormState extends State<LoginForm> {
                 foregroundColor: Colors.white,
                 backgroundColor: Constants.primaryColor,
                 elevation: 0.2,
+                padding: const EdgeInsets.all(12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
             ),
           ),

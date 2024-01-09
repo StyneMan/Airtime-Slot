@@ -1,4 +1,3 @@
-import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
 import 'package:data_extra_app/components/text_components.dart';
 
@@ -151,6 +150,7 @@ class _PackageSelectorState extends State<PackageSelector> {
                   ),
                   child: RoundedInputField(
                     hintText: "Search",
+                    height: 16.0,
                     onChanged: (val) => _filterList(val),
                     fillColor: Colors.white,
                     icon: const Icon(Icons.search),
@@ -162,7 +162,7 @@ class _PackageSelectorState extends State<PackageSelector> {
               ),
             ),
           ),
-          const SizedBox(height: 24.0),
+          const SizedBox(height: 16.0),
           Expanded(
             child: Card(
               color: Colors.white.withOpacity(.9),
@@ -175,7 +175,9 @@ class _PackageSelectorState extends State<PackageSelector> {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 10.0),
+                  horizontal: 16.0,
+                  vertical: 10.0,
+                ),
                 child: ListView(
                   shrinkWrap: true,
                   children: [
@@ -223,7 +225,7 @@ class _PackageSelectorState extends State<PackageSelector> {
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.66,
+                                          0.56,
                                       child: TextPoppins(
                                         text: "${_filteredList[index]['name']}",
                                         fontSize: 15,

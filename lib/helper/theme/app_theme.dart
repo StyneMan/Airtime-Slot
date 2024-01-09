@@ -13,7 +13,10 @@ ThemeData appTheme = ThemeData(
     bodyText2: TextStyle(),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(elevation: 0.0),
+    style: ElevatedButton.styleFrom(
+      elevation: 0.0,
+      backgroundColor: Constants.primaryColor,
+    ),
   ),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   inputDecorationTheme: const InputDecorationTheme(

@@ -301,6 +301,18 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
                 ),
               ),
             ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16.0),
+                CardDetailTrans(
+                  title: "Transaction Reference",
+                  value: "${widget.model.transactionRef}",
+                  icon: Icons.bubble_chart_rounded,
+                ),
+              ],
+            ),
             const SizedBox(height: 18.0),
             !widget.isLoggedIn
                 ? ElevatedButton(

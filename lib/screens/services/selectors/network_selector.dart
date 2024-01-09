@@ -1,4 +1,3 @@
-import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
 import 'package:data_extra_app/components/text_components.dart';
 
@@ -181,6 +180,7 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                   ),
                   child: RoundedInputField(
                     hintText: "Search",
+                    height: 16.0,
                     onChanged: (val) => _filterList(val),
                     fillColor: Colors.white,
                     icon: const Icon(Icons.search),
@@ -208,9 +208,6 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    const SizedBox(
-                      height: 8.0,
-                    ),
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -255,7 +252,7 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.70,
+                                          0.60,
                                       child: Wrap(
                                         children: [
                                           TextPoppins(
@@ -294,26 +291,6 @@ class _NetworkSelectorState extends State<NetworkSelector> {
                       ),
                       itemCount: _filteredList.length,
                     ),
-                    // SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.end,
-                    //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //     children: [
-                    //       RoundedButton(
-                    //         text: "Continue",
-                    //         press: () {
-                    //           if (_selectedIndex > 0) {
-                    //             Get.back();
-                    //           } else {
-                    //             Constants.toast("Select a network provider");
-                    //           }
-                    //         },
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ),
