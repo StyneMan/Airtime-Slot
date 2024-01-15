@@ -8,7 +8,7 @@ import 'package:http_interceptor/http/http.dart';
 // import 'package:package_info_plus/package_info_plus.dart';
 
 import "../interceptors/api_interceptor.dart";
-import "../interceptors/token_retry.dart";
+// import "../interceptors/token_retry.dart";
 import '../state/state_controller.dart';
 
 class APIService {
@@ -17,7 +17,6 @@ class APIService {
     interceptors: [
       MyApiInterceptor(),
     ],
-    retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
   // PackageInfo? packageInfo;

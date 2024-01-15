@@ -14,9 +14,13 @@ class PreferenceManager {
   PreferenceManager(this.context) {
     init();
   }
- 
+
   void saveAccessToken(String token) {
     prefs.setString('accessToken', token);
+  }
+
+  void saveEmail(String token) {
+    prefs.setString('email', token);
   }
 
   String getEmail() => prefs != null ? prefs!.getString('email') : '';

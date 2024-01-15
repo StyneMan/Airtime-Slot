@@ -60,7 +60,7 @@ class HistoryItemRow extends StatelessWidget {
         ),
         TextRoboto(
           text:
-              "-${Constants.formatMoneyFloat(double.parse(data['amount']))}.00",
+              "${Constants.formatMoneyFloat(double.parse(data['amount']))}.00",
           fontSize: 14,
           color: Colors.black,
           fontWeight: FontWeight.w600,

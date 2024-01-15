@@ -35,7 +35,7 @@ class _MBTState extends State<MBT> {
   final TextEditingController _nameController = TextEditingController();
 
   String _selectedBank = "";
-  final List<String> _mList = ["0712446586  (DataExtra - GTB)"];
+  final List<String> _mList = ["0712442650 (DataExtra Services- GTB)"];
   bool _paid = false;
 
   void onSelected(String value) {

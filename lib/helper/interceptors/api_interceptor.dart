@@ -15,6 +15,7 @@ class MyApiInterceptor implements InterceptorContract {
   // late PreferenceManager manager;
 
   final _controller = Get.find<StateController>();
+  bool _handling401 = false;
 
   // MyApiInterceptor(context) {
   //   manager = PreferenceManager(context);
@@ -53,14 +54,17 @@ class MyApiInterceptor implements InterceptorContract {
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
     try {
       final _prefs = await SharedPreferences.getInstance();
+      // final _handleStr = _prefs.getString("handledAuth") ?? "";
 
       if (data.statusCode == 401) {
         //Unauthorized. Logout user here...
         debugPrint("LOG THIS USER OUT. SESSION EXPIRED!!!");
         //Clear preference
         _prefs.clear();
+        _prefs.setString("handledAuth", "handled");
         //Go to login screen...
-        Get.offAll(Login());
+
+        Get.off(const Login());
       }
     } catch (e) {
       debugPrint(e.toString());

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/inputs/rounded_input_money.dart';
@@ -9,12 +8,10 @@ import 'package:data_extra_app/helper/preferences/preference_manager.dart';
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:data_extra_app/model/error/error.dart';
-import 'package:data_extra_app/screens/wallet/confirm_wallet_trans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:monnify_flutter_sdk_plus/monnify_flutter_sdk_plus.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CardWallet extends StatefulWidget {
@@ -157,7 +154,8 @@ class _CardWalletState extends State<CardWallet> {
                               text: "Continue",
                               press: () {
                                 if (_formKey.currentState!.validate()) {
-                                  _initPayment();
+                                  // _initPayment();
+                                  _submit();
                                 }
                               },
                             ),
@@ -175,7 +173,7 @@ class _CardWalletState extends State<CardWallet> {
     );
   }
 
-  Future<void> _initPayment() async {
+  Future<void> _initPayment(String reference) async {
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
 
@@ -187,7 +185,7 @@ class _CardWalletState extends State<CardWallet> {
           "NGN",
           widget.manager.getUser()['name'],
           widget.manager.getUser()['email'],
-          _getRandomString(15),
+          reference,
           "Topup wallet",
           metaData: {
             "ip": "196.168.45.22",
@@ -200,21 +198,7 @@ class _CardWalletState extends State<CardWallet> {
     } on PlatformException catch (e, s) {
       print("Error initializing payment");
       print(e);
-      print(s);
     }
-  }
-
-  String _getRandomString(int length) {
-    const _chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    Random _rnd = Random();
-
-    return String.fromCharCodes(
-      Iterable.generate(
-        length,
-        (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
-      ),
-    );
   }
 
   _submit() async {
@@ -233,25 +217,15 @@ class _CardWalletState extends State<CardWallet> {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString("accessToken");
       final resp = await APIService().transactionWallet(_payload, "$_token");
+
       debugPrint("RESP WALLEEET : ${resp.body}");
 
+      // Use the transaction ref on the monnify sdk
       _controller.setLoading(false);
       if (resp.statusCode == 200) {
         Map<String, dynamic> _respMap = jsonDecode(resp.body);
-        Navigator.pop(context);
-        Constants.toast("${_respMap['message']}");
-
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: ConfirmWalletTrans(
-              model: _respMap['data'],
-              manager: widget.manager,
-            ),
-          ),
-        );
+        // Constants.toast("${_respMap['message']}");
+        _initPayment("${_respMap['data']['transaction_ref']}");
       } else {
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(resp.body);

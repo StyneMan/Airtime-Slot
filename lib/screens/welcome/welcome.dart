@@ -1,10 +1,8 @@
 import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/screens/auth/login/login.dart';
 import 'package:data_extra_app/screens/auth/register/register.dart';
-import 'package:data_extra_app/screens/welcome/splasher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:sliding_up_panel/sliding_up_panel.dart';

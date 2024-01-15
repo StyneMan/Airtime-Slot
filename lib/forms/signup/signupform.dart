@@ -7,10 +7,6 @@ import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/model/auth/login_model.dart';
-import 'package:data_extra_app/model/error/error.dart';
-import 'package:data_extra_app/model/error/validation_error.dart';
-import 'package:data_extra_app/screens/account/verify_account.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +93,7 @@ class _SignupFormState extends State<SignupForm> {
 
         _controller.setAccessToken('${registerMap['data']['token']}');
         widget.manager.saveAccessToken('${registerMap['data']['token']}');
+        widget.manager.saveEmail('${registerMap['data']['user']['email']}');
         _controller.setUserData(registerMap['data']['user']);
         widget.manager.setIsLoggedIn(true);
 

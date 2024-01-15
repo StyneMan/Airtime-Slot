@@ -43,38 +43,40 @@ class _PayState extends State<Pay> {
   void _paginateTransaction() async {
     final _prefs = await SharedPreferences.getInstance();
     String _token = _prefs.getString("accessToken") ?? "";
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        debugPrint("reached end");
+    if (_token.isNotEmpty) {
+      _scrollController.addListener(() {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          debugPrint("reached end");
 
-        //Now load more items
-        if (_controller.isMoreDataAvailable.value) {
-          _controller.isDataProcessing.value = true;
-          _currentPage++;
-          Future.delayed(const Duration(seconds: 3), () {
-            APIService()
-                .getTransactionsPaginated(_token, _currentPage)
-                .then((value) {
-              _controller.isDataProcessing.value = false;
-              Map<String, dynamic> map = jsonDecode(value.body);
+          //Now load more items
+          if (_controller.isMoreDataAvailable.value) {
+            _controller.isDataProcessing.value = true;
+            _currentPage++;
+            Future.delayed(const Duration(seconds: 3), () {
+              APIService()
+                  .getTransactionsPaginated(_token, _currentPage)
+                  .then((value) {
+                _controller.isDataProcessing.value = false;
+                Map<String, dynamic> map = jsonDecode(value.body);
 
-              debugPrint("PAGIN:  ${map['data']}");
-              setState(() {
-                _controller.isMoreDataAvailable.value =
-                    map['data']['next_page_url'] == null ? false : true;
-                _list.addAll(map['data']['data']);
+                debugPrint("PAGIN:  ${map['data']}");
+                setState(() {
+                  _controller.isMoreDataAvailable.value =
+                      map['data']['next_page_url'] == null ? false : true;
+                  _list.addAll(map['data']['data']);
+                });
               });
             });
-          });
+          } else {
+            _controller.isDataProcessing.value = false;
+            Constants.toast("All transactions loaded");
+          }
         } else {
-          _controller.isDataProcessing.value = false;
-          Constants.toast("All transactions loaded");
+          debugPrint("still moving to end");
         }
-      } else {
-        debugPrint("still moving to end");
-      }
-    });
+      });
+    }
   }
 
   @override

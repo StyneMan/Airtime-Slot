@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpiredTokenRetryPolicy extends RetryPolicy {
   @override
@@ -16,11 +17,9 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
     if (response.statusCode == 401) {
       debugPrint("Retrying request example here!...");
-      // final cache = await SharedPreferences.getInstance();
+      final cache = await SharedPreferences.getInstance();
 
-      // cache.setString(appToken, OPEN_WEATHER_API_KEY);
-
-      return true;
+      return false;
     }
 
     return false;

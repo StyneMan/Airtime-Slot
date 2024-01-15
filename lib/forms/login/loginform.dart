@@ -13,6 +13,7 @@ import 'package:data_extra_app/screens/auth/forgotpass/forgotPass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   final PreferenceManager manager;
@@ -58,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
 
         _controller.setAccessToken('${loginMap['data']['token']}');
         widget.manager.saveAccessToken('${loginMap['data']['token']}');
+        widget.manager.saveEmail('${loginMap['data']['user']['email']}');
 
         //Save user data and preferences
         String userData = jsonEncode(loginMap['data']['user']);
@@ -90,6 +92,20 @@ class _LoginFormState extends State<LoginForm> {
       debugPrint("ERR::: $e");
       Constants.toast("$e");
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    SharedPreferences.getInstance().then((value) {
+      if (value.containsKey("email")) {
+        String email = value.getString("email") ?? "";
+        setState(() {
+          _emailController.text = email;
+        });
+      }
+    });
   }
 
   @override

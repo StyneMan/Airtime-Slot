@@ -113,7 +113,7 @@ class _NetworkSelectorState extends State<NetworkSelector> {
       case "electricity":
         _controller.selectedElectricityProvider.value = network;
         break;
-      case "cabletv":
+      case "cable_tv":
         _controller.selectedTelevisionProvider.value = network;
         _controller.selectedTelevisionPlan.value = {};
         break;

@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TelevisionForm extends StatefulWidget {
   final PreferenceManager manager;
-  TelevisionForm({
+  const TelevisionForm({
     Key? key,
     required this.manager,
   }) : super(key: key);
@@ -105,7 +105,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => NetworkSelector(
-                          type: "cabletv",
+                          type: "cable_tv",
                           list: _controller.cableData['networks'],
                         ),
                       ),

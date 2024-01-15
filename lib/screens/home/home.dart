@@ -47,26 +47,29 @@ class _HomeState extends State<Home> {
       final String _token = prefs.getString('accessToken') ?? "";
       // var model = prefs.get('user');
       // if (model != null) {
-      var mod = widget.manager!.getUser();
-      // debugPrint("APROKO:: ${mod['name']}");
-      setState(() {
-        _bal = mod['wallet_balance']!;
-        _name = mod['name'];
-        _email = mod['email'];
-        _swapBal = mod['withdrawable_balance'];
-      });
-      // }
 
-      if (_isAuthenticated) {
-        var data = _controller.transactions.value;
-        // print("MJKD::: ${data}");
-        for (var v in data) {
-          _transactionList.add(UserTransaction.fromJson(v));
+      if (_token.isNotEmpty) {
+        var mod = widget.manager!.getUser();
+        // debugPrint("APROKO:: ${mod['name']}");
+        setState(() {
+          _bal = mod['wallet_balance']!;
+          _name = mod['name'];
+          _email = mod['email'];
+          _swapBal = mod['withdrawable_balance'];
+        });
+        // }
+
+        if (_isAuthenticated) {
+          var data = _controller.transactions.value;
+          // print("MJKD::: ${data}");
+          for (var v in data) {
+            _transactionList.add(UserTransaction.fromJson(v));
+          }
         }
+        await APIService()
+            .getTransactions(_token)
+            .then((value) => debugPrint("JUST Refetching: : ${value.body}"));
       }
-      await APIService()
-          .getTransactions(_token)
-          .then((value) => debugPrint("JUST Refetching: : ${value.body}"));
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -181,7 +184,7 @@ class _HomeState extends State<Home> {
             backgroundColor: Constants.primaryColor,
           ),
           child: _controller.products.isEmpty
-              ? const SizedBox()
+              ? const LinearProgressIndicator()
               : ListView(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 8.0),

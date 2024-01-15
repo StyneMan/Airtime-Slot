@@ -15,7 +15,7 @@ import 'package:share_plus/share_plus.dart';
 
 class BankTransfer extends StatefulWidget {
   final PreferenceManager manager;
-  BankTransfer({
+  const BankTransfer({
     Key? key,
     required this.manager,
   }) : super(key: key);
@@ -262,8 +262,9 @@ class _BankTransferState extends State<BankTransfer> {
                                 itemCount: _controller
                                         .userData.value['accounts']?.length ??
                                     0,
-                                separatorBuilder: (context, index) => Column(
-                                  children: const [
+                                separatorBuilder: (context, index) =>
+                                    const Column(
+                                  children: [
                                     SizedBox(
                                       height: 24.0,
                                     ),

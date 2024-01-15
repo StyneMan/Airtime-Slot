@@ -47,7 +47,9 @@ class _DashboardState extends State<Dashboard> {
         final _prefs = await SharedPreferences.getInstance();
         final _token = _prefs.getString("accessToken") ?? "";
 
-        APIService().fetchTransactions(_token);
+        if (_token.isNotEmpty) {
+          APIService().fetchTransactions(_token);
+        }
       } catch (e) {
         debugPrint(e.toString());
       }

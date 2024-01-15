@@ -73,14 +73,6 @@ class InfoDialog extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Positioned(
-                          left: 3,
-                          top: 0,
-                          bottom: 0,
-                          child: Image.asset(
-                            "assets/images/logo_white.png",
-                          ),
-                        ),
                       ],
                     ),
                   ),

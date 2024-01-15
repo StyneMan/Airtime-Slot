@@ -26,10 +26,10 @@ class TransactionSummary extends StatelessWidget {
     required this.type,
     required this.data,
     required this.manager,
-    this.meterSmartcardNumber,
-    this.address,
-    this.dueDate,
-    this.customerName,
+    this.meterSmartcardNumber = "",
+    this.address = "",
+    this.dueDate = "",
+    this.customerName = "",
   }) : super(key: key);
 
   final _controller = Get.find<StateController>();
@@ -245,42 +245,12 @@ class TransactionSummary extends StatelessWidget {
                             const SizedBox(
                               height: 10.0,
                             ),
-                            data['type'] == "electricity" &&
-                                    data['transaction_meta']['meter_type'] ==
-                                        "prepaid" &&
-                                    "${data['transaction_meta']['purchased_token']}"
-                                            .toLowerCase() !=
-                                        "null"
+                            data['type'] == "electricity"
                                 ? Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          TextPoppins(
-                                            text: "Token",
-                                            fontSize: 14,
-                                          ),
-                                          Text(
-                                            "${data['transaction_meta']['purchased_token']}",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      const Divider(),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,

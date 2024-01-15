@@ -114,7 +114,7 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
 
       Map _payload = {
         "amount": amt.replaceAll(",", ""),
-        "network_id": "1",
+        "network_id": "${_selectedNetwork?.id}",
         "phone": _phoneController.text
       };
 

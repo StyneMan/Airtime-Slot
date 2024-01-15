@@ -146,7 +146,8 @@ class _AirtimeFormFormState extends State<AirtimeForm> {
               separatorBuilder: (context, index) => const SizedBox(
                 height: 10.0,
               ),
-              itemCount: _controller.airtimeData.value['networks']?.length,
+              itemCount:
+                  (_controller.airtimeData.value['networks']?.length ?? 0),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.125,

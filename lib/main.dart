@@ -5,8 +5,8 @@ import 'dart:io';
 
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/theme/app_theme.dart';
+import 'package:data_extra_app/screens/auth/login/login.dart';
 import 'package:data_extra_app/screens/welcome/splasher.dart';
-import 'package:data_extra_app/screens/welcome/welcome.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -63,7 +63,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   PreferenceManager? _manager;
 
   Timer? _timer;
-  int _inactiveTimeInSeconds = 300; // 5 minutes in seconds
+  Timer? _inactiveTimer;
+  int _inactiveTimeInSeconds = 600; // 5 minutes in seconds
 
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    _init();
     super.initState();
     _manager = PreferenceManager(context);
     _controller.getProducts();
@@ -96,6 +98,36 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
 
     WidgetsBinding.instance.addObserver(this);
+    SharedPreferences.getInstance().then((pref) {
+      // var toek = pref.getString('accessToken') ?? "";
+      if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+        debugPrint("ACCESS TOKEN PRESENT ...");
+        _resetInactiveTimer();
+      }
+    });
+  }
+
+  _init() async {
+    final _prefs = await SharedPreferences.getInstance();
+    final _token = _prefs.getString('accessToken') ?? "";
+
+    setState(() {
+      _accessToken = _token;
+    });
+  }
+
+  void _resetInactiveTimer() {
+    // Adjust the duration based on your requirements
+    const inactiveDuration = Duration(minutes: 10);
+
+    _inactiveTimer?.cancel();
+    _inactiveTimer = Timer(inactiveDuration, () {
+      // Do something when the user is not actively interacting
+      print('User is not actively interacting with the app.');
+      print('Therefore log out here...');
+      Constants.toast("Not interacting with the app!!!");
+      _logoutUser();
+    });
   }
 
   void _startTimer() async {
@@ -103,9 +135,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString('accessToken') ?? "";
 
-      setState(() {
-        _accessToken = _token;
-      });
+      // setState(() {
+      //   _accessToken = _token;
+      // });
 
       if (_token.isNotEmpty) {
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
@@ -113,7 +145,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           if (_inactiveTimeInSeconds <= 0) {
             // Log out the user or perform any other actions
             _logoutUser();
-            await _prefs.clear();
+            setState(() {
+              _inactiveTimeInSeconds = 0;
+            });
+            _timer?.cancel();
           } else {
             // Decrease the inactive time counter
             _inactiveTimeInSeconds--;
@@ -133,6 +168,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString('accessToken') ?? "";
       final response = await APIService().logout(_token);
+
+      await _prefs.remove("user");
+      await _prefs.remove("loggedIn");
+      await _prefs.remove("accessToken");
+      Get.offAll(const Login());
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -143,24 +183,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // App is in the foreground, reset the timer
-      debugPrint("APP IN FOREGROUND");
+      debugPrint("APP IN FOREGROUND :: ${_inactiveTimeInSeconds}");
       if (_inactiveTimeInSeconds > 0) {
         debugPrint("CANCEL TIMER :: ");
-        if (_timer != null) {
-          // if (_timer!.isActive) {
-          _timer?.cancel();
-          // }
-        }
+        _timer?.cancel();
+        setState(() {
+          _inactiveTimeInSeconds = 600;
+        });
       }
     } else if (state == AppLifecycleState.paused) {
       // App is in the background, start the timer
       debugPrint("APP IN BACKGROUND");
-      if (_accessToken.isNotEmpty) {
-        _startTimer();
-      }
-
-      //
+      SharedPreferences.getInstance().then((pref) {
+        // var toek = pref.getString('accessToken') ?? "";
+        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+          debugPrint("ACCESS TOKEN PRESENT ...");
+          _startTimer();
+        }
+      });
     }
+
+    // _handleSession();
+  }
+
+  @override
+  void didChangeMetrics() {
+    // This is called when the user interacts with the app (e.g., taps, scrolls)
+    _resetInactiveTimer();
+    debugPrint("Started Interacting With The App");
   }
 
   @override
@@ -169,6 +219,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance?.removeObserver(this);
     // Cancel the timer when the widget is disposed
     _timer?.cancel();
+    _inactiveTimer?.cancel();
     super.dispose();
   }
 
@@ -177,17 +228,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Obx(
       () => _controller.hasInternetAccess.value == false
-          ? const GetMaterialApp(
+          ? GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              home: NoInternet(),
+              home: const NoInternet(),
+              title: 'Data Extra',
+              theme: appTheme,
             )
           : FutureBuilder(
               future: Init.instance.initialize(),
               builder: (context, AsyncSnapshot snapshot) {
                 // Show splash screen while waiting for app resources to load:
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return MaterialApp(
+                  return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
+                    title: 'Data Extra',
+                    theme: appTheme,
                     home: Splash(
                       controller: _controller,
                     ),

@@ -7,6 +7,7 @@ import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/pdf/pdf_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -259,7 +260,7 @@ class _HistoryDetailState extends State<HistoryDetail> {
                         ),
                 ],
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 21.0),
               Expanded(
                 child: Card(
                   color: Colors.white.withOpacity(.9),
@@ -278,10 +279,10 @@ class _HistoryDetailState extends State<HistoryDetail> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
                               child: Column(
-                                children: const [
+                                children: [
                                   Text(
                                     "Here are vital information about your transaction",
                                     textAlign: TextAlign.center,
@@ -309,7 +310,8 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                       .replaceAll("_", " ")
                                       .capitalize!,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -328,12 +330,19 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   text: "Amount",
                                   fontSize: 14,
                                 ),
-                                Text(
-                                  "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${widget.data['amount']}'))}",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                )
+                                widget.data['status'] != "initiated"
+                                    ? Text(
+                                        "${widget.data['entry_type'] == "cr" ? "+" : widget.data['entry_type'] == "dr" ? "-" : ""}${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${widget.data['amount']}'))}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : Text(
+                                        "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${widget.data['amount']}'))}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                               ],
                             ),
                             const SizedBox(
@@ -469,7 +478,8 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                 Text(
                                   "${widget.data['discount_text']}",
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 )
                               ],
                             ),
@@ -538,17 +548,19 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                                 ),
                                               ),
                                               IconButton(
-                                                  onPressed: () {
-                                                    Clipboard.setData(
-                                                      ClipboardData(
-                                                        text:
-                                                            "${widget.data['transaction_meta']['purchased_token']}",
-                                                      ),
-                                                    );
-                                                    Constants.toast(
-                                                        "Token copied to clipboard");
-                                                  },
-                                                  icon: const Icon(Icons.copy))
+                                                onPressed: () {
+                                                  Clipboard.setData(
+                                                    ClipboardData(
+                                                      text:
+                                                          "${widget.data['transaction_meta']['purchased_token']}",
+                                                    ),
+                                                  );
+                                                  Constants.toast(
+                                                    "Token copied to clipboard",
+                                                  );
+                                                },
+                                                icon: const Icon(Icons.copy),
+                                              ),
                                             ],
                                           )
                                         ],
@@ -606,6 +618,20 @@ class _HistoryDetailState extends State<HistoryDetail> {
                         ),
                         const SizedBox(
                           height: 24,
+                        ),
+                        widget.data['status']?.toLowerCase() == "initiated"
+                            ? const SizedBox()
+                            : SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.98,
+                                child: RoundedButton(
+                                  text: "Download PDF",
+                                  press: () {
+                                    _previewPdf();
+                                  },
+                                ),
+                              ),
+                        const SizedBox(
+                          height: 8.0,
                         ),
                         widget.data['status']?.toLowerCase() == "success"
                             ? const SizedBox()
@@ -703,5 +729,12 @@ class _HistoryDetailState extends State<HistoryDetail> {
       debugPrint(e.toString());
       _controller.setLoading(false);
     }
+  }
+
+  _previewPdf() {
+    Get.to(
+      PDFPreview(data: widget.data),
+      transition: Transition.cupertino,
+    );
   }
 }

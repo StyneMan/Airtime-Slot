@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:data_extra_app/components/drawer/custom_drawer.dart';
 import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/model/error/error.dart';
 import 'package:data_extra_app/model/transactions/guest_transaction_model.dart';
 import 'package:data_extra_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:monnify_flutter_sdk_plus/monnify_flutter_sdk_plus.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,8 +54,14 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
     super.initState();
 
     _manager = PreferenceManager(context);
-    plugin.initialize(
-        publicKey: "pk_test_e4a4319c62eb54ce99d8e4cbde2b46c372c3cb0b");
+    // plugin.initialize(
+    //     publicKey: "pk_test_e4a4319c62eb54ce99d8e4cbde2b46c372c3cb0b");
+
+    MonnifyFlutterSdkPlus.initialize(
+      Constants.spike,
+      Constants.contractCode,
+      ApplicationMode.LIVE,
+    );
   }
 
   _payWallet() async {
@@ -90,80 +102,79 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
     );
   }
 
-  _payCard() async {
-    _controller.setLoading(true);
-    final _prefs = await SharedPreferences.getInstance();
-    // final _token = _prefs.getString("accessToken") ?? "";
-
-    Charge charge = Charge()
-      ..amount = int.parse("${widget.model.amount}") * 100
-      ..reference = "${widget.model.transactionRef}"
-      ..email = widget.model.email;
-
-    // var accessCode = widget.model.transactionRef;
-    // charge.accessCode = accessCode;
+  Future<void> _initPayment(String reference) async {
+    // String? amt = _amountController.text.replaceAll("₦ ", "");
+    String filteredAmt = widget.model.amount;
 
     try {
-      CheckoutResponse response = await plugin.checkout(
-        context,
-        method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
-        charge: charge,
-        fullscreen: true,
-        logo: Image.asset("assets/images/app_logo.png", width: 100),
+      TransactionResponse transactionResponse =
+          await MonnifyFlutterSdkPlus.initializePayment(
+        Transaction(
+          double.parse(filteredAmt),
+          "NGN",
+          " widget.manager.getUser()['name']",
+          "widget.manager.getUser()['email']",
+          reference,
+          "Payment card",
+          metaData: {
+            "ip": "196.168.45.22",
+            "device": "mobile_flutter"
+            // any other info
+          },
+          paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
+        ),
       );
+    } on PlatformException catch (e, s) {
+      print("Error initializing payment");
+      print(e);
+    }
+  }
 
-      debugPrint('Transaction Response => $response');
-      debugPrint('Transaction Response Ref => ${response.reference}');
-      // _verifyOnServer(response.reference, cart, listMap, user);
+  _payCard() async {
+    _controller.setLoading(true);
+
+    // String amt = _amountController.text.replaceAll("₦ ", "");
+    // String filteredAmt = amt!.replaceAll(",", "");
+    // int price = int.parse(amt.replaceAll(",", ""));
+
+    Map _payload = {
+      "amount": widget.model.amount,
+      "transaction_type": "fund_wallet",
+    };
+
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _token = _prefs.getString("accessToken");
+      final resp = await APIService().transactionWallet(_payload, "$_token");
+
+      debugPrint("RESP WALLEEET : ${resp.body}");
+
+      // Use the transaction ref on the monnify sdk
       _controller.setLoading(false);
-
-      //Show success screen here
-      if (response.message == "Success" || response.verify == true) {
-        //Now refresh user data
-        // if (_token.isNotEmpty) {
-        //   // final userCall = await APIService().getProfile(_token);
-        //   debugPrint("USER PROFILE :: ${userCall.body}");
-        //   if (userCall.statusCode == 200) {
-        //     Map<String, dynamic> _userMap = jsonDecode(userCall.body);
-
-        //     String userData = jsonEncode(_userMap['data']);
-        //     _manager?.updateUserData(userData);
-
-        //     Navigator.push(
-        //       context,
-        //       PageTransition(
-        //         type: PageTransitionType.rightToLeft,
-        //         isIos: true,
-        //         child: PaymentSuccess(manager: _manager!),
-        //       ),
-        //     );
-        //   }
-        // } else {
-        Navigator.push(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            isIos: true,
-            child: PaymentSuccess(manager: _manager!),
-          ),
-        );
-        // }
+      if (resp.statusCode == 200) {
+        Map<String, dynamic> _respMap = jsonDecode(resp.body);
+        Constants.toast("${_respMap['message']}");
+        _initPayment("${_respMap['data']['transaction_ref']}");
+      } else {
+        //Error occurred on login
+        Map<String, dynamic> errorMap = jsonDecode(resp.body);
+        ErrorResponse error = ErrorResponse.fromJson(errorMap);
+        Constants.toast("${error.message}");
       }
     } catch (e) {
       _controller.setLoading(false);
-      debugPrint('Transaction Error Response => $e');
-      rethrow;
+      debugPrint(e.toString());
     }
   }
 
   _cancelTransaction() async {
     _controller.setLoading(true);
     final _prefs = await SharedPreferences.getInstance();
-    // final String _token = _prefs.getString("accessToken") ?? "";
+    final String _token = _prefs.getString("accessToken") ?? "";
     try {
-      // final resp = await APIService()
-      //     .cancelTransaction(_token, widget.model.transactionRef);
-      // debugPrint("CANCEL RESPONSE :: ${resp.body}");
+      final resp = await APIService()
+          .cancelTransaction(_token, widget.model.transactionRef);
+      debugPrint("CANCEL RESPONSE :: ${resp.body}");
       // toast("Transaction cancelled successfully");
 
       Future.delayed(const Duration(seconds: 3), () {
