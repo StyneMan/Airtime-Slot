@@ -11,7 +11,7 @@ import 'package:flutter/services.dart' show rootBundle;
 Future<Uint8List> makePdf(var data) async {
   final pdf = Document();
   final imageLogo = MemoryImage(
-      (await rootBundle.load('assets/images/welcome.png'))
+      (await rootBundle.load('assets/images/ic_launcher.png'))
           .buffer
           .asUint8List());
   pdf.addPage(
@@ -41,15 +41,18 @@ Future<Uint8List> makePdf(var data) async {
                 ],
               ),
             ),
-            SizedBox(height: 16.0),
-            Text(
-              "Here are vital information about your transaction",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: PdfColors.black,
+            SizedBox(height: 8.0),
+            Center(
+              child: Text(
+                "Here are vital information about your transaction",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: PdfColors.black,
+                ),
               ),
             ),
+            SizedBox(height: 36.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,19 +80,21 @@ Future<Uint8List> makePdf(var data) async {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Amount",
-                    style: const TextStyle(
-                      fontSize: 14,
-                    )),
+                Text(
+                  "Amount",
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
                 data['status'] != "initiated"
                     ? Text(
-                        "${data['entry_type'] == "cr" ? "+" : data['entry_type'] == "dr" ? "-" : ""}${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${data['amount']}'))}",
+                        "${data['entry_type'] == "cr" ? "+" : data['entry_type'] == "dr" ? "-" : ""} NGN${Constants.formatMoneyFloat(double.parse('${data['amount']}'))}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       )
                     : Text(
-                        "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${data['amount']}'))}",
+                        "NGN${Constants.formatMoneyFloat(double.parse('${data['amount']}'))}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -107,12 +112,14 @@ Future<Uint8List> makePdf(var data) async {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Amount Paid",
-                    style: const TextStyle(
-                      fontSize: 14,
-                    )),
                 Text(
-                  "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${data['amount_paid']}'))}",
+                  "Amount Paid",
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  "NGN${Constants.formatMoneyFloat(double.parse('${data['amount_paid']}'))}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -203,12 +210,12 @@ Future<Uint8List> makePdf(var data) async {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Payment Ref",
+                Text("Description",
                     style: const TextStyle(
                       fontSize: 14,
                     )),
                 Text(
-                  "${data['payment_ref']}",
+                  "${data['description']}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -330,15 +337,3 @@ Future<Uint8List> makePdf(var data) async {
 
   return pdf.save();
 }
-
-Widget PaddedText(
-  final String text, {
-  final TextAlign align = TextAlign.left,
-}) =>
-    Padding(
-      padding: const EdgeInsets.all(10),
-      child: Text(
-        text,
-        textAlign: align,
-      ),
-    );

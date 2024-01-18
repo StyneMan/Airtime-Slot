@@ -58,13 +58,23 @@ class HistoryItemRow extends StatelessWidget {
         const SizedBox(
           width: 6.0,
         ),
-        TextRoboto(
-          text:
-              "${Constants.formatMoneyFloat(double.parse(data['amount']))}.00",
-          fontSize: 14,
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
-        ),
+        data['status'] != "initiated" &&
+                data['status'] != "cancelled" &&
+                data['status'] != "failed"
+            ? Text(
+                "${data['entry_type'] == "cr" ? "+" : data['entry_type'] == "dr" ? "-" : ""}${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${data['amount']}'))}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+              )
+            : Text(
+                "${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse(data['amount']))}.00",
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ],
     );
   }

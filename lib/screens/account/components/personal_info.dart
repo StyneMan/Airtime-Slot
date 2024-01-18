@@ -121,7 +121,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 children: [
                   Center(
                     child: TextPoppins(
-                      text: "Personal information",
+                      text: "Personal Information",
                       fontSize: 21,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

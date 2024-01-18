@@ -59,7 +59,7 @@ class StateController extends GetxController {
   var discountAmount = 0.0.obs;
   var percentDiscount = "".obs;
 
-  ScrollController transactionsScrollController = ScrollController();
+  var transactionsScrollController = ScrollController();
   ScrollController messagesScrollController = ScrollController();
 
   var isDataProcessing = false.obs;
@@ -139,17 +139,23 @@ class StateController extends GetxController {
     super.onInit();
     packageInfo = await PackageInfo.fromPlatform();
     appVersion.value = "${packageInfo?.version}";
+
+    final _prefs = await SharedPreferences.getInstance();
+    _token = _prefs.getString("accessToken") ?? "";
+
     // print("PACKAGE INFO IS ${packageInfo?.version}");
     initDao();
+
+    transactionsScrollController.addListener(() {
+      print("CHOKOBINA WORLDWIDE TESTING...");
+      if (_token.isNotEmpty) {
+        paginateTransaction(_token);
+      }
+    });
 
     updateMobile();
     // Get products
     try {
-      //Fetch user data
-      final _prefs = await SharedPreferences.getInstance();
-      _token = _prefs.getString("accessToken") ?? "";
-      // bool _isAuthenticated = prefs.getBool("loggedIn") ?? false;
-
       if (_token.isNotEmpty) {
         APIService().getProfile(_token).then((value) {
           // print("STATE GET PROFILE >>> ${value.body}");
@@ -164,8 +170,10 @@ class StateController extends GetxController {
             hasInternetAccess.value = false;
           }
         });
+        // paginateTransaction(_token);
         hasInternetAccess.value = true;
-        paginateTransaction(_token);
+      } else {
+        print("TOKEM IS EMPTY OH!!!");
       }
     } on SocketException {
       //No internet here
@@ -182,10 +190,12 @@ class StateController extends GetxController {
   }
 
   void paginateTransaction(String accessToken) {
+    print("RUNNIN THIS PART NOW ...");
     transactionsScrollController.addListener(() {
+      // print("Checkmbo !!!");
       if (transactionsScrollController.position.pixels ==
           transactionsScrollController.position.maxScrollExtent) {
-        // print("reached end");
+        print("reached end");
 
         //Now load more items
         if (hasMoreTransactions.value) {
@@ -205,7 +215,7 @@ class StateController extends GetxController {
           setSpinning(false);
         }
       } else {
-        // print("still moving to end");
+        print("still moving to end");
       }
     });
   }
@@ -227,10 +237,6 @@ class StateController extends GetxController {
 
   void setAccessToken(String token) {
     accessToken.value = token;
-  }
-
-  void setUnreadNotifications(int num) {
-    unreadNotifications.value = num;
   }
 
   void setSpinning(bool val) {
@@ -304,6 +310,7 @@ class StateController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    transactionsScrollController.removeListener(() {});
     transactionsScrollController.dispose();
     messagesScrollController.dispose();
   }

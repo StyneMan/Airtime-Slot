@@ -112,6 +112,12 @@ class _DashboardState extends State<Dashboard> {
         } else {
           // _controller.triggerAppExit(true);
           if (Platform.isAndroid) {
+            // Log user out here
+            final _prefs = await SharedPreferences.getInstance();
+            final _token = _prefs.getString('accessToken') ?? "";
+            await APIService().logout(_token);
+
+            await _prefs.clear();
             exit(0);
           } else if (Platform.isIOS) {}
           return true;

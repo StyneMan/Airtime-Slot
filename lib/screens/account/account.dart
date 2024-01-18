@@ -12,6 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
+import 'components/kyc.dart';
+
 class Account extends StatelessWidget {
   final PreferenceManager manager;
   Account({Key? key, required this.manager}) : super(key: key);
@@ -146,12 +148,84 @@ class Account extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             TextRoboto(
-                                              text: "Personal information",
+                                              text: "Personal Information",
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,
                                             ),
                                             const Text(
                                               "Edit your profile",
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    const Icon(Icons.chevron_right),
+                                  ],
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(2.0),
+                                  foregroundColor: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 21.0,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Get.to(
+                                    KYC(
+                                      manager: manager,
+                                    ),
+                                    transition: Transition.cupertino,
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ClipOval(
+                                          child: Container(
+                                            color: Constants.primaryColor,
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: const Center(
+                                              child: Icon(
+                                                CupertinoIcons
+                                                    .person_crop_circle_badge_checkmark,
+                                                color: Colors.white,
+                                                size: 21,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextRoboto(
+                                              text: "Know Your Customer",
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            const Text(
+                                              "Setup your KYC",
                                               style: TextStyle(
                                                 color: Colors.grey,
                                               ),

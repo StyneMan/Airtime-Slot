@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Timer? _timer;
   Timer? _inactiveTimer;
-  int _inactiveTimeInSeconds = 600; // 5 minutes in seconds
+  int _inactiveTimeInSeconds = 420; // 6 minutes in seconds
 
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
@@ -118,7 +118,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _resetInactiveTimer() {
     // Adjust the duration based on your requirements
-    const inactiveDuration = Duration(minutes: 10);
+    const inactiveDuration = Duration(seconds: 420);
 
     _inactiveTimer?.cancel();
     _inactiveTimer = Timer(inactiveDuration, () {
@@ -172,6 +172,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       await _prefs.remove("user");
       await _prefs.remove("loggedIn");
       await _prefs.remove("accessToken");
+
       Get.offAll(const Login());
     } catch (e) {
       debugPrint(e.toString());
@@ -188,10 +189,30 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         debugPrint("CANCEL TIMER :: ");
         _timer?.cancel();
         setState(() {
-          _inactiveTimeInSeconds = 600;
+          _inactiveTimeInSeconds = 420;
         });
       }
     } else if (state == AppLifecycleState.paused) {
+      // App is in the background, start the timer
+      debugPrint("APP IN BACKGROUND");
+      SharedPreferences.getInstance().then((pref) {
+        // var toek = pref.getString('accessToken') ?? "";
+        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+          debugPrint("ACCESS TOKEN PRESENT ...");
+          _startTimer();
+        }
+      });
+    } else if (state == AppLifecycleState.detached) {
+      // App is in the background, start the timer
+      debugPrint("APP IN BACKGROUND");
+      SharedPreferences.getInstance().then((pref) {
+        // var toek = pref.getString('accessToken') ?? "";
+        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+          debugPrint("ACCESS TOKEN PRESENT ...");
+          _startTimer();
+        }
+      });
+    } else if (state == AppLifecycleState.inactive) {
       // App is in the background, start the timer
       debugPrint("APP IN BACKGROUND");
       SharedPreferences.getInstance().then((pref) {
@@ -216,7 +237,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     // Remove this class as an observer when the widget is disposed
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     // Cancel the timer when the widget is disposed
     _timer?.cancel();
     _inactiveTimer?.cancel();

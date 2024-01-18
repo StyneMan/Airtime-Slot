@@ -330,7 +330,9 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                   text: "Amount",
                                   fontSize: 14,
                                 ),
-                                widget.data['status'] != "initiated"
+                                widget.data['status'] != "initiated" &&
+                                        widget.data['status'] != "cancelled" &&
+                                        widget.data['status'] != "failed"
                                     ? Text(
                                         "${widget.data['entry_type'] == "cr" ? "+" : widget.data['entry_type'] == "dr" ? "-" : ""}${Constants.nairaSign(context).currencySymbol}${Constants.formatMoneyFloat(double.parse('${widget.data['amount']}'))}",
                                         style: const TextStyle(
@@ -449,13 +451,17 @@ class _HistoryDetailState extends State<HistoryDetail> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 TextPoppins(
-                                  text: "Payment Ref",
+                                  text: "Description",
                                   fontSize: 14,
                                 ),
-                                Text(
-                                  "${widget.data['payment_ref']}",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                const SizedBox(width: 24.0),
+                                Expanded(
+                                  child: Text(
+                                    "${widget.data['description']}",
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 )
                               ],
@@ -679,6 +685,7 @@ class _HistoryDetailState extends State<HistoryDetail> {
 
   _payWallet() async {
     _controller.setLoading(true);
+    Get.back();
     Map _payload = {
       "method": "wallet",
       "transaction_ref": "${widget.data['transaction_ref']}",

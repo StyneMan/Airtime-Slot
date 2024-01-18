@@ -176,7 +176,6 @@ class _HistoryState extends State<History> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: ListView(
-                        shrinkWrap: true,
                         controller: _controller.transactionsScrollController,
                         children: [
                           ClipRRect(
