@@ -67,46 +67,14 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
     super.initState();
   }
 
-  void setSelected(String val, NetworkProducts? network) {
-    // setState(() {
-    _networkValue = val;
-    _selectedNetwork = network;
-    // });
-
-    ///Now filter through second list
-    final arr = _mainList.where(
-      (element) => element['key'].toString().toLowerCase().startsWith(
-            val.toLowerCase(),
-          ),
-    );
-
-    final arrRate = arr.where((element) =>
-        element['key'].toString().toLowerCase() ==
-        "${val.toLowerCase()}_percentage");
-
-    final arrNumber = arr.where((element) =>
-        element['key'].toString().toLowerCase() ==
-        "${val.toLowerCase()}_number");
-
-    _controller.airtimeSwapRate.value = arrRate.first['value'];
-    _controller.airtimeSwapNumber.value = arrNumber.first['value'];
-
-    String? amt = _amountController.text.replaceAll("₦ ", "");
-    String filteredAmt = amt.replaceAll(",", "");
-
-    int rateVal = int.parse("${arrRate.first['value']}");
-    double decimal = (rateVal / 100);
-    var reduce = int.parse(amt.replaceAll(",", "")) * decimal;
-    // var result = int.parse(amt.replaceAll(",", "")) - reduce;
-
-    _controller.airtimeSwapResultantAmt.value = "$reduce";
-  }
-
   _airtimeSwap() async {
     FocusManager.instance.primaryFocus?.unfocus();
     _controller.setLoading(true);
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
+
+    debugPrint(
+        "SELECTED NETWORK <<<>>> ${_controller.selectedAirtimeProvider.value['id']}");
 
     try {
       final _prefs = await SharedPreferences.getInstance();
@@ -114,12 +82,12 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
 
       Map _payload = {
         "amount": amt.replaceAll(",", ""),
-        "network_id": "${_selectedNetwork?.id}",
+        "network_id": "${_controller.selectedAirtimeProvider.value['id']}",
         "phone": _phoneController.text
       };
 
       final resp = await APIService().airtimeCashRequest(_payload, _token);
-      // debugPrint("AIRTIME RESPONSE <<<>>> ${resp.body}");
+      debugPrint("AIRTIME RESPONSE <<<>>> ${resp.body}");
       _controller.setLoading(false);
       if (resp.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(resp.body);
@@ -243,10 +211,10 @@ class _AirtimeSwapState extends State<AirtimeSwap> {
               () => Form(
                 key: _formKey,
                 child: ListView(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(10.0),
                   children: [
                     TextRoboto(
-                      text: "Securely Swap your Airtime here",
+                      text: "Securely Swap your airtime here",
                       fontSize: 21,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,

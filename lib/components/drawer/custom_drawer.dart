@@ -1,15 +1,15 @@
 import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/logout_loader.dart';
 import 'package:data_extra_app/model/drawer/drawermodel.dart';
 import 'package:data_extra_app/screens/account/account.dart';
+import 'package:data_extra_app/screens/auth/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/instance_manager.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -27,19 +27,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
   List<DrawerModel> drawerList = [];
 
   final _controller = Get.find<StateController>();
-  bool _isLoggedIn = true;
 
   _initAuth() {
-    // final prefs = await SharedPreferences.getInstance();
-    // _isLoggedIn = prefs.getBool('loggedIn') ?? false;
-    // final _user = FirebaseAuth.instance.currentUser;
     setState(() {
       drawerList = [
         DrawerModel(
           icon: 'assets/images/meal_plan_drawer.svg',
-          title: 'About Us',
+          title: 'Website',
           isAction: true,
-          url: "https://dataextra.vercel.app/",
+          url: "https://www.dataextra.ng/",
         ),
         DrawerModel(
           icon: 'assets/images/maccount_drawer.svg',
@@ -50,16 +46,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         ),
         DrawerModel(
-          icon: 'assets/images/faq_drawer.svg',
-          title: 'FAQs',
-          isAction: true,
-          url: "https://dataextra.vercel.app/",
-        ),
-        DrawerModel(
           icon: 'assets/images/contact_drawer.svg',
           title: 'Contact us',
           isAction: true,
-          url: "https://dataextra.vercel.app/contact",
+          url: "https://www.dataextra.ng/contact",
         ),
       ];
     });
@@ -74,17 +64,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
   _logout() async {
     _controller.setLoading(true);
     try {
+      await APIService().logout(
+        widget.manager.getAccessToken(),
+      );
       _controller.setLoading(false);
       widget.manager.clearProfile();
+      widget.manager.clearEmail();
+      _controller.resetAll();
+      Get.off(const Login());
 
-      if (mounted) {
-        pushNewScreen(
-          context,
-          screen: const LogoutLoader(),
-          withNavBar: false, // OPTIONAL VALUE. True by default.
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
-        );
-      }
+      // if (mounted) {
+      //   // pushNewScreen(
+      //   //   context,
+      //   //   screen: const LogoutLoader(),
+      //   //   withNavBar: false, // OPTIONAL VALUE. True by default.
+      //   //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      //   // );
+      // }
     } catch (e) {
       Constants.toast(e.toString());
       _controller.setLoading(false);
@@ -185,16 +181,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     _launchInBrowser("${drawerList[i].url}");
                                   } else {
                                     Navigator.of(context).pop();
-                                    // pushNewScreen(
-                                    //   context,
-                                    //   screen: MealPlan(
-                                    //     manager: widget.manager,
-                                    //   ),
-                                    //   withNavBar:
-                                    //       false, // OPTIONAL VALUE. True by default.
-                                    //   pageTransitionAnimation:
-                                    //       PageTransitionAnimation.cupertino,
-                                    // );
                                   }
                                 }
                               },
@@ -220,7 +206,77 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: TextButton.icon(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _logout();
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) => CupertinoAlertDialog(
+                        title: TextPoppins(
+                          text: "Log Out",
+                          fontSize: 18,
+                        ),
+                        content: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.96,
+                          height: 50,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              RichText(
+                                textAlign: TextAlign.center,
+                                text: const TextSpan(
+                                  text: "Are you sure you want to ",
+                                  style: TextStyle(
+                                    color: Colors.black45,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: " log out ",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "? ",
+                                      style: TextStyle(
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: TextRoboto(
+                                text: "Cancel",
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                _logout();
+                              },
+                              child: TextRoboto(
+                                text: "Log out",
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    // _logout();
                   },
                   label: TextPoppins(
                     text: "Log Out",

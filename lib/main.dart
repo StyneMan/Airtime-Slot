@@ -173,7 +173,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       await _prefs.remove("loggedIn");
       await _prefs.remove("accessToken");
 
-      Get.offAll(const Login());
+      // _controller.resetAll();
+
+      await APIService().logout(_token);
+      _controller.resetAll();
+
+      // Now make an API call to protected endpoint
+      // so we get 401 and route to login screen
+
+      // Get.off(() => const Login());
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -202,17 +210,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           _startTimer();
         }
       });
-    } else if (state == AppLifecycleState.detached) {
-      // App is in the background, start the timer
-      debugPrint("APP IN BACKGROUND");
-      SharedPreferences.getInstance().then((pref) {
-        // var toek = pref.getString('accessToken') ?? "";
-        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
-          debugPrint("ACCESS TOKEN PRESENT ...");
-          _startTimer();
-        }
-      });
-    } else if (state == AppLifecycleState.inactive) {
+    }
+    // else if (state == AppLifecycleState.detached) {
+    //   // App is in the background, start the timer
+    //   debugPrint("APP IN BACKGROUND");
+    //   SharedPreferences.getInstance().then((pref) {
+    //     // var toek = pref.getString('accessToken') ?? "";
+    //     if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+    //       debugPrint("ACCESS TOKEN PRESENT ...");
+    //       _startTimer();
+    //     }
+    //   });
+    // }
+    else if (state == AppLifecycleState.inactive) {
       // App is in the background, start the timer
       debugPrint("APP IN BACKGROUND");
       SharedPreferences.getInstance().then((pref) {
@@ -230,6 +240,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     // This is called when the user interacts with the app (e.g., taps, scrolls)
+    if (_inactiveTimer != null) {
+      _inactiveTimer?.cancel();
+    }
     _resetInactiveTimer();
     debugPrint("Started Interacting With The App");
   }
@@ -272,7 +285,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   // Loading is done, return the app:
                   final SharedPreferences d = snapshot.requireData;
                   final String _token = d.getString("accessToken") ?? "";
-                  // print("PREF STA::: >>> ${d.getBool("loggedIn")}");
+                  final bool _launchedBefore =
+                      d.getBool("launchedBefore") ?? false;
+                  print("PREF STA::: >>> ${d.getBool("launchedBefore")}");
                   return GetMaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: 'Data Extra',
@@ -280,7 +295,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     home: _controller.hasInternetAccess.value
                         ? _token.isNotEmpty
                             ? Dashboard(manager: _manager!)
-                            : const Splasher()
+                            : _launchedBefore
+                                ? const Login()
+                                : const Splasher()
                         : const NoInternet(),
                   );
                 }

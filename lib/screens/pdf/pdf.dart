@@ -210,10 +210,12 @@ Future<Uint8List> makePdf(var data) async {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Description",
-                    style: const TextStyle(
-                      fontSize: 14,
-                    )),
+                Text(
+                  "Description",
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
                 Text(
                   "${data['description']}",
                   style: TextStyle(
@@ -229,6 +231,112 @@ Future<Uint8List> makePdf(var data) async {
             SizedBox(
               height: 4.0,
             ),
+            data['type'] == "data" && data['transaction_meta']?.isNotEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Phone Number",
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(width: 10.0),
+                          Expanded(
+                            child: Text(
+                              "${data['transaction_meta']['phone']}",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+            data['type'] == "cable_tv" && data['transaction_meta']?.isNotEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("CableTv Number (isn)",
+                              style: const TextStyle(
+                                fontSize: 14,
+                              )),
+                          SizedBox(width: 24.0),
+                          Expanded(
+                            child: Text(
+                              "${data['transaction_meta']['isn']}",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+            data['type'] == "electricity" &&
+                    data['transaction_meta']?.isNotEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Meter Number",
+                              style: const TextStyle(
+                                fontSize: 14,
+                              )),
+                          SizedBox(width: 10.0),
+                          Expanded(
+                            child: Text(
+                              "${data['transaction_meta']['meter_number']}",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,7 +348,8 @@ Future<Uint8List> makePdf(var data) async {
                   ),
                 ),
                 Text(
-                  "${DateFormat('dd/MM/yyyy').format(DateTime.parse(data['created_at']))}"
+                  DateFormat('dd/MM/yyyy')
+                      .format(DateTime.parse(data['created_at']))
                       .replaceAll("about", "")
                       .replaceAll("minute", "min"),
                   style: TextStyle(

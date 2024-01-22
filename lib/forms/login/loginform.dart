@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
     _controller.setLoading(true);
     try {
       final response = await APIService().login(_payload);
-      // debugPrint("LOGIN RESP:: ${response.body}");
+      debugPrint("LOGIN RESP:: ${response.body}");
 
       _controller.setLoading(false);
 
@@ -60,6 +60,7 @@ class _LoginFormState extends State<LoginForm> {
         _controller.setAccessToken('${loginMap['data']['token']}');
         widget.manager.saveAccessToken('${loginMap['data']['token']}');
         widget.manager.saveEmail('${loginMap['data']['user']['email']}');
+        widget.manager.setLaunchedBefore(true);
 
         //Save user data and preferences
         String userData = jsonEncode(loginMap['data']['user']);

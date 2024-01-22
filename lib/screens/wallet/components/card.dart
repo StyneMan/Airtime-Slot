@@ -177,11 +177,16 @@ class _CardWalletState extends State<CardWallet> {
     String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = amt.replaceAll(",", "");
 
+    const rate = 1.4 / 100;
+    var total = (rate * double.parse(filteredAmt)) + double.parse(filteredAmt);
+
+    debugPrint("SSFB :: ${total}");
+
     try {
       TransactionResponse transactionResponse =
           await MonnifyFlutterSdkPlus.initializePayment(
         Transaction(
-          double.parse(filteredAmt),
+          double.parse(filteredAmt) > 2000 ? total += 100 : total,
           "NGN",
           widget.manager.getUser()['name'],
           widget.manager.getUser()['email'],
@@ -224,7 +229,6 @@ class _CardWalletState extends State<CardWallet> {
       _controller.setLoading(false);
       if (resp.statusCode == 200) {
         Map<String, dynamic> _respMap = jsonDecode(resp.body);
-        // Constants.toast("${_respMap['message']}");
         _initPayment("${_respMap['data']['transaction_ref']}");
       } else {
         //Error occurred on login

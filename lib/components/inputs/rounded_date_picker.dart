@@ -20,7 +20,7 @@ class RoundedDatePicker extends StatelessWidget {
       required this.validator,
       required this.onSelected,
       this.borderRadius = 6.0,
-      this.height = 18.0})
+      this.height = 10.0})
       : super(key: key);
 
   @override

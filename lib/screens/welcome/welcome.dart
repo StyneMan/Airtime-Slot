@@ -96,8 +96,10 @@ class _WelcomeState extends State<Welcome> {
                       RoundedButton(
                         text: "Sign in",
                         press: () {
-                          Get.to(const Login(),
-                              transition: Transition.downToUp);
+                          Get.to(
+                            const Login(),
+                            transition: Transition.downToUp,
+                          );
                         },
                         color: Constants.primaryColor,
                         textColor: Colors.white,

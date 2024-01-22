@@ -7,6 +7,7 @@ import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:data_extra_app/screens/account/components/kyc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -113,10 +114,28 @@ class _BankTransferState extends State<BankTransfer> {
                               Center(
                                 child: TextPoppins(
                                   text:
-                                      "Use the details below to send money to your DataExtra wallet from any bank's app or through internet banking.",
-                                  fontSize: 17,
+                                      "Please do your KYC verification to be able to use the monnify account below.",
+                                  fontSize: 16,
+                                  align: TextAlign.center,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Get.to(
+                                      KYC(manager: widget.manager),
+                                      transition: Transition.cupertino,
+                                    );
+                                  },
+                                  child: TextPoppins(
+                                    text: "Verify Now",
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                               const SizedBox(

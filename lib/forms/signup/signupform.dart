@@ -96,6 +96,7 @@ class _SignupFormState extends State<SignupForm> {
         widget.manager.saveEmail('${registerMap['data']['user']['email']}');
         _controller.setUserData(registerMap['data']['user']);
         widget.manager.setIsLoggedIn(true);
+        widget.manager.setLaunchedBefore(true);
 
         _controller.onInit();
 

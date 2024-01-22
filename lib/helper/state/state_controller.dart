@@ -149,7 +149,30 @@ class StateController extends GetxController {
     transactionsScrollController.addListener(() {
       print("CHOKOBINA WORLDWIDE TESTING...");
       if (_token.isNotEmpty) {
-        paginateTransaction(_token);
+        if (transactionsScrollController.position.pixels ==
+            transactionsScrollController.position.maxScrollExtent) {
+          print("reached end");
+
+          //Now load more items
+          if (hasMoreTransactions.value) {
+            setSpinning(true);
+            transactionCurrentPage.value++;
+            Future.delayed(const Duration(seconds: 3), () async {
+              try {
+                await APIService().fetchNextTransactions(
+                    _token, transactionCurrentPage.value);
+                setSpinning(false);
+              } catch (e) {
+                setSpinning(false);
+                debugPrint(e.toString());
+              }
+            });
+          } else {
+            setSpinning(false);
+          }
+        } else {
+          print("still moving to end");
+        }
       }
     });
 
@@ -170,6 +193,7 @@ class StateController extends GetxController {
             hasInternetAccess.value = false;
           }
         });
+
         // paginateTransaction(_token);
         hasInternetAccess.value = true;
       } else {
@@ -305,7 +329,33 @@ class StateController extends GetxController {
     isAppClosed = state;
   }
 
-  void resetAll() {}
+  void resetAll() {
+    airtimeCashData.value = [];
+    transactions.value = [];
+    recentTransactions.value = [];
+    hasMoreTransactions.value = false;
+    hasMoreNotifications.value = false;
+    hasMoreInvites.value = false;
+    transactionCurrentPage.value = 0;
+
+    selectedDataProvider.value = {};
+    selectedDataPlan.value = {};
+    selectedDataPlanAmount.value = 0;
+    selectedAirtimeProvider.value = {};
+    selectedElectricityProvider.value = {};
+    selectedTelevisionProvider.value = {};
+    selectedTelevisionPlan.value = {};
+
+    userData.value = {};
+
+    airtimeSwapData.value = [];
+    airtimeSwapRate.value = "";
+    airtimeSwapNumber.value = "";
+    airtimeSwapResultantAmt.value = "0.0";
+
+    discountAmount.value = 0.0;
+    percentDiscount.value = "";
+  }
 
   @override
   void onClose() {

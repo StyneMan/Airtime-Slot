@@ -2,9 +2,11 @@ import 'package:data_extra_app/components/inputs/rounded_button_wrapped.dart';
 import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:data_extra_app/screens/account/components/personal_info.dart';
 import 'package:data_extra_app/screens/account/components/security.dart';
+import 'package:data_extra_app/screens/auth/login/login.dart';
 import 'package:data_extra_app/screens/welcome/welcome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -524,19 +526,13 @@ class Account extends StatelessWidget {
   _logout() async {
     _controller.setLoading(true);
     try {
+      await APIService().logout(manager.getAccessToken());
       _controller.setLoading(false);
       manager.clearProfile();
+      manager.clearEmail();
+      _controller.resetAll();
 
-      Get.off(const Welcome());
-
-      // if (mounted) {
-      // pushNewScreen(
-      //   context,
-      //   screen: const LogoutLoader(),
-      //   withNavBar: false, // OPTIONAL VALUE. True by default.
-      //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      // );
-      // }
+      Get.off(const Login());
     } catch (e) {
       Constants.toast(e.toString());
       _controller.setLoading(false);

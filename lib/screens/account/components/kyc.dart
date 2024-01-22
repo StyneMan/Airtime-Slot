@@ -15,27 +15,47 @@ import 'package:data_extra_app/model/auth/wallet_pin.dart';
 import 'package:data_extra_app/model/error/error.dart';
 import 'package:data_extra_app/model/user/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class KYC extends StatelessWidget {
+class KYC extends StatefulWidget {
   final PreferenceManager manager;
   KYC({
     Key? key,
     required this.manager,
   }) : super(key: key);
 
-  final _controller = Get.find<StateController>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
+  @override
+  State<KYC> createState() => _KYCState();
+}
 
+class _KYCState extends State<KYC> {
+  final _controller = Get.find<StateController>();
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _bvnController = TextEditingController();
   final _ninController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dateController = TextEditingController();
+
   String _gender = "Male";
+
   String? _dob;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _nameController.text = "${widget.manager.getUser()['name'] ?? ""}";
+      _bvnController.text = "${widget.manager.getUser()['bvn'] ?? ""}";
+      _phoneController.text = "${widget.manager.getUser()['phone'] ?? ""}";
+      _dateController.text = "${widget.manager.getUser()['dob'] ?? ""}";
+    });
+  }
 
   void onSelected(String gender) {
     _gender = gender;
@@ -56,8 +76,9 @@ class KYC extends StatelessWidget {
       "bvn": _bvnController.text,
       "gender": _gender.toLowerCase(),
       "dob": _dob,
-      "name": manager.getUser()['name'],
+      "name": _nameController.text,
       "phone": _phoneController.text,
+      "nin": _ninController.text
     };
 
     _controller.setLoading(true);
@@ -74,8 +95,8 @@ class KYC extends StatelessWidget {
         //Update shared preference
         UserModel? model = data.data;
         String userData = jsonEncode(model);
-        manager.setUserData(userData);
-        manager.setIsLoggedIn(true);
+        widget.manager.setUserData(userData);
+        widget.manager.setIsLoggedIn(true);
         _controller.setUserData('${data.data}');
 
         Constants.toast("${data.message}");
@@ -144,10 +165,11 @@ class KYC extends StatelessWidget {
                   ),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
                     child: ListView(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextPoppins(
                           text:
@@ -166,6 +188,26 @@ class KYC extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
+                                child: RoundedInputField(
+                                  hintText: "NIN",
+                                  icon: const Icon(Icons.person),
+                                  onChanged: (value) {},
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter your full name';
+                                    }
+                                    return null;
+                                  },
+                                  controller: _nameController,
+                                  inputType: TextInputType.name,
+                                  capitalization: TextCapitalization.words,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedDropdownGender(
                                   placeholder: "Select your gender",
                                   onSelected: onSelected,
@@ -173,7 +215,7 @@ class KYC extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                height: 16.0,
+                                height: 12.0,
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -191,7 +233,7 @@ class KYC extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                height: 16.0,
+                                height: 12.0,
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -213,7 +255,7 @@ class KYC extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                height: 16.0,
+                                height: 12.0,
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -221,21 +263,13 @@ class KYC extends StatelessWidget {
                                   hintText: "NIN",
                                   icon: const Icon(Icons.person),
                                   onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter your nin';
-                                    }
-                                    if (value.length > 11) {
-                                      return 'Enter a valid nin';
-                                    }
-                                    return null;
-                                  },
+                                  validator: (value) {},
                                   controller: _ninController,
                                   inputType: TextInputType.number,
                                 ),
                               ),
                               const SizedBox(
-                                height: 16.0,
+                                height: 12.0,
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -260,16 +294,19 @@ class KYC extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                height: 16.0,
+                                height: 8.0,
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                              TextPoppins(
+                                text:
+                                    "Note:  Ensure the provided information matches the information supplied during your BVN registration",
+                                color: Colors.black54,
+                                fontSize: 13,
+                                align: TextAlign.left,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              const SizedBox(
+                                height: 32.0,
+                              ),
                               Container(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16.0),
@@ -280,8 +317,6 @@ class KYC extends StatelessWidget {
                                     if (_formKey.currentState!.validate() &&
                                         _gender.isNotEmpty) {
                                       _saveKYC();
-                                    } else {
-                                      debugPrint("JKBS;:");
                                     }
                                   },
                                 ),

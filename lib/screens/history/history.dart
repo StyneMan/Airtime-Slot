@@ -46,50 +46,48 @@ class _HistoryState extends State<History> {
       // print("$date");
 
       // Group
-      var _wid = Obx(
-        () => Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                TextPoppins(
-                  text: DateFormat.yMMMEd('en_US')
-                      .format(DateTime.parse("$date")),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade600,
-                ),
-                Text(_controller.emptyLogic.value)
-              ],
-            ),
-            const SizedBox(height: 6.0),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, i) => TextButton(
-                onPressed: () {
-                  Get.to(
-                    HistoryDetail(
-                      data: list[i],
-                    ),
-                    transition: Transition.cupertino,
-                  );
-                },
-                child: HistoryItemRow(
-                  data: list[i],
-                ),
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                ),
+      var _wid = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              TextPoppins(
+                text:
+                    DateFormat.yMMMEd('en_US').format(DateTime.parse("$date")),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade600,
               ),
-              separatorBuilder: (context, i) => const Divider(),
-              itemCount: list.length,
+              Text(_controller.emptyLogic.value)
+            ],
+          ),
+          const SizedBox(height: 6.0),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, i) => TextButton(
+              onPressed: () {
+                Get.to(
+                  HistoryDetail(
+                    data: list[i],
+                  ),
+                  transition: Transition.cupertino,
+                );
+              },
+              child: HistoryItemRow(
+                data: list[i],
+              ),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 0.0),
+              ),
             ),
-            const SizedBox(height: 24.0),
-          ],
-        ),
+            separatorBuilder: (context, i) => const Divider(),
+            itemCount: list.length,
+          ),
+          const SizedBox(height: 24.0),
+        ],
       );
 
       _widg.add(_wid);
@@ -175,8 +173,7 @@ class _HistoryState extends State<History> {
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ListView(
-                        controller: _controller.transactionsScrollController,
+                      child: Column(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
@@ -351,17 +348,23 @@ class _HistoryState extends State<History> {
                             ),
                           ),
                           const SizedBox(
-                            height: 24.0,
+                            height: 21.0,
                           ),
                           _list.isEmpty
-                              ? Center(
-                                  child: Image.asset(
-                                    "assets/images/no_record.png",
-                                    width: 256,
+                              ? Expanded(
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/images/no_record.png",
+                                      width: 256,
+                                    ),
                                   ),
                                 )
-                              : Column(
-                                  children: _buildList(),
+                              : Expanded(
+                                  child: ListView(
+                                    controller: _controller
+                                        .transactionsScrollController,
+                                    children: _buildList(),
+                                  ),
                                 ),
                           //Loader here
                           _controller.isSpinning.value

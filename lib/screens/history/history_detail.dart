@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -446,6 +447,124 @@ class _HistoryDetailState extends State<HistoryDetail> {
                             const SizedBox(
                               height: 8.0,
                             ),
+                            (widget.data['type'] == "data" ||
+                                        widget.data['type'] == "airtime") &&
+                                    widget.data['transaction_meta']?.isNotEmpty
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Phone Number",
+                                            fontSize: 14,
+                                          ),
+                                          const SizedBox(width: 24.0),
+                                          Expanded(
+                                            child: Text(
+                                              "${widget.data['transaction_meta']['phone']}",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
+                            widget.data['type'] == "cable_tv" &&
+                                    widget.data['transaction_meta']?.isNotEmpty
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "CableTv Number (isn)",
+                                            fontSize: 14,
+                                          ),
+                                          const SizedBox(width: 24.0),
+                                          Expanded(
+                                            child: Text(
+                                              "${widget.data['transaction_meta']['isn']}",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
+                            widget.data['type'] == "electricity" &&
+                                    widget.data['transaction_meta']?.isNotEmpty
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          TextPoppins(
+                                            text: "Meter Number",
+                                            fontSize: 14,
+                                          ),
+                                          const SizedBox(width: 24.0),
+                                          Expanded(
+                                            child: Text(
+                                              "${widget.data['transaction_meta']['meter_number']}",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 8.0,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -526,7 +645,7 @@ class _HistoryDetailState extends State<HistoryDetail> {
                                             ['meter_type'] ==
                                         "prepaid" &&
                                     "${widget.data['transaction_meta']['purchased_token']}"
-                                            ?.toLowerCase() !=
+                                            .toLowerCase() !=
                                         "null"
                                 ? Column(
                                     children: [
@@ -627,14 +746,29 @@ class _HistoryDetailState extends State<HistoryDetail> {
                         ),
                         widget.data['status']?.toLowerCase() == "initiated"
                             ? const SizedBox()
-                            : SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.98,
-                                child: RoundedButton(
-                                  text: "Download PDF",
-                                  press: () {
-                                    _previewPdf();
-                                  },
-                                ),
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: RoundedButton(
+                                      text: "Share",
+                                      press: () {
+                                        _shareTransaction();
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8.0),
+                                  Expanded(
+                                    child: RoundedButton(
+                                      text: "Download PDF",
+                                      press: () {
+                                        _previewPdf();
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                         const SizedBox(
                           height: 8.0,
@@ -659,6 +793,42 @@ class _HistoryDetailState extends State<HistoryDetail> {
           ),
         ),
       ),
+    );
+  }
+
+  _shareTransaction() {
+    Share.share(
+      ' Type: \t${widget.data['type']}' +
+          '\n Amount: \t₦${widget.data['amount']}' +
+          '\n Amount Paid: \t₦${widget.data['amount_paid']}' +
+          '\n Status: \t${widget.data['status']}' +
+          '\n Reference: \t${widget.data['transaction_ref']}' +
+          '\n Email: \t${widget.data['email']}' +
+          '\n Payment Method: \t${widget.data['payment_method']}' +
+          '\n Description: \t${widget.data['description']}' +
+          '\n ${widget.data['type'] == "electricity" && widget.data['transaction_meta']['meter_type'] == "prepaid" && "${widget.data['transaction_meta']['purchased_token']}".toLowerCase() != "null" ? "Token: \t " + widget.data['transaction_meta']['purchased_token'] : ""}' +
+          (widget.data['type'] == "data" &&
+                  widget.data['transaction_meta']?.isNotEmpty
+              ? "\n Phone number: \t " +
+                  widget.data['transaction_meta']['phone']
+              : "") +
+          (widget.data['type'] == "airtime" &&
+                  widget.data['transaction_meta']?.isNotEmpty
+              ? "\n Phone number: \t " +
+                  widget.data['transaction_meta']['phone']
+              : "") +
+          (widget.data['type'] == "electricity" &&
+                  widget.data['transaction_meta']?.isNotEmpty
+              ? "\n Meter number: \t " +
+                  widget.data['transaction_meta']['meter_number']
+              : "") +
+          (widget.data['type'] == "cable_tv" &&
+                  widget.data['transaction_meta']?.isNotEmpty
+              ? "\n Tv number: \t " + widget.data['transaction_meta']['isn']
+              : "") +
+          '\n Initiated: \t${"${DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.data['created_at']))} (${timeUntil(DateTime.parse("${widget.data['created_at']}"))})".replaceAll("about", "").replaceAll("minute", "min")}' +
+          '\n Discount: \t${widget.data['discount_text']}',
+      subject: "Transaction Detail",
     );
   }
 

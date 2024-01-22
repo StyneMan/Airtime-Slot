@@ -37,7 +37,7 @@ class HistoryItemRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.56,
                   child: TextRoboto(
                     text: "${data['description']}",
                     fontSize: 14,

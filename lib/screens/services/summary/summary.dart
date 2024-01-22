@@ -57,7 +57,10 @@ class TransactionSummary extends StatelessWidget {
                 children: [
                   Center(
                     child: TextPoppins(
-                      text: type.capitalize,
+                      text: (type.toLowerCase().startsWith("cable")
+                              ? type.replaceAll("_", " ")
+                              : type)
+                          .capitalize,
                       fontSize: 21,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -184,10 +187,16 @@ class TransactionSummary extends StatelessWidget {
                                   text: "Reference",
                                   fontSize: 14,
                                 ),
-                                Text(
-                                  "${data['transaction_ref']}",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  width: 16.0,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${data['transaction_ref']}",
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 )
                               ],
@@ -207,10 +216,16 @@ class TransactionSummary extends StatelessWidget {
                                   text: "Email address",
                                   fontSize: 14,
                                 ),
-                                Text(
-                                  "${data['email']}",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  width: 16.0,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${data['email']}",
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 )
                               ],
@@ -261,10 +276,16 @@ class TransactionSummary extends StatelessWidget {
                                             text: "Customer Name",
                                             fontSize: 14,
                                           ),
-                                          Text(
-                                            "$customerName",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "$customerName",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           )
                                         ],
@@ -286,10 +307,16 @@ class TransactionSummary extends StatelessWidget {
                                             text: "Address",
                                             fontSize: 14,
                                           ),
-                                          Text(
-                                            "$address",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "$address",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           )
                                         ],
@@ -311,10 +338,16 @@ class TransactionSummary extends StatelessWidget {
                                             text: "Meter Number",
                                             fontSize: 14,
                                           ),
-                                          Text(
-                                            "$meterSmartcardNumber",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "$meterSmartcardNumber",
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           )
                                         ],
@@ -345,12 +378,18 @@ class TransactionSummary extends StatelessWidget {
                                                 text: "Smartcard Number",
                                                 fontSize: 14,
                                               ),
-                                              Text(
-                                                "$meterSmartcardNumber",
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
+                                              const SizedBox(
+                                                width: 16.0,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  "$meterSmartcardNumber",
+                                                  textAlign: TextAlign.end,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                           const SizedBox(
@@ -370,10 +409,14 @@ class TransactionSummary extends StatelessWidget {
                                                 text: "Customer Name",
                                                 fontSize: 14,
                                               ),
-                                              Text(
-                                                "$customerName",
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
+                                              const SizedBox(width: 16.0),
+                                              Expanded(
+                                                child: Text(
+                                                  "$customerName",
+                                                  textAlign: TextAlign.end,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               )
                                             ],

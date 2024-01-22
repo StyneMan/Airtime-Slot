@@ -31,6 +31,12 @@ class PreferenceManager {
 
   bool getIsLoggedIn() => prefs!.getBool('loggedIn') ?? false;
 
+  void setLaunchedBefore(bool isLaunched) {
+    prefs.setBool('launchedBefore', isLaunched);
+  }
+
+  bool isLaunchedBefore() => prefs!.getBool('launchedBefore') ?? false;
+
   String getAccessToken() =>
       prefs != null ? prefs!.getString('accessToken') : '';
 
@@ -51,7 +57,21 @@ class PreferenceManager {
     return map;
   }
 
-  void clearProfile() {
-    prefs!.clear();
+  clearProfile() async {
+    try {
+      await prefs!.remove('user');
+      await prefs!.remove('accessToken');
+      await prefs!.remove('loggedIn');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void clearEmail() async {
+    try {
+      await prefs!.remove('email');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

@@ -60,11 +60,12 @@ class MyApiInterceptor implements InterceptorContract {
         //Unauthorized. Logout user here...
         debugPrint("LOG THIS USER OUT. SESSION EXPIRED!!!");
         //Clear preference
-        _prefs.clear();
-        _prefs.setString("handledAuth", "handled");
-        //Go to login screen...
+        _prefs.remove('user');
+        _prefs.remove('accessToken');
+        _prefs.remove('loggedIn');
 
-        Get.off(const Login());
+        //Go to login screen...
+        Get.off(() => const Login());
       }
     } catch (e) {
       debugPrint(e.toString());

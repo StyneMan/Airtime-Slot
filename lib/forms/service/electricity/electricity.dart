@@ -34,10 +34,8 @@ class _ElectricityFormState extends State<ElectricityForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isNetworkErr = false, _shouldContinue = false;
   String _meterType = "";
-  String _customerName = "",
-      _customerAddress = "",
-      _customerPhone = "",
-      _meterNumber = "";
+  String _customerName = "", _customerAddress = "", _customerPhone = "";
+  String? _meterNumber = "";
 
   void _onSelected(val) {
     setState(() {
@@ -65,20 +63,24 @@ class _ElectricityFormState extends State<ElectricityForm> {
       print("BTV VERIFY RESPONSE  :: ${response.body}");
 
       Map<String, dynamic> mapper = jsonDecode(response.body);
-      debugPrint("MESSAGE :: ${mapper['message']}");
+      // debugPrint("MESSAGE :: ${mapper['message']}");
       if (mapper['message'] != null) {
-        Constants.toast('${mapper['message']}');
+        Constants.toast('${mapper['message'] ?? ""}');
       }
 
-      if (response.statusCode == 200) {
+      if (response.statusCode >= 200 && response.statusCode <= 300) {
+        debugPrint("SUCCESS :");
+
         Map<String, dynamic> map = jsonDecode(response.body);
 
+        debugPrint("SUCCESS MAPPER : $map");
+
         setState(() {
+          _shouldContinue = true;
           _customerAddress = map['data']['Address'];
           _customerName = map['data']['Customer_Name'];
           _customerPhone = map['data']['Customer_Phone'];
-          _meterNumber = map['data']['MeterNumber'];
-          _shouldContinue = true;
+          _meterNumber = map['data']['Meter_Number'];
         });
       } else {
         setState(() {
@@ -263,15 +265,33 @@ class _ElectricityFormState extends State<ElectricityForm> {
                             TextRoboto(text: _customerAddress, fontSize: 13),
                             const SizedBox(height: 16.0),
                             const SizedBox(height: 8.0),
+                            (_customerPhone.isEmpty ||
+                                    _customerPhone.toString().toLowerCase() ==
+                                        "null")
+                                ? TextRoboto(
+                                    text: "Meter Number",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  )
+                                : TextRoboto(
+                                    text: "Phone Number",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             TextRoboto(
-                              text: "Phone Number",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            TextRoboto(text: _customerPhone, fontSize: 13),
+                                text: (_customerPhone.isEmpty ||
+                                        _customerPhone
+                                                .toString()
+                                                .toLowerCase() ==
+                                            "null")
+                                    ? _meterNumController.text
+                                        .replaceAll(" ", "")
+                                    : _customerPhone,
+                                fontSize: 13),
                             const SizedBox(height: 16.0)
                           ],
                         ),
+                  const SizedBox(height: 48),
                   RoundedButton(
                     text: "Next",
                     isEnabled: _shouldContinue,
@@ -320,9 +340,9 @@ class _ElectricityFormState extends State<ElectricityForm> {
 
     Map _payload = {
       "disco_id": _controller.selectedElectricityProvider.value['id'],
-      "amount": amt.replaceAll(",", ""),
+      "amount": filteredAmt,
       "transaction_type": "electricity",
-      "meter_number": _meterNumController.text,
+      "meter_number": _meterNumController.text.replaceAll(" ", ""),
       "meter_type": _meterType.toLowerCase(),
     };
 
@@ -330,7 +350,7 @@ class _ElectricityFormState extends State<ElectricityForm> {
       final response = await APIService()
           .startTransaction(_payload, widget.manager.getAccessToken());
 
-      debugPrint("RES AIRRTIME? ==>>>> ${response.body}");
+      debugPrint("RES Electricity? ==>>>> ${response.body}");
       _controller.setLoading(false);
       if (response.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(response.body);
@@ -350,7 +370,8 @@ class _ElectricityFormState extends State<ElectricityForm> {
             manager: widget.manager,
             address: _customerAddress,
             customerName: _customerName,
-            meterSmartcardNumber: _meterNumber,
+            meterSmartcardNumber:
+                (_meterNumber ?? _meterNumController.text).replaceAll(" ", ""),
           ),
           transition: Transition.cupertino,
         );

@@ -27,8 +27,7 @@ class Constants {
 
   // static String pstk = "pk_test_043683268da92cd71e0d30f9d72396396f2dfb1f";
   static String contractCode = "227549465723";
-  static String spike =
-      "MK_PROD_24ZP5F437X"; //"MK_PROD_PPWB6XAGDQ"; //"MK_TEST_44M9YWM4L4";
+  static String spike = "MK_PROD_24ZP5F437X";
 
   static String formatMoney(int amt) {
     MoneyFormatter fmf = MoneyFormatter(

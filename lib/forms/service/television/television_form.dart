@@ -43,7 +43,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
       // print("BANK CODE :: ${_controller.selectedTelevisionProvider.value}");
 
       Map _payload = {
-        "isn": _cardController.text,
+        "isn": _cardController.text.replaceAll(" ", ""),
         "network_id": _controller.selectedTelevisionProvider.value['id']
       };
       final response =
@@ -61,9 +61,10 @@ class _TelevisionFormState extends State<TelevisionForm> {
         Map<String, dynamic> map = jsonDecode(response.body);
 
         setState(() {
-          _customerNumber = map['data']['Customer_Number'];
+          _customerNumber =
+              "${map['data']['Customer_Number'] ?? map['data']['Smartcard_Number']}";
           _customerName = map['data']['Customer_Name'];
-          _dueDate = map['data']['Due_Date'];
+          _dueDate = "${map['data']['Due_Date'] ?? ""}";
           _shouldContinue = true;
         });
       } else {
@@ -355,11 +356,13 @@ class _TelevisionFormState extends State<TelevisionForm> {
                               TextRoboto(text: _customerNumber, fontSize: 13),
                               const SizedBox(height: 16.0),
                               const SizedBox(height: 8.0),
-                              TextRoboto(
-                                text: "Due Date",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              _dueDate == ""
+                                  ? const SizedBox()
+                                  : TextRoboto(
+                                      text: "Due Date",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               TextRoboto(text: _dueDate, fontSize: 13),
                               const SizedBox(height: 16.0)
                             ],
@@ -427,7 +430,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
     _controller.setLoading(true);
     Map _payload = {
       "network_id": _controller.selectedTelevisionProvider.value['id'],
-      "isn": _cardController.text,
+      "isn": _cardController.text.replaceAll(" ", ""),
       "product_id": _controller.selectedTelevisionPlan.value['id'],
       "transaction_type": "cable_tv",
       "amount": 0,
@@ -457,7 +460,7 @@ class _TelevisionFormState extends State<TelevisionForm> {
             manager: widget.manager,
             customerName: _customerName,
             dueDate: _dueDate,
-            meterSmartcardNumber: _cardController.text,
+            meterSmartcardNumber: _cardController.text.replaceAll(" ", ""),
           ),
           transition: Transition.cupertino,
         );
