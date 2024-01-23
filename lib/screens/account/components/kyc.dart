@@ -49,12 +49,14 @@ class _KYCState extends State<KYC> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _nameController.text = "${widget.manager.getUser()['name'] ?? ""}";
-      _bvnController.text = "${widget.manager.getUser()['bvn'] ?? ""}";
-      _phoneController.text = "${widget.manager.getUser()['phone'] ?? ""}";
-      _dateController.text = "${widget.manager.getUser()['dob'] ?? ""}";
-    });
+    if (widget.manager.getUser()['has_kyc']) {
+      setState(() {
+        _nameController.text = "${widget.manager.getUser()['name'] ?? ""}";
+        _bvnController.text = "${widget.manager.getUser()['bvn'] ?? ""}";
+        _phoneController.text = "${widget.manager.getUser()['phone'] ?? ""}";
+        _dateController.text = "${widget.manager.getUser()['dob'] ?? ""}";
+      });
+    }
   }
 
   void onSelected(String gender) {
@@ -189,7 +191,7 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedInputField(
-                                  hintText: "NIN",
+                                  hintText: "Full name",
                                   icon: const Icon(Icons.person),
                                   onChanged: (value) {},
                                   validator: (value) {
@@ -298,7 +300,7 @@ class _KYCState extends State<KYC> {
                               ),
                               TextPoppins(
                                 text:
-                                    "Note:  Ensure the provided information matches the information supplied during your BVN registration",
+                                    "Note: Ensure the provided information matches the information supplied during your BVN registration",
                                 color: Colors.black54,
                                 fontSize: 13,
                                 align: TextAlign.left,

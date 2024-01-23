@@ -119,6 +119,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void _resetInactiveTimer() {
     // Adjust the duration based on your requirements
     const inactiveDuration = Duration(seconds: 420);
+    // setState(() {
+    _inactiveTimeInSeconds = 420;
+    // });
 
     _inactiveTimer?.cancel();
     _inactiveTimer = Timer(inactiveDuration, () {
@@ -134,10 +137,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     try {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString('accessToken') ?? "";
-
-      // setState(() {
-      //   _accessToken = _token;
-      // });
 
       if (_token.isNotEmpty) {
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
@@ -162,7 +161,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _logoutUser() async {
     // Perform logout logic here
-    print('User logged out due to inactivity.');
+    // print('User logged out due to inactivity.');
     // You can navigate to the login screen or perform any other actions
     try {
       final _prefs = await SharedPreferences.getInstance();
@@ -173,15 +172,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       await _prefs.remove("loggedIn");
       await _prefs.remove("accessToken");
 
-      // _controller.resetAll();
-
       await APIService().logout(_token);
       _controller.resetAll();
-
-      // Now make an API call to protected endpoint
-      // so we get 401 and route to login screen
-
-      // Get.off(() => const Login());
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -240,9 +232,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     // This is called when the user interacts with the app (e.g., taps, scrolls)
-    if (_inactiveTimer != null) {
-      _inactiveTimer?.cancel();
-    }
+    // if (_inactiveTimer != null) {
+    _inactiveTimer?.cancel();
+    _timer?.cancel();
+    // }
+
     _resetInactiveTimer();
     debugPrint("Started Interacting With The App");
   }

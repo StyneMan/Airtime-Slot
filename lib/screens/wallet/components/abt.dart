@@ -71,7 +71,7 @@ class _BankTransferState extends State<BankTransfer> {
                   ),
                 ],
               ),
-              const SizedBox(height: 36.0),
+              const SizedBox(height: 24.0),
               Expanded(
                 child: Card(
                   elevation: 0.0,
@@ -108,15 +108,19 @@ class _BankTransferState extends State<BankTransfer> {
                         )
                       : Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                            bottom: 10.0,
+                          ),
                           child: ListView(
                             children: [
                               Center(
                                 child: TextPoppins(
                                   text:
-                                      "Please do your KYC verification to be able to use the monnify account below.",
-                                  fontSize: 16,
-                                  align: TextAlign.center,
+                                      "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
+                                  fontSize: 13,
+                                  align: TextAlign.left,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                 ),

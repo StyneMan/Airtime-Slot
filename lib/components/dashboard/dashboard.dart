@@ -115,9 +115,15 @@ class _DashboardState extends State<Dashboard> {
             // Log user out here
             final _prefs = await SharedPreferences.getInstance();
             final _token = _prefs.getString('accessToken') ?? "";
+
+            await _prefs.remove("user");
+            await _prefs.remove("loggedIn");
+            await _prefs.remove("accessToken");
+
             await APIService().logout(_token);
 
-            await _prefs.clear();
+            _controller.resetAll();
+
             exit(0);
           } else if (Platform.isIOS) {}
           return true;
