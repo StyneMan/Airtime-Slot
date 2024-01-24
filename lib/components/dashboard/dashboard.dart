@@ -19,6 +19,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -46,9 +47,15 @@ class _DashboardState extends State<Dashboard> {
       try {
         final _prefs = await SharedPreferences.getInstance();
         final _token = _prefs.getString("accessToken") ?? "";
+        final _reloadedApp = _prefs.getBool("isReloadedApp") ?? false;
 
         if (_token.isNotEmpty) {
           APIService().fetchTransactions(_token);
+        }
+
+        if (!_reloadedApp) {
+          _prefs.setBool("isReloadedApp", true);
+          Restart.restartApp();
         }
       } catch (e) {
         debugPrint(e.toString());

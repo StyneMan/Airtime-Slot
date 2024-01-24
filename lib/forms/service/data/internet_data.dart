@@ -262,7 +262,7 @@ class _InternetDataFormState extends State<InternetDataForm> {
               ),
             ),
             const SizedBox(
-              height: 16.0,
+              height: 8.0,
             ),
             Expanded(
               child: Padding(

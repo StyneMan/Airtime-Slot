@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:data_extra_app/components/dialogs/info_dialog.dart';
 import 'package:data_extra_app/components/drawer/custom_drawer.dart';
 import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/inputs/rounded_date_picker.dart';
@@ -102,6 +103,22 @@ class _KYCState extends State<KYC> {
         _controller.setUserData('${data.data}');
 
         Constants.toast("${data.message}");
+
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width * 0.98,
+              child: InfoDialog(
+                message: map['message'],
+              ),
+            );
+          },
+        );
+
+        _controller.onInit();
       } else {
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);

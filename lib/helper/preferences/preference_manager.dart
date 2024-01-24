@@ -62,6 +62,7 @@ class PreferenceManager {
       await prefs!.remove('user');
       await prefs!.remove('accessToken');
       await prefs!.remove('loggedIn');
+      await prefs!.remove("isReloadedApp");
     } catch (e) {
       debugPrint(e.toString());
     }

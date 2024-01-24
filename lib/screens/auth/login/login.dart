@@ -28,6 +28,9 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     _manager = PreferenceManager(context);
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   // Get.offAll(const Login());
+    // });
   }
 
   @override

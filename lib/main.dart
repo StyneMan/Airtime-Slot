@@ -64,7 +64,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Timer? _timer;
   Timer? _inactiveTimer;
-  int _inactiveTimeInSeconds = 420; // 6 minutes in seconds
+  int _inactiveTimeInSeconds = 120; // 6 minutes in seconds
+  int _untouchedTimeInSeconds = 120; // 6 minutes in seconds
 
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
@@ -99,7 +100,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
     SharedPreferences.getInstance().then((pref) {
-      // var toek = pref.getString('accessToken') ?? "";
+      // _accessToken = pref.getString('accessToken') ?? "";
       if ((pref.getString('accessToken') ?? "").isNotEmpty) {
         debugPrint("ACCESS TOKEN PRESENT ...");
         _resetInactiveTimer();
@@ -116,21 +117,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
   }
 
-  void _resetInactiveTimer() {
-    // Adjust the duration based on your requirements
-    const inactiveDuration = Duration(seconds: 420);
-    // setState(() {
-    _inactiveTimeInSeconds = 420;
-    // });
+  void _resetInactiveTimer() async {
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final _token = _prefs.getString('accessToken') ?? "";
 
-    _inactiveTimer?.cancel();
-    _inactiveTimer = Timer(inactiveDuration, () {
-      // Do something when the user is not actively interacting
-      print('User is not actively interacting with the app.');
-      print('Therefore log out here...');
-      Constants.toast("Not interacting with the app!!!");
-      _logoutUser();
-    });
+      if (_token != "") {
+        _inactiveTimer = Timer.periodic(const Duration(seconds: 1), (t) async {
+          // setState(() {
+          //   _inactiveTimer = t;
+          // });
+          // Check if the user has been inactive for more than the specified time
+          if (_untouchedTimeInSeconds <= 0) {
+            // Log out the user or perform any other actions
+            debugPrint("USER NOT ACTIVELY INPUTING THINGS AND THINGS !!!");
+            _logoutUser();
+            setState(() {
+              _untouchedTimeInSeconds = 0;
+            });
+            _inactiveTimer?.cancel();
+          } else {
+            // Decrease the inactive time counter
+            _untouchedTimeInSeconds--;
+          }
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void _startTimer() async {
@@ -141,6 +155,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       if (_token.isNotEmpty) {
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
           // Check if the user has been inactive for more than the specified time
+
           if (_inactiveTimeInSeconds <= 0) {
             // Log out the user or perform any other actions
             _logoutUser();
@@ -161,19 +176,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void _logoutUser() async {
     // Perform logout logic here
-    // print('User logged out due to inactivity.');
+    print('User logged out due to inactivity.');
     // You can navigate to the login screen or perform any other actions
     try {
       final _prefs = await SharedPreferences.getInstance();
       final _token = _prefs.getString('accessToken') ?? "";
-      final response = await APIService().logout(_token);
+      if (_token.isNotEmpty) {
+        final response = await APIService().logout(_token);
 
-      await _prefs.remove("user");
-      await _prefs.remove("loggedIn");
-      await _prefs.remove("accessToken");
+        await _prefs.remove("user");
+        await _prefs.remove("loggedIn");
+        await _prefs.remove("accessToken");
+        await _prefs.remove("isReloadedApp");
 
-      await APIService().logout(_token);
-      _controller.resetAll();
+        _controller.resetAll();
+        await APIService().logout(_token);
+        Get.offAll(const Login());
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -184,62 +203,56 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // App is in the foreground, reset the timer
-      debugPrint("APP IN FOREGROUND :: ${_inactiveTimeInSeconds}");
-      if (_inactiveTimeInSeconds > 0) {
-        debugPrint("CANCEL TIMER :: ");
-        _timer?.cancel();
-        setState(() {
-          _inactiveTimeInSeconds = 420;
-        });
+      if (_accessToken.isNotEmpty) {
+        _resetInactiveTimer();
+        debugPrint("APP IN FOREGROUND :: ${_inactiveTimeInSeconds}");
+        if (_inactiveTimeInSeconds > 0) {
+          debugPrint("CANCEL TIMER :: ");
+          _timer?.cancel();
+          setState(() {
+            _inactiveTimeInSeconds = 120;
+          });
+        }
       }
     } else if (state == AppLifecycleState.paused) {
-      // App is in the background, start the timer
-      debugPrint("APP IN BACKGROUND");
-      SharedPreferences.getInstance().then((pref) {
-        // var toek = pref.getString('accessToken') ?? "";
-        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
-          debugPrint("ACCESS TOKEN PRESENT ...");
-          _startTimer();
-        }
-      });
+      if (_accessToken.isNotEmpty) {
+        // App is in the background, start the timer
+        debugPrint("APP IN BACKGROUND");
+        SharedPreferences.getInstance().then((pref) {
+          // var toek = pref.getString('accessToken') ?? "";
+          if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+            debugPrint("ACCESS TOKEN PRESENT ...");
+            _startTimer();
+          }
+        });
+      }
     }
-    // else if (state == AppLifecycleState.detached) {
-    //   // App is in the background, start the timer
-    //   debugPrint("APP IN BACKGROUND");
-    //   SharedPreferences.getInstance().then((pref) {
-    //     // var toek = pref.getString('accessToken') ?? "";
-    //     if ((pref.getString('accessToken') ?? "").isNotEmpty) {
-    //       debugPrint("ACCESS TOKEN PRESENT ...");
-    //       _startTimer();
-    //     }
-    //   });
+    // else if (state == AppLifecycleState.inactive) {
+    //   if (_accessToken.isNotEmpty) {
+    //     // App is in the background, start the timer
+    //     debugPrint("APP NOT RECEIVING INPUT");
+    //     SharedPreferences.getInstance().then((pref) {
+    //       // var toek = pref.getString('accessToken') ?? "";
+    //       if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+    //         debugPrint("ACCESS TOKEN PRESENT ...");
+    //         // _startTimer();
+    //         _resetInactiveTimer();
+    //       }
+    //     });
+    //   }
     // }
-    else if (state == AppLifecycleState.inactive) {
-      // App is in the background, start the timer
-      debugPrint("APP IN BACKGROUND");
-      SharedPreferences.getInstance().then((pref) {
-        // var toek = pref.getString('accessToken') ?? "";
-        if ((pref.getString('accessToken') ?? "").isNotEmpty) {
-          debugPrint("ACCESS TOKEN PRESENT ...");
-          _startTimer();
-        }
-      });
-    }
-
-    // _handleSession();
   }
 
-  @override
-  void didChangeMetrics() {
-    // This is called when the user interacts with the app (e.g., taps, scrolls)
-    // if (_inactiveTimer != null) {
-    _inactiveTimer?.cancel();
-    _timer?.cancel();
-    // }
-
-    _resetInactiveTimer();
-    debugPrint("Started Interacting With The App");
-  }
+  // @override
+  // void didChangeMetrics() {
+  //   // print("INTERACTED JUST NOW!!!");
+  //   // if (_accessToken.isNotEmpty) {
+  //   //   setState(() {
+  //   //     _untouchedTimeInSeconds = 120;
+  //   //   });
+  //   //   debugPrint("Started Interacting With The App");
+  //   // }
+  // }
 
   @override
   void dispose() {
@@ -251,7 +264,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -288,7 +300,75 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     theme: appTheme,
                     home: _controller.hasInternetAccess.value
                         ? _token.isNotEmpty
-                            ? Dashboard(manager: _manager!)
+                            ? GestureDetector(
+                                onDoubleTap: () {
+                                  print(
+                                      "Started Interacting With The App  $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                onTap: () {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                onLongPress: () {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                  // Future.delayed(const Duration(seconds: 1),
+                                  //     () {
+                                  //   _untouchedTimeInSeconds = 120;
+                                  // });
+                                },
+                                onVerticalDragStart: (val) {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                  // Future.delayed(const Duration(seconds: 1),
+                                  //     () {
+                                  //   _untouchedTimeInSeconds = 120;
+                                  // });
+                                },
+                                onHorizontalDragEnd: (val) {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                  // Future.delayed(const Duration(seconds: 1),
+                                  //     () {
+                                  //   _untouchedTimeInSeconds = 120;
+                                  // });
+                                },
+                                onVerticalDragDown: (val) {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                onSecondaryTap: () {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                onSecondaryLongPress: () {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                onTapDown: (value) {
+                                  print(
+                                      "Started Interacting With The App $_untouchedTimeInSeconds");
+                                  _untouchedTimeInSeconds = 120;
+                                  _untouchedTimeInSeconds = 120;
+                                },
+                                child: Dashboard(manager: _manager!),
+                              )
                             : _launchedBefore
                                 ? const Login()
                                 : const Splasher()

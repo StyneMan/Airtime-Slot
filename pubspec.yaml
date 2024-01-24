@@ -76,6 +76,7 @@ dependencies:
   connectivity_plus: ^2.3.0
   pdf: ^3.10.7
   printing: ^5.11.0
+  restart_app: ^1.2.1
 
 dependency_overrides:
   modal_bottom_sheet:

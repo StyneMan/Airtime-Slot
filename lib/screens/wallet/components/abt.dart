@@ -115,33 +115,37 @@ class _BankTransferState extends State<BankTransfer> {
                           ),
                           child: ListView(
                             children: [
-                              Center(
-                                child: TextPoppins(
-                                  text:
-                                      "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
-                                  fontSize: 13,
-                                  align: TextAlign.left,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                              widget.manager.getUser()['has_kyc']
+                                  ? const SizedBox()
+                                  : Center(
+                                      child: TextPoppins(
+                                        text:
+                                            "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
+                                        fontSize: 13,
+                                        align: TextAlign.left,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                               const SizedBox(
                                 height: 8.0,
                               ),
-                              Center(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Get.to(
-                                      KYC(manager: widget.manager),
-                                      transition: Transition.cupertino,
-                                    );
-                                  },
-                                  child: TextPoppins(
-                                    text: "Verify Now",
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
+                              widget.manager.getUser()['has_kyc']
+                                  ? const SizedBox()
+                                  : Center(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Get.to(
+                                            KYC(manager: widget.manager),
+                                            transition: Transition.cupertino,
+                                          );
+                                        },
+                                        child: TextPoppins(
+                                          text: "Verify Now",
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
                               const SizedBox(
                                 height: 32.0,
                               ),

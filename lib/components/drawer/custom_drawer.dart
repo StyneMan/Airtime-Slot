@@ -71,7 +71,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       widget.manager.clearProfile();
       widget.manager.clearEmail();
       _controller.resetAll();
-      Get.offAll(const Login());
+      Get.off(const Login());
 
       // if (mounted) {
       //   // pushNewScreen(

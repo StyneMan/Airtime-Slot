@@ -880,6 +880,8 @@ class _HomeState extends State<Home> {
         _controller.transactions.value = [];
 
         await APIService().fetchTransactions(_token);
+        // await APIService().
+        _controller.getProducts();
 
         Future.delayed(
           const Duration(seconds: 2),

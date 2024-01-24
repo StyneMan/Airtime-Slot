@@ -242,6 +242,35 @@ class TransactionSummary extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 TextPoppins(
+                                  text: "Phone",
+                                  fontSize: 14,
+                                ),
+                                const SizedBox(
+                                  width: 16.0,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${data['transaction_meta']['phone']}",
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            const Divider(),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TextPoppins(
                                   text: "Discount",
                                   fontSize: 14,
                                 ),

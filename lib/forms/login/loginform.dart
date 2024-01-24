@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:data_extra_app/components/dashboard/dashboard.dart';
 import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
@@ -69,6 +70,7 @@ class _LoginFormState extends State<LoginForm> {
         _controller.setUserData(loginMap['data']['user']);
 
         widget.manager.setIsLoggedIn(true);
+        _controller.getProducts();
         _controller.setLoading(false);
 
         Navigator.pushReplacement(
@@ -77,6 +79,10 @@ class _LoginFormState extends State<LoginForm> {
             builder: (context) => Dashboard(manager: widget.manager),
           ),
         );
+
+        // Relaod app here
+        // Trigger app reload
+        // developer.postRestart();
       } else if (response.statusCode == 422) {
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
@@ -86,12 +92,16 @@ class _LoginFormState extends State<LoginForm> {
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        Constants.toast("${error.message}");
+        // Constants.toast("${error.message}");
       }
     } catch (e) {
       _controller.setLoading(false);
       debugPrint("ERR::: $e");
-      Constants.toast("$e");
+      if (e.toString().contains("Failed host lookup")) {
+        Constants.toast("Check your internet connection.");
+      } else {
+        Constants.toast("$e");
+      }
     }
   }
 
