@@ -65,7 +65,7 @@ class MyApiInterceptor implements InterceptorContract {
         _prefs.remove('loggedIn');
 
         //Go to login screen...
-        // Get.off(() => Login());
+        Get.offAll(() => Login());
       }
     } catch (e) {
       debugPrint(e.toString());

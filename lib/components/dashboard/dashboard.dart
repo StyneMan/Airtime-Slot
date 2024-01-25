@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:data_extra_app/components/dialogs/info_dialog.dart';
+import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/connectivity/net_conectivity.dart';
 import 'package:data_extra_app/helper/constants/constants.dart';
 // import 'package:data_extra_app/helper/navigator/auth_controller.dart';
@@ -19,7 +22,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -47,16 +49,122 @@ class _DashboardState extends State<Dashboard> {
       try {
         final _prefs = await SharedPreferences.getInstance();
         final _token = _prefs.getString("accessToken") ?? "";
-        final _reloadedApp = _prefs.getBool("isReloadedApp") ?? false;
+        // final _reloadedApp = _prefs.getBool("isReloadedApp") ?? false;
 
         if (_token.isNotEmpty) {
           APIService().fetchTransactions(_token);
         }
 
-        if (!_reloadedApp) {
-          _prefs.setBool("isReloadedApp", true);
-          Restart.restartApp();
+        // Show Announcement here
+        final _resp = await APIService().announcement(accessToken: _token);
+        print("Announcement Data: ${_resp.body}");
+
+        if (_resp.statusCode == 200) {
+          Map<String, dynamic> _map = jsonDecode(_resp.body);
+
+          if (_map['data']?.length > 0) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return SizedBox(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width * 0.99,
+                  child: Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36),
+                    ),
+                    elevation: 0.0,
+                    backgroundColor: Colors.transparent,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              color: Constants.primaryColor,
+                              padding: const EdgeInsets.all(8.0),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextPoppins(
+                                    text: "General Announcements",
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: const Icon(
+                                      Icons.cancel_outlined,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 24.0),
+                            ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(16.0),
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) =>
+                                  _map['data'][index]['value'] == null
+                                      ? const SizedBox()
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.circle,
+                                              size: 13,
+                                              color: Constants.primaryColor,
+                                            ),
+                                            const SizedBox(width: 16.0),
+                                            TextPoppins(
+                                              text:
+                                                  "${_map['data'][index]['value']}",
+                                              fontSize: 13,
+                                            ),
+                                          ],
+                                        ),
+                              separatorBuilder: (context, index) {
+                                return const Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 4.0),
+                                    Divider(),
+                                    SizedBox(height: 4.0),
+                                  ],
+                                );
+                              },
+                              itemCount: _map['data']?.length,
+                            ),
+                            const SizedBox(height: 24.0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
         }
+
+        // if (!_reloadedApp) {
+        //   _prefs.setBool("isReloadedApp", true);
+        //   // Restart.restartApp();
+        // }
       } catch (e) {
         debugPrint(e.toString());
       }

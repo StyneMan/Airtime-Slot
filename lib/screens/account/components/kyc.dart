@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:data_extra_app/components/dialogs/info_dialog.dart';
-import 'package:data_extra_app/components/drawer/custom_drawer.dart';
 import 'package:data_extra_app/components/inputs/rounded_button.dart';
 import 'package:data_extra_app/components/inputs/rounded_date_picker.dart';
 import 'package:data_extra_app/components/inputs/rounded_dropdown_gender.dart';
@@ -12,13 +11,10 @@ import 'package:data_extra_app/helper/constants/constants.dart';
 import 'package:data_extra_app/helper/preferences/preference_manager.dart';
 import 'package:data_extra_app/helper/service/api_service.dart';
 import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/model/auth/wallet_pin.dart';
 import 'package:data_extra_app/model/error/error.dart';
-import 'package:data_extra_app/model/user/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class KYC extends StatefulWidget {
   final PreferenceManager manager;
@@ -43,7 +39,7 @@ class _KYCState extends State<KYC> {
   final _phoneController = TextEditingController();
   final _dateController = TextEditingController();
 
-  String _gender = "Male";
+  String? _gender = "";
 
   String? _dob;
 
@@ -56,6 +52,7 @@ class _KYCState extends State<KYC> {
         _bvnController.text = "${widget.manager.getUser()['bvn'] ?? ""}";
         _phoneController.text = "${widget.manager.getUser()['phone'] ?? ""}";
         _dateController.text = "${widget.manager.getUser()['dob'] ?? ""}";
+        _gender = "${widget.manager.getUser()['gender'] ?? ""}";
       });
     }
   }
@@ -77,7 +74,7 @@ class _KYCState extends State<KYC> {
 
     Map _payload = {
       "bvn": _bvnController.text,
-      "gender": _gender.toLowerCase(),
+      "gender": "$_gender".toLowerCase(),
       "dob": _dob,
       "name": _nameController.text,
       "phone": _phoneController.text,
@@ -94,16 +91,8 @@ class _KYCState extends State<KYC> {
       _controller.setLoading(false);
       if (response.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(response.body);
-        WalletPINResponse data = WalletPINResponse.fromJson(map);
-        //Update shared preference
-        UserModel? model = data.data;
-        String userData = jsonEncode(model);
-        widget.manager.setUserData(userData);
-        widget.manager.setIsLoggedIn(true);
-        _controller.setUserData('${data.data}');
-
-        Constants.toast("${data.message}");
-
+        debugPrint("KYC MAP:: ${map}");
+        Constants.toast("${map['message']}");
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -112,13 +101,19 @@ class _KYCState extends State<KYC> {
               height: 200,
               width: MediaQuery.of(context).size.width * 0.98,
               child: InfoDialog(
-                message: map['message'],
+                message: "${map['message']}",
               ),
             );
           },
         );
-
         _controller.onInit();
+        // WalletPINResponse data = WalletPINResponse.fromJson(map);
+        //Update shared preference
+        // UserModel? model = data.data;
+        String userData = map['data'];
+        // jsonEncode(model);
+        widget.manager.setUserData(userData);
+        // _controller.setUserData('${data.data}');
       } else {
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
@@ -228,7 +223,8 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedDropdownGender(
-                                  placeholder: "Select your gender",
+                                  placeholder: _gender.toString().capitalize ??
+                                      "Select your gender",
                                   onSelected: onSelected,
                                   items: const ["Male", "Female"],
                                 ),
@@ -334,7 +330,7 @@ class _KYCState extends State<KYC> {
                                   text: "SAVE KYC",
                                   press: () {
                                     if (_formKey.currentState!.validate() &&
-                                        _gender.isNotEmpty) {
+                                        "$_gender".isNotEmpty) {
                                       _saveKYC();
                                     }
                                   },

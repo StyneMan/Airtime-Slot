@@ -487,4 +487,15 @@ class APIService {
       },
     );
   }
+
+  Future<http.Response> announcement({required String accessToken}) async {
+    return await client.get(
+      Uri.parse('${Constants.baseURL}backend/general/announcement'),
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
+      },
+    );
+  }
 }

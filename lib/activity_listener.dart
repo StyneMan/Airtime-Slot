@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityTimeoutListener extends StatefulWidget {
   Widget child;
@@ -23,6 +24,7 @@ class _ActivityTimeoutListenerState extends State<ActivityTimeoutListener> {
   Timer? _timer;
 
   _startTimer() {
+    print("Timer Reset !!!");
     if (_timer != null) {
       _timer?.cancel();
       _timer = null;
@@ -36,7 +38,14 @@ class _ActivityTimeoutListenerState extends State<ActivityTimeoutListener> {
 
   @override
   void initState() {
-    _startTimer();
+    SharedPreferences.getInstance().then((pref) {
+      // _accessToken = pref.getString('accessToken') ?? "";
+      if ((pref.getString('accessToken') ?? "").isNotEmpty) {
+        debugPrint("ACCESS TOKEN PRESENT ...");
+        _startTimer();
+      }
+    });
+
     super.initState();
   }
 

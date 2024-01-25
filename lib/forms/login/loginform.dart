@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
         //Error occurred on login
         Map<String, dynamic> errorMap = jsonDecode(response.body);
         ErrorResponse error = ErrorResponse.fromJson(errorMap);
-        // Constants.toast("${error.message}");
+        Constants.toast("${error.message}");
       }
     } catch (e) {
       _controller.setLoading(false);

@@ -532,7 +532,7 @@ class Account extends StatelessWidget {
       manager.clearEmail();
       _controller.resetAll();
 
-      Get.off(const Login());
+      Get.offAll(const Login());
     } catch (e) {
       Constants.toast(e.toString());
       _controller.setLoading(false);
