@@ -253,19 +253,25 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedInputField(
-                                  hintText: "BVN",
+                                  hintText: "NIN",
                                   icon: const Icon(Icons.person),
                                   onChanged: (value) {},
+                                  isEnabled:
+                                      widget.manager.getUser()['nin'] != null
+                                          ? false
+                                          : true,
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter your bvn';
+                                    if (widget.manager.getUser()['nin'] ==
+                                        null) {
+                                      if (_bvnController.text.isEmpty &&
+                                          value.toString().isEmpty) {
+                                        return 'Provide your NIN since BVN is empty';
+                                      }
                                     }
-                                    if (value.length > 11) {
-                                      return 'Enter a valid bvn';
-                                    }
+
                                     return null;
                                   },
-                                  controller: _bvnController,
+                                  controller: _ninController,
                                   inputType: TextInputType.number,
                                 ),
                               ),
@@ -275,11 +281,29 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedInputField(
-                                  hintText: "NIN",
+                                  hintText: "BVN",
                                   icon: const Icon(Icons.person),
                                   onChanged: (value) {},
-                                  validator: (value) {},
-                                  controller: _ninController,
+                                  isEnabled:
+                                      widget.manager.getUser()['bvn'] != null
+                                          ? false
+                                          : true,
+                                  validator: (value) {
+                                    if (widget.manager.getUser()['bvn'] ==
+                                        null) {
+                                      if (_ninController.text.isEmpty &&
+                                          value.toString().isEmpty) {
+                                        return 'Provide your BVN since NIN is empty';
+                                      }
+
+                                      if (value.length > 11) {
+                                        return 'Enter a valid bvn';
+                                      }
+                                    }
+
+                                    return null;
+                                  },
+                                  controller: _bvnController,
                                   inputType: TextInputType.number,
                                 ),
                               ),

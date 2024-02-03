@@ -254,7 +254,7 @@ class _SignupFormState extends State<SignupForm> {
                 if (value == null || value.isEmpty) {
                   return 'Please type password';
                 }
-                if (value.length < 8) {
+                if (value.length < 6) {
                   return 'Password must be at least 8 characters';
                 }
                 return null;

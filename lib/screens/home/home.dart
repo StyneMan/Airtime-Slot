@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
                   children: [
                     TextSpan(
                       text:
-                          "${_controller.userData.value['name'] ?? "Welcome"}",
+                          "${_controller.userData.value['name'].toString().length > 18 ? _controller.userData.value['name'].toString().substring(0, 15) + "..." ?? "Welcome" : _controller.userData.value['name'] ?? "Welcome"}",
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

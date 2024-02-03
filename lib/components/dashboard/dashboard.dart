@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:data_extra_app/components/dialogs/announcement_dialog.dart';
 import 'package:data_extra_app/components/dialogs/info_dialog.dart';
 import 'package:data_extra_app/components/text_components.dart';
 import 'package:data_extra_app/helper/connectivity/net_conectivity.dart';
@@ -68,47 +69,17 @@ class _DashboardState extends State<Dashboard> {
               barrierDismissible: false,
               builder: (context) {
                 return SizedBox(
-                  height: 300,
+                  height: 360,
                   width: MediaQuery.of(context).size.width * 0.99,
-                  child: Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36),
-                    ),
-                    elevation: 0.0,
-                    backgroundColor: Colors.transparent,
-                    child: SingleChildScrollView(
+                  child: AnnouncementDialog(
+                    title: "General Announcement",
+                    content: SingleChildScrollView(
                       child: Container(
                         color: Colors.white,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              color: Constants.primaryColor,
-                              padding: const EdgeInsets.all(8.0),
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  TextPoppins(
-                                    text: "General Announcements",
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    icon: const Icon(
-                                      Icons.cancel_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
                             const SizedBox(height: 24.0),
                             ListView.separated(
                               shrinkWrap: true,
@@ -121,14 +92,14 @@ class _DashboardState extends State<Dashboard> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             const Icon(
                                               Icons.circle,
                                               size: 13,
                                               color: Constants.primaryColor,
                                             ),
-                                            const SizedBox(width: 16.0),
+                                            const SizedBox(width: 10.0),
                                             TextPoppins(
                                               text:
                                                   "${_map['data'][index]['value']}",

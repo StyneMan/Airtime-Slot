@@ -66,7 +66,6 @@ class _LoginFormState extends State<LoginForm> {
         //Save user data and preferences
         String userData = jsonEncode(loginMap['data']['user']);
         widget.manager.setUserData(userData);
-
         _controller.setUserData(loginMap['data']['user']);
 
         widget.manager.setIsLoggedIn(true);
@@ -176,6 +175,9 @@ class _LoginFormState extends State<LoginForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please type password';
+                }
+                if (value.length < 6) {
+                  return "Minimum of 6 characters required!";
                 }
                 return null;
               },

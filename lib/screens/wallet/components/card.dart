@@ -11,7 +11,7 @@ import 'package:data_extra_app/model/error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:monnify_flutter_sdk_plus/monnify_flutter_sdk_plus.dart';
+import 'package:monnify_payment_sdk/monnify_payment_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CardWallet extends StatefulWidget {
@@ -30,13 +30,20 @@ class _CardWalletState extends State<CardWallet> {
   final _controller = Get.find<StateController>();
   final TextEditingController _amountController = TextEditingController();
 
-  // late MonnifyFlutterSdkPlus? monnify;
+  late Monnify? _monnify;
+
+  _initMonnify() async {
+    _monnify = await Monnify.initialize(
+      applicationMode: ApplicationMode.LIVE,
+      apiKey: Constants.spike,
+      contractCode: Constants.contractCode,
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    MonnifyFlutterSdkPlus.initialize(
-        Constants.spike, Constants.contractCode, ApplicationMode.LIVE);
+    _initMonnify();
   }
 
   @override
@@ -182,27 +189,24 @@ class _CardWalletState extends State<CardWallet> {
 
     debugPrint("SSFB :: ${total}");
 
+    final transaction = TransactionDetails().copyWith(
+      amount: double.parse(filteredAmt) > 2000 ? total += 100 : total,
+      currencyCode: 'NGN',
+      customerName: widget.manager.getUser()['name'],
+      customerEmail: widget.manager.getUser()['email'],
+      paymentReference: reference,
+      paymentDescription: "Topup wallet",
+      // metaData: {"ip": "0.0.0.0", "device": "mobile"},
+      paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
+    );
+
     try {
-      TransactionResponse transactionResponse =
-          await MonnifyFlutterSdkPlus.initializePayment(
-        Transaction(
-          double.parse(filteredAmt) > 2000 ? total += 100 : total,
-          "NGN",
-          widget.manager.getUser()['name'],
-          widget.manager.getUser()['email'],
-          reference,
-          "Topup wallet",
-          metaData: {
-            "ip": "196.168.45.22",
-            "device": "mobile_flutter"
-            // any other info
-          },
-          paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
-        ),
-      );
+      final _response =
+          await _monnify?.initializePayment(transaction: transaction);
+      debugPrint("Monnify Response:: $_response");
     } on PlatformException catch (e, s) {
-      print("Error initializing payment");
-      print(e);
+      debugPrint("Error initializing payment");
+      debugPrint(e.toString());
     }
   }
 
@@ -210,8 +214,6 @@ class _CardWalletState extends State<CardWallet> {
     _controller.setLoading(true);
 
     String amt = _amountController.text.replaceAll("₦ ", "");
-    // String filteredAmt = amt!.replaceAll(",", "");
-    // int price = int.parse(amt.replaceAll(",", ""));
 
     Map _payload = {
       "amount": amt.replaceAll(",", ""),

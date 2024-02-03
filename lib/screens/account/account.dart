@@ -7,7 +7,6 @@ import 'package:data_extra_app/helper/state/state_controller.dart';
 import 'package:data_extra_app/screens/account/components/personal_info.dart';
 import 'package:data_extra_app/screens/account/components/security.dart';
 import 'package:data_extra_app/screens/auth/login/login.dart';
-import 'package:data_extra_app/screens/welcome/welcome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +19,6 @@ class Account extends StatelessWidget {
   final PreferenceManager manager;
   Account({Key? key, required this.manager}) : super(key: key);
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = Get.find<StateController>();
 
   @override

@@ -15,13 +15,11 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:monnify_flutter_sdk_plus/monnify_flutter_sdk_plus.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:monnify_payment_sdk/monnify_payment_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/card_details.dart';
 import 'pay_wallet.dart';
-import 'payment_success.dart';
 
 class ConfirmTransaction extends StatefulWidget {
   final GuestTransactionModel model;
@@ -45,23 +43,33 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
   String _paymentMethod = "Card";
   PreferenceManager? _manager;
 
+  late Monnify? _monnify;
+
   void onSelected(String paymentMethod) {
     _paymentMethod = paymentMethod;
+  }
+
+  _initMonnify() async {
+    _monnify = await Monnify.initialize(
+      applicationMode: ApplicationMode.LIVE,
+      apiKey: Constants.spike,
+      contractCode: Constants.contractCode,
+    );
   }
 
   @override
   void initState() {
     super.initState();
-
+    _initMonnify();
     _manager = PreferenceManager(context);
     // plugin.initialize(
     //     publicKey: "pk_test_e4a4319c62eb54ce99d8e4cbde2b46c372c3cb0b");
 
-    MonnifyFlutterSdkPlus.initialize(
-      Constants.spike,
-      Constants.contractCode,
-      ApplicationMode.LIVE,
-    );
+    // MonnifyFlutterSdkPlus.initialize(
+    //   Constants.spike,
+    //   Constants.contractCode,
+    //   ApplicationMode.LIVE,
+    // );
   }
 
   _payWallet() async {
@@ -105,25 +113,38 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
   Future<void> _initPayment(String reference) async {
     // String? amt = _amountController.text.replaceAll("₦ ", "");
     String filteredAmt = widget.model.amount;
+    final paymentReference = 'YOUR PAYMENT REFERENCE';
+
+    // final transaction = TransactionDetails().copyWith(
+    //   amount: double.parse(filteredAmt),
+    //   currencyCode: 'NGN',
+    //   customerName: '${widget.manager.getUser()['name']}',
+    //   customerEmail: 'custo.mer@email.com',
+    //   paymentReference: paymentReference,
+    //   // metaData: {"ip": "0.0.0.0", "device": "mobile"},
+    //   // paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER, PaymentMethod.USSD],
+    //   /*incomeSplitConfig: [SubAccountDetails("MFY_SUB_319452883968", 10.5, 500, true),
+    //       SubAccountDetails("MFY_SUB_259811283666", 10.5, 1000, false)]*/
+    // );
 
     try {
-      TransactionResponse transactionResponse =
-          await MonnifyFlutterSdkPlus.initializePayment(
-        Transaction(
-          double.parse(filteredAmt),
-          "NGN",
-          " widget.manager.getUser()['name']",
-          "widget.manager.getUser()['email']",
-          reference,
-          "Payment card",
-          metaData: {
-            "ip": "196.168.45.22",
-            "device": "mobile_flutter"
-            // any other info
-          },
-          paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
-        ),
-      );
+      // TransactionResponse transactionResponse =
+      //     await MonnifyFlutterSdkPlus.initializePayment(
+      //   Transaction(
+      //     double.parse(filteredAmt),
+      //     "NGN",
+      //     " widget.manager.getUser()['name']",
+      //     "widget.manager.getUser()['email']",
+      //     reference,
+      //     "Payment card",
+      //     metaData: {
+      //       "ip": "196.168.45.22",
+      //       "device": "mobile_flutter"
+      //       // any other info
+      //     },
+      //     paymentMethods: [PaymentMethod.CARD, PaymentMethod.ACCOUNT_TRANSFER],
+      //   ),
+      // );
     } on PlatformException catch (e, s) {
       print("Error initializing payment");
       print(e);

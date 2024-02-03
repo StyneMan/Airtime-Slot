@@ -9,11 +9,15 @@ import 'package:data_extra_app/helper/theme/app_theme.dart';
 import 'package:data_extra_app/screens/auth/login/login.dart';
 import 'package:data_extra_app/screens/welcome/splasher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:data_extra_app/trigger_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'components/dashboard/dashboard.dart';
+import 'components/dialogs/action_dialog.dart';
+import 'components/dialogs/fixed_dialog.dart';
 import 'helper/connectivity/net_conectivity.dart';
 import 'helper/constants/constants.dart';
 import 'helper/preferences/preference_manager.dart';
@@ -206,12 +210,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       () => _controller.hasInternetAccess.value == false
           ? GetMaterialApp(
               debugShowCheckedModeBanner: false,
-              home: const NoInternet(),
+              home: const TriggerController(
+                child: NoInternet(),
+              ),
               title: 'Data Extra',
               theme: appTheme,
             )
           : ActivityTimeoutListener(
-              duration: const Duration(seconds: 120),
+              duration: const Duration(seconds: 180),
               onTimeout: () {
                 print("LOG OUT NOW !!!");
                 _logoutUser();
@@ -240,13 +246,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       debugShowCheckedModeBanner: false,
                       title: 'Data Extra',
                       theme: appTheme,
-                      home: _controller.hasInternetAccess.value
-                          ? _token.isNotEmpty
-                              ? Dashboard(manager: _manager!)
-                              : _launchedBefore
-                                  ? const Login()
-                                  : const Splasher()
-                          : const NoInternet(),
+                      home: TriggerController(
+                        child: _controller.hasInternetAccess.value
+                            ? _token.isNotEmpty
+                                ? Dashboard(manager: _manager!)
+                                : _launchedBefore
+                                    ? const Login()
+                                    : const Splasher()
+                            : const NoInternet(),
+                      ),
                     );
                   }
                 },

@@ -82,7 +82,9 @@ class _BankTransferState extends State<BankTransfer> {
                       topRight: Radius.circular(36.0),
                     ),
                   ),
-                  child: (_controller.userData.value['accounts'] ?? []).isEmpty
+                  child: (_controller.userData.value['accounts'] ?? [])
+                              .isEmpty &&
+                          (_controller.userData.value['has_kyc'] == true)
                       ? Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -106,18 +108,49 @@ class _BankTransferState extends State<BankTransfer> {
                             ],
                           ),
                         )
-                      : Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(
-                            left: 16.0,
-                            right: 16.0,
-                            bottom: 10.0,
-                          ),
-                          child: ListView(
-                            children: [
-                              widget.manager.getUser()['has_kyc']
-                                  ? const SizedBox()
-                                  : Center(
+                      : (_controller.userData.value['accounts'] ?? [])
+                                  .isEmpty &&
+                              (_controller.userData.value['has_kyc'] == false)
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextPoppins(
+                                    text:
+                                        "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
+                                    fontSize: 13,
+                                    align: TextAlign.center,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  const SizedBox(
+                                    height: 16.0,
+                                  ),
+                                  RoundedButton(
+                                    text: "Verify Account",
+                                    press: () {
+                                      Get.to(
+                                        KYC(manager: widget.manager),
+                                        transition: Transition.cupertino,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                                bottom: 10.0,
+                                top: 10.0,
+                              ),
+                              child: Center(
+                                child: ListView(
+                                  children: [
+                                    Center(
                                       child: TextPoppins(
                                         text:
                                             "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
@@ -127,12 +160,10 @@ class _BankTransferState extends State<BankTransfer> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                              const SizedBox(
-                                height: 8.0,
-                              ),
-                              widget.manager.getUser()['has_kyc']
-                                  ? const SizedBox()
-                                  : Center(
+                                    const SizedBox(
+                                      height: 8.0,
+                                    ),
+                                    Center(
                                       child: ElevatedButton(
                                         onPressed: () {
                                           Get.to(
@@ -146,166 +177,178 @@ class _BankTransferState extends State<BankTransfer> {
                                         ),
                                       ),
                                     ),
-                              const SizedBox(
-                                height: 32.0,
-                              ),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(1.0),
-                                itemBuilder: (context, index) => Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextPoppins(
-                                      text: "Bank",
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Clipboard.setData(
-                                          ClipboardData(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['bank_name']}",
-                                          ),
-                                        );
-                                        Constants.toast(
-                                            "Bank name copied to clipboard");
-                                      },
-                                      child: Row(
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      padding: const EdgeInsets.all(1.0),
+                                      itemBuilder: (context, index) => Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          TextPoppins(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['bank_name']}",
-                                            fontSize: 16,
+                                          const SizedBox(
+                                            height: 24.0,
                                           ),
-                                          const Icon(Icons.copy)
+                                          TextPoppins(
+                                            text: "Bank",
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Clipboard.setData(
+                                                ClipboardData(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['bank_name']}",
+                                                ),
+                                              );
+                                              Constants.toast(
+                                                  "Bank name copied to clipboard");
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                TextPoppins(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['bank_name'] ?? ""}",
+                                                  fontSize: 16,
+                                                ),
+                                                const Icon(Icons.copy)
+                                              ],
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              backgroundColor:
+                                                  Constants.accentColor,
+                                              foregroundColor: Colors.grey,
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          TextPoppins(
+                                            text: "Account Number",
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Clipboard.setData(
+                                                ClipboardData(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['account_number']}",
+                                                ),
+                                              );
+                                              Constants.toast(
+                                                  "Account number copied to clipboard");
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                TextPoppins(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['account_number']}",
+                                                  fontSize: 16,
+                                                ),
+                                                const Icon(Icons.copy)
+                                              ],
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              backgroundColor:
+                                                  Constants.accentColor,
+                                              foregroundColor: Colors.grey,
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 16.0,
+                                          ),
+                                          TextPoppins(
+                                            text: "Account Name",
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Clipboard.setData(
+                                                ClipboardData(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['account_name']}",
+                                                ),
+                                              );
+                                              Constants.toast(
+                                                  "Account name copied to clipboard");
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                TextPoppins(
+                                                  text:
+                                                      "${widget.manager.getUser()['accounts'][index]['account_name']}",
+                                                  fontSize: 16,
+                                                ),
+                                                const Icon(Icons.copy)
+                                              ],
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0)),
+                                              backgroundColor:
+                                                  Constants.accentColor,
+                                              foregroundColor: Colors.grey,
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      style: TextButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        backgroundColor: Constants.accentColor,
-                                        foregroundColor: Colors.grey,
-                                        padding: const EdgeInsets.all(16.0),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    TextPoppins(
-                                      text: "Account Number",
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Clipboard.setData(
-                                          ClipboardData(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['account_number']}",
-                                          ),
-                                        );
-                                        Constants.toast(
-                                            "Account number copied to clipboard");
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                      itemCount: _controller.userData
+                                              .value['accounts']?.length ??
+                                          0,
+                                      separatorBuilder: (context, index) =>
+                                          const Column(
                                         children: [
-                                          TextPoppins(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['account_number']}",
-                                            fontSize: 16,
+                                          SizedBox(
+                                            height: 24.0,
                                           ),
-                                          const Icon(Icons.copy)
+                                          Divider(),
                                         ],
                                       ),
-                                      style: TextButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0)),
-                                        backgroundColor: Constants.accentColor,
-                                        foregroundColor: Colors.grey,
-                                        padding: const EdgeInsets.all(16.0),
-                                      ),
                                     ),
-                                    const SizedBox(
-                                      height: 16.0,
-                                    ),
-                                    TextPoppins(
-                                      text: "Account Name",
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Clipboard.setData(
-                                          ClipboardData(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['account_name']}",
-                                          ),
-                                        );
-                                        Constants.toast(
-                                            "Account name copied to clipboard");
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          TextPoppins(
-                                            text:
-                                                "${widget.manager.getUser()['accounts'][index]['account_name']}",
-                                            fontSize: 16,
-                                          ),
-                                          const Icon(Icons.copy)
-                                        ],
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0)),
-                                        backgroundColor: Constants.accentColor,
-                                        foregroundColor: Colors.grey,
-                                        padding: const EdgeInsets.all(16.0),
-                                      ),
-                                    ),
+                                    const SizedBox(height: 56.0),
                                   ],
                                 ),
-                                itemCount: _controller
-                                        .userData.value['accounts']?.length ??
-                                    0,
-                                separatorBuilder: (context, index) =>
-                                    const Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 24.0,
-                                    ),
-                                    Divider(),
-                                    SizedBox(
-                                      height: 12.0,
-                                    ),
-                                  ],
-                                ),
                               ),
-                              const SizedBox(height: 24.0),
-                            ],
-                          ),
-                        ),
+                            ),
                 ),
               ),
               (widget.manager.getUser()['accounts'] ?? []).isEmpty
