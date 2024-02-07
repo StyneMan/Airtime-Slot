@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:flutter/material.dart';
 
 class GlassCard extends StatefulWidget {

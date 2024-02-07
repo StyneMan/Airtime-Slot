@@ -1,18 +1,18 @@
-import 'package:data_extra_app/components/drawer/custom_drawer.dart';
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/model/transactions/user/user_transaction.dart';
-import 'package:data_extra_app/screens/history/history.dart';
-import 'package:data_extra_app/screens/services/airtime/airtime.dart';
-import 'package:data_extra_app/screens/services/airtime/airtime_cash.dart';
-import 'package:data_extra_app/screens/services/data/internet_data.dart';
-import 'package:data_extra_app/screens/services/electricity/electricity.dart';
-import 'package:data_extra_app/screens/services/television/television.dart';
-import 'package:data_extra_app/screens/wallet/components/bank_option.dart';
-import 'package:data_extra_app/screens/wallet/fund_wallet.dart';
+import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/transactions/user/user_transaction.dart';
+import 'package:airtimeslot_app/screens/history/history.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime_cash.dart';
+import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
+import 'package:airtimeslot_app/screens/services/electricity/electricity.dart';
+import 'package:airtimeslot_app/screens/services/television/television.dart';
+import 'package:airtimeslot_app/screens/wallet/components/bank_option.dart';
+import 'package:airtimeslot_app/screens/wallet/fund_wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -187,10 +187,12 @@ class _HomeState extends State<Home> {
               ? const LinearProgressIndicator()
               : ListView(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
+                      borderRadius: BorderRadius.circular(14.0),
                       child: Stack(
                         children: [
                           Center(

@@ -1,11 +1,11 @@
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/model/drawer/drawermodel.dart';
-import 'package:data_extra_app/screens/account/account.dart';
-import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/drawer/drawermodel.dart';
+import 'package:airtimeslot_app/screens/account/account.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +35,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/meal_plan_drawer.svg',
           title: 'Website',
           isAction: true,
-          url: "https://www.dataextra.ng/",
+          url: "https://www.airtimeslot.com/",
         ),
         DrawerModel(
           icon: 'assets/images/maccount_drawer.svg',
@@ -49,7 +49,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: 'assets/images/contact_drawer.svg',
           title: 'Contact us',
           isAction: true,
-          url: "https://www.dataextra.ng/contact",
+          url: "https://www.airtimeslot.com/",
         ),
       ];
     });
@@ -72,15 +72,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
       widget.manager.clearEmail();
       _controller.resetAll();
       Get.off(const Login());
-
-      // if (mounted) {
-      //   // pushNewScreen(
-      //   //   context,
-      //   //   screen: const LogoutLoader(),
-      //   //   withNavBar: false, // OPTIONAL VALUE. True by default.
-      //   //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      //   // );
-      // }
     } catch (e) {
       Constants.toast(e.toString());
       _controller.setLoading(false);

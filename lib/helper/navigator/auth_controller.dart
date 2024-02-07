@@ -1,7 +1,7 @@
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/main.dart';
-import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/main.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

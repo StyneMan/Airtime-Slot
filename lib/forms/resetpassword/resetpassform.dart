@@ -1,6 +1,6 @@
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/screens/auth/resetsuccess/resetsuccess.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/screens/auth/resetsuccess/resetsuccess.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

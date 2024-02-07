@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/screens/services/airtime/airtime.dart';
-import 'package:data_extra_app/screens/services/airtime/airtime_cash.dart';
-import 'package:data_extra_app/screens/services/airtime_swap.dart';
-import 'package:data_extra_app/screens/services/bill_payment.dart';
-import 'package:data_extra_app/screens/services/data/internet_data.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime.dart';
+import 'package:airtimeslot_app/screens/services/airtime/airtime_cash.dart';
+import 'package:airtimeslot_app/screens/services/airtime_swap.dart';
+import 'package:airtimeslot_app/screens/services/bill_payment.dart';
+import 'package:airtimeslot_app/screens/services/data/internet_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

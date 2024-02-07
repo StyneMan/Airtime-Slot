@@ -3,21 +3,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:data_extra_app/activity_listener.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/theme/app_theme.dart';
-import 'package:data_extra_app/screens/auth/login/login.dart';
-import 'package:data_extra_app/screens/welcome/splasher.dart';
+import 'package:airtimeslot_app/activity_listener.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/theme/app_theme.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
+import 'package:airtimeslot_app/screens/welcome/splasher.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:data_extra_app/trigger_controller.dart';
+import 'package:airtimeslot_app/trigger_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'components/dashboard/dashboard.dart';
-import 'components/dialogs/action_dialog.dart';
-import 'components/dialogs/fixed_dialog.dart';
 import 'helper/connectivity/net_conectivity.dart';
 import 'helper/constants/constants.dart';
 import 'helper/preferences/preference_manager.dart';
@@ -213,7 +210,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               home: const TriggerController(
                 child: NoInternet(),
               ),
-              title: 'Data Extra',
+              title: 'Airtime Slot',
               theme: appTheme,
             )
           : ActivityTimeoutListener(
@@ -241,7 +238,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     final String _token = d.getString("accessToken") ?? "";
                     final bool _launchedBefore =
                         d.getBool("launchedBefore") ?? false;
-                    print("PREF STA::: >>> ${d.getBool("launchedBefore")}");
+                    // print("PREF STA::: >>> ${d.getBool("launchedBefore")}");
                     return GetMaterialApp(
                       debugShowCheckedModeBanner: false,
                       title: 'Data Extra',

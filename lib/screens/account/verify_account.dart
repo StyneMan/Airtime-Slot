@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:data_extra_app/components/dashboard/dashboard.dart';
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/model/auth/otp_resend.dart';
-import 'package:data_extra_app/model/error/error.dart';
-import 'package:data_extra_app/screens/auth/account_created/successscreen.dart';
-import 'package:data_extra_app/screens/wallet/set_wallet_pin.dart';
+import 'package:airtimeslot_app/components/dashboard/dashboard.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/model/auth/otp_resend.dart';
+import 'package:airtimeslot_app/model/error/error.dart';
+import 'package:airtimeslot_app/screens/auth/account_created/successscreen.dart';
+import 'package:airtimeslot_app/screens/wallet/set_wallet_pin.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';

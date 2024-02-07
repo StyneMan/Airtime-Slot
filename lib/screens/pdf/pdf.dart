@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';

@@ -1,4 +1,4 @@
-import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog extends StatelessWidget {

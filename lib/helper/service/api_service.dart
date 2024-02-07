@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:data_extra_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;

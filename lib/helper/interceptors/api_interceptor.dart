@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';

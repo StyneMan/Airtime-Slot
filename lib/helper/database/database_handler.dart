@@ -1,4 +1,4 @@
-import 'package:data_extra_app/model/transactions/guest_transaction_model.dart';
+import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart';
 import 'package:path/path.dart' as Path;
 import 'package:sqflite/sqflite.dart';
 

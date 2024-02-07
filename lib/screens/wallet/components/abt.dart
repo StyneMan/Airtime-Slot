@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:data_extra_app/components/dialogs/info_dialog.dart';
-import 'package:data_extra_app/components/inputs/rounded_button.dart';
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/screens/account/components/kyc.dart';
+import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/account/components/kyc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -362,7 +362,7 @@ class _BankTransferState extends State<BankTransfer> {
                         text: "Share",
                         press: () {
                           Share.share('${_share()}',
-                              subject: 'DataExtra Bank Detail');
+                              subject: 'Airtimeslot Bank Detail');
                         },
                       ),
                     ),

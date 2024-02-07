@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/main.dart';
-import 'package:data_extra_app/screens/Home/home.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/main.dart';
+import 'package:airtimeslot_app/screens/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -68,7 +68,7 @@ class StateController extends GetxController {
   var showInfoUpdateDialog = false.obs;
   var accessToken = "".obs;
   String _token = "";
-  RxString appVersion = "2.0".obs;
+  RxString appVersion = "3.0".obs;
   RxString androidAppUrl = "".obs;
 
   RxString dbItem = 'Awaiting data'.obs;
@@ -76,10 +76,6 @@ class StateController extends GetxController {
   var tabController = PersistentTabController(initialIndex: 0);
 
   PackageInfo? packageInfo;
-
-  // init() async {
-  //   packageInfo = await PackageInfo.fromPlatform();
-  // }
 
   getProducts() async {
     try {

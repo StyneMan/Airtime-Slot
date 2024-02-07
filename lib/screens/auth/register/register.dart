@@ -1,9 +1,9 @@
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/forms/signup/signupform.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
-import 'package:data_extra_app/screens/auth/login/login.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/forms/signup/signupform.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -68,7 +68,7 @@ class _RegisterState extends State<Register> {
                           const SizedBox(
                             height: 10.0,
                           ),
-                          Image.asset("assets/images/cta_image.png"),
+                          Image.asset("assets/images/welcome.jpeg"),
                           const SizedBox(
                             height: 16.0,
                           ),

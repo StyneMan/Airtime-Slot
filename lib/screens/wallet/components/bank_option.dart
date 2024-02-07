@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:data_extra_app/components/dialogs/info_dialog.dart';
-import 'package:data_extra_app/components/inputs/rounded_button.dart';
-import 'package:data_extra_app/components/inputs/rounded_dropdown_bank.dart';
-import 'package:data_extra_app/components/inputs/rounded_input_field.dart';
-import 'package:data_extra_app/components/inputs/rounded_input_money.dart';
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/banks/banks.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/service/api_service.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_dropdown_bank.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
+import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/banks/banks.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/service/api_service.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';

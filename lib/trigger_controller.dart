@@ -1,5 +1,5 @@
-import 'package:data_extra_app/components/dialogs/action_dialog.dart';
-import 'package:data_extra_app/components/dialogs/fixed_dialog.dart';
+import 'package:airtimeslot_app/components/dialogs/action_dialog.dart';
+import 'package:airtimeslot_app/components/dialogs/fixed_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';

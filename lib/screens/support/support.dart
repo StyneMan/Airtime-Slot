@@ -1,7 +1,7 @@
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
-import 'package:data_extra_app/helper/state/state_controller.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -59,7 +59,7 @@ class _SupportState extends State<Support> {
     super.initState();
     emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'dataextraservices@gmail.com',
+      path: 'support@airtimeslot.com',
       query:
           encodeQueryParameters(<String, String>{'subject': 'Contact Support'}),
     );

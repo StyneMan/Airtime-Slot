@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:data_extra_app/components/drawer/custom_drawer.dart';
-import 'package:data_extra_app/components/shimmer/banner_shimmer.dart';
-import 'package:data_extra_app/components/text_components.dart';
-import 'package:data_extra_app/helper/constants/constants.dart';
-import 'package:data_extra_app/helper/preferences/preference_manager.dart';
+import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
+import 'package:airtimeslot_app/components/shimmer/banner_shimmer.dart';
+import 'package:airtimeslot_app/components/text_components.dart';
+import 'package:airtimeslot_app/helper/constants/constants.dart';
+import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';

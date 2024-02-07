@@ -1,4 +1,4 @@
-import 'package:data_extra_app/model/user/user_model.dart';
+import 'package:airtimeslot_app/model/user/user_model.dart';
 
 class WalletPINResponse {
   String? message;
