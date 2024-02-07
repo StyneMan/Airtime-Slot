@@ -32,7 +32,7 @@ Future<Uint8List> makePdf(var data) async {
                     child: Image(imageLogo),
                   ),
                   Text(
-                    "Data Extra ",
+                    "Airtime Slot ",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

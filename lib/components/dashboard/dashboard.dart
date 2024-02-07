@@ -100,10 +100,12 @@ class _DashboardState extends State<Dashboard> {
                                               color: Constants.primaryColor,
                                             ),
                                             const SizedBox(width: 10.0),
-                                            TextPoppins(
-                                              text:
-                                                  "${_map['data'][index]['value']}",
-                                              fontSize: 13,
+                                            Expanded(
+                                              child: TextPoppins(
+                                                text:
+                                                    "${_map['data'][index]['value']}",
+                                                fontSize: 13,
+                                              ),
                                             ),
                                           ],
                                         ),

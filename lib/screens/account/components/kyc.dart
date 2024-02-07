@@ -313,7 +313,7 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedPhoneField(
-                                  hintText: "BVN Phone",
+                                  hintText: "Phone",
                                   onChanged: (value) {},
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
