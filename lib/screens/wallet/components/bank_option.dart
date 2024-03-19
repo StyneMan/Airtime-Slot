@@ -36,12 +36,12 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
   bool shouldContinue = false;
 
   _onSelected(val) {
-    var _mBank = banks.firstWhere(
+    var _mBank = _controller.banks.value.where(
       (element) => element['name'] == val,
     );
     setState(() {
       _selectedBank = val;
-      _selectedBankCode = _mBank['code'];
+      _selectedBankCode = _mBank.first['code'];
     });
   }
 
@@ -133,7 +133,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedDropdownBank(
-                                  items: banks,
+                                  items: _controller.banks.value,
                                   onSelected: _onSelected,
                                   placeholder: "Select Bank",
                                   validator: (val) {
@@ -332,6 +332,12 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
       if (resp.statusCode == 200) {
         Map<String, dynamic> map = jsonDecode(resp.body);
 
+        setState(() {
+          _accNumController.text = "";
+          _amountController.text = "";
+          _selectedBankCode = "";
+        });
+
         _controller.onInit();
 
         showDialog(
@@ -343,6 +349,7 @@ class _WithdrawToBnnkState extends State<WithdrawToBnnk> {
               width: MediaQuery.of(context).size.width * 0.98,
               child: InfoDialog(
                 message: map['message'],
+                goBack: true,
               ),
             );
           },

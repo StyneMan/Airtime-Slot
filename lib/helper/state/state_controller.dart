@@ -31,6 +31,7 @@ class StateController extends GetxController {
 
   var emptyLogic = "".obs;
 
+  var banks = [].obs;
   var products = [].obs;
   var internetData = {}.obs;
   var airtimeData = {}.obs;
@@ -97,6 +98,25 @@ class StateController extends GetxController {
               else if (elem['name'].toString().toLowerCase() == "cable_tv")
                 {cableData.value = elem}
             });
+      }
+
+      final response2 = await APIService().getBanks();
+      debugPrint("BANK RESP:: ${response2.body}");
+      setHasInternet(true);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = jsonDecode(response2.body);
+        banks.value = map['data'];
+
+        // map['data']?.forEach((elem) => {
+        //       if (elem['name'].toString().toLowerCase() == "airtime")
+        //         {airtimeData.value = elem}
+        //       else if (elem['name'].toString().toLowerCase() == "data")
+        //         {internetData.value = elem}
+        //       else if (elem['name'].toString().toLowerCase() == "electricity")
+        //         {electricityData.value = elem}
+        //       else if (elem['name'].toString().toLowerCase() == "cable_tv")
+        //         {cableData.value = elem}
+        //     });
       }
     } on SocketException {
       Constants.toast("No Internet Connection!");

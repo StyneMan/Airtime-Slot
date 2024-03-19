@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:airtimeslot_app/components/dialogs/announcement_dialog.dart';
-import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/connectivity/net_conectivity.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
@@ -80,10 +79,9 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 24.0),
                             ListView.separated(
                               shrinkWrap: true,
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(2.0),
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) =>
                                   _map['data'][index]['value'] == null
@@ -122,7 +120,6 @@ class _DashboardState extends State<Dashboard> {
                               },
                               itemCount: _map['data']?.length,
                             ),
-                            const SizedBox(height: 24.0),
                           ],
                         ),
                       ),

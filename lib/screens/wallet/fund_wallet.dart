@@ -174,7 +174,7 @@ class _FundWalletState extends State<FundWallet>
                                             ),
                                             TextPoppins(
                                               text:
-                                                  "Pay with local bank transfer",
+                                                  "Pay with Automated Bank Transfer",
                                               fontSize: 13,
                                             ),
                                           ],

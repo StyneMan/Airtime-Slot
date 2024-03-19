@@ -498,4 +498,14 @@ class APIService {
       },
     );
   }
+
+  Future<http.Response> getBanks() async {
+    return await client.get(
+      Uri.parse('${Constants.baseURL}backend/banks'),
+      headers: {
+        "Content-type": "application/json",
+        "HTTP-REQUEST-SOURCE": "mobile:${_controller.appVersion.value}",
+      },
+    );
+  }
 }

@@ -118,7 +118,7 @@ class _BankTransferState extends State<BankTransfer> {
                                 children: [
                                   TextPoppins(
                                     text:
-                                        "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
+                                        " In line with CBN directive, to continue funding your wallet with the virtual account below, kindly update your KYC. \n\nPlease note that you can also make use of other deposit options if you don't want to update your KYC yet.",
                                     fontSize: 13,
                                     align: TextAlign.center,
                                     color: Colors.black,
@@ -153,7 +153,7 @@ class _BankTransferState extends State<BankTransfer> {
                                     Center(
                                       child: TextPoppins(
                                         text:
-                                            "In line with a CBN directive to every Website/App  in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
+                                            "In line with a CBN directive to every Website/App in Nigeria, to continue using monnify virtual account, please update your KYC here \n\nPlease note that you can also make use of other means of wallet funding if you don't want to update your KYC yet.",
                                         fontSize: 13,
                                         align: TextAlign.left,
                                         color: Colors.black,
@@ -172,7 +172,7 @@ class _BankTransferState extends State<BankTransfer> {
                                           );
                                         },
                                         child: TextPoppins(
-                                          text: "Verify Now",
+                                          text: "Update Now",
                                           fontSize: 13,
                                         ),
                                       ),

@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:airtimeslot_app/components/dialogs/info_dialog.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_date_picker.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_dropdown_gender.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
-import 'package:airtimeslot_app/components/inputs/rounded_phone_field.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
@@ -33,13 +31,9 @@ class _KYCState extends State<KYC> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
   final _bvnController = TextEditingController();
-  final _ninController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _dateController = TextEditingController();
 
-  String? _gender = "";
+  String _type = "BVN";
 
   String? _dob;
 
@@ -48,23 +42,16 @@ class _KYCState extends State<KYC> {
     super.initState();
     if (widget.manager.getUser()['has_kyc']) {
       setState(() {
-        _nameController.text = "${widget.manager.getUser()['name'] ?? ""}";
-        _bvnController.text = "${widget.manager.getUser()['bvn'] ?? ""}";
-        _phoneController.text = "${widget.manager.getUser()['phone'] ?? ""}";
-        _dateController.text = "${widget.manager.getUser()['dob'] ?? ""}";
-        _gender = "${widget.manager.getUser()['gender'] ?? ""}";
+        _bvnController.text =
+            "${widget.manager.getUser()['bvn'] ?? widget.manager.getUser()['nin'] ?? ""}";
       });
     }
   }
 
-  void onSelected(String gender) {
-    _gender = gender;
-  }
-
-  void onDateSelected(String date) {
-    debugPrint("DATE SELECTED:: $date");
-    _dateController.text = date;
-    _dob = date;
+  void onSelected(String type) {
+    setState(() {
+      _type = type;
+    });
   }
 
   _saveKYC() async {
@@ -72,14 +59,7 @@ class _KYCState extends State<KYC> {
     // final prefs = await SharedPreferences.getInstance();
     // String _token = prefs.getString("accessToken") ?? "";
 
-    Map _payload = {
-      "bvn": _bvnController.text,
-      "gender": "$_gender".toLowerCase(),
-      "dob": _dob,
-      "name": _nameController.text,
-      "phone": _phoneController.text,
-      "nin": _ninController.text
-    };
+    Map _payload = {"type": _type.toLowerCase(), "value": _bvnController.text};
 
     _controller.setLoading(true);
 
@@ -202,49 +182,11 @@ class _KYCState extends State<KYC> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedInputField(
-                                  hintText: "Full name",
-                                  icon: const Icon(Icons.person),
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Enter your full name';
-                                    }
-                                    return null;
-                                  },
-                                  controller: _nameController,
-                                  inputType: TextInputType.name,
-                                  capitalization: TextCapitalization.words,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedDropdownGender(
-                                  placeholder: _gender.toString().capitalize ??
-                                      "Select your gender",
+                                  placeholder: _type.toString().capitalize ??
+                                      "Select ID type",
                                   onSelected: onSelected,
-                                  items: const ["Male", "Female"],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedDatePicker(
-                                  labelText: "Date of birth",
-                                  hintText: _dob ?? "Date of birth",
-                                  onSelected: onDateSelected,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Enter your date of birth';
-                                    }
-                                    return null;
-                                  },
-                                  controller: _dateController,
+                                  items: const ["NIN", "BVN"],
                                 ),
                               ),
                               const SizedBox(
@@ -253,52 +195,15 @@ class _KYCState extends State<KYC> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16.0),
                                 child: RoundedInputField(
-                                  hintText: "NIN",
+                                  hintText: _type.toLowerCase() == "nin"
+                                      ? "Enter your NIN"
+                                      : "Enter your BVN",
                                   icon: const Icon(Icons.person),
                                   onChanged: (value) {},
-                                  isEnabled:
-                                      widget.manager.getUser()['nin'] != null
-                                          ? false
-                                          : true,
                                   validator: (value) {
-                                    if (widget.manager.getUser()['nin'] ==
-                                        null) {
-                                      if (_bvnController.text.isEmpty &&
-                                          value.toString().isEmpty) {
-                                        return 'Provide your NIN since BVN is empty';
-                                      }
-                                    }
-
-                                    return null;
-                                  },
-                                  controller: _ninController,
-                                  inputType: TextInputType.number,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 12.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedInputField(
-                                  hintText: "BVN",
-                                  icon: const Icon(Icons.person),
-                                  onChanged: (value) {},
-                                  isEnabled:
-                                      widget.manager.getUser()['bvn'] != null
-                                          ? false
-                                          : true,
-                                  validator: (value) {
-                                    if (widget.manager.getUser()['bvn'] ==
-                                        null) {
-                                      if (_ninController.text.isEmpty &&
-                                          value.toString().isEmpty) {
-                                        return 'Provide your BVN since NIN is empty';
-                                      }
-
-                                      if (value.length > 11) {
-                                        return 'Enter a valid bvn';
-                                      }
+                                    if (value == null ||
+                                        value.toString().isEmpty) {
+                                      return 'Provide your ${_type.toLowerCase() == "nin" ? "NIN" : "BVN"} number';
                                     }
 
                                     return null;
@@ -309,39 +214,6 @@ class _KYCState extends State<KYC> {
                               ),
                               const SizedBox(
                                 height: 12.0,
-                              ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: RoundedPhoneField(
-                                  hintText: "Phone",
-                                  onChanged: (value) {},
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your bvn phone number';
-                                    }
-                                    if (!RegExp('^(?:[+0]234)?[0-9]{10}')
-                                        .hasMatch(value)) {
-                                      return 'Please enter a valid phone number';
-                                    }
-                                    if (value.length < 10) {
-                                      return 'Phone number not valid';
-                                    }
-                                    return null;
-                                  },
-                                  inputType: TextInputType.phone,
-                                  controller: _phoneController,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8.0,
-                              ),
-                              TextPoppins(
-                                text:
-                                    "Note: Ensure the provided information matches the information supplied during your BVN registration",
-                                color: Colors.black54,
-                                fontSize: 13,
-                                align: TextAlign.left,
-                                fontWeight: FontWeight.w400,
                               ),
                               const SizedBox(
                                 height: 32.0,
@@ -354,7 +226,7 @@ class _KYCState extends State<KYC> {
                                   text: "SAVE KYC",
                                   press: () {
                                     if (_formKey.currentState!.validate() &&
-                                        "$_gender".isNotEmpty) {
+                                        "$_type".isNotEmpty) {
                                       _saveKYC();
                                     }
                                   },

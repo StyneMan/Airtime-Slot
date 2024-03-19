@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget {
   final String message;
-  // final String title;
+  final bool goBack;
   InfoDialog({
     required this.message,
-    // required this.title,
+    this.goBack = false,
   });
 
   @override
@@ -101,6 +101,9 @@ class InfoDialog extends StatelessWidget {
                           child: RoundedButton(
                             press: () {
                               Navigator.pop(context);
+                              if (goBack) {
+                                Navigator.pop(context);
+                              }
                             },
                             text: "Done",
                           ),
