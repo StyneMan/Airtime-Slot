@@ -6,7 +6,6 @@ import 'package:airtimeslot_app/components/inputs/rounded_dropdown_bank.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_field.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_input_money.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
-import 'package:airtimeslot_app/helper/banks/banks.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';

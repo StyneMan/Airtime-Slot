@@ -5,7 +5,6 @@ import 'package:airtimeslot_app/components/dialogs/announcement_dialog.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
 import 'package:airtimeslot_app/helper/connectivity/net_conectivity.dart';
 import 'package:airtimeslot_app/helper/constants/constants.dart';
-// import 'package:airtimeslot_app/helper/navigator/auth_controller.dart';
 import 'package:airtimeslot_app/helper/preferences/preference_manager.dart';
 import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
