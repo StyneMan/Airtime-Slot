@@ -54,8 +54,8 @@ class ResetSuccess extends StatelessWidget {
                       color: Colors.white,
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Constants.primaryColor,
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Constants.primaryColor,
                       elevation: 0.2,
                     ),
                   ),

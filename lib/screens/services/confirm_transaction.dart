@@ -11,7 +11,7 @@ import 'package:airtimeslot_app/model/transactions/guest_transaction_model.dart'
 import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
+// import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -39,7 +39,7 @@ class ConfirmTransaction extends StatefulWidget {
 class _ConfirmTransactionState extends State<ConfirmTransaction> {
   final _controller = Get.find<StateController>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final plugin = PaystackPlugin();
+  // final plugin = PaystackPlugin();
   String _paymentMethod = "Card";
   PreferenceManager? _manager;
 
@@ -62,14 +62,6 @@ class _ConfirmTransactionState extends State<ConfirmTransaction> {
     super.initState();
     _initMonnify();
     _manager = PreferenceManager(context);
-    // plugin.initialize(
-    //     publicKey: "pk_test_e4a4319c62eb54ce99d8e4cbde2b46c372c3cb0b");
-
-    // MonnifyFlutterSdkPlus.initialize(
-    //   Constants.spike,
-    //   Constants.contractCode,
-    //   ApplicationMode.LIVE,
-    // );
   }
 
   _payWallet() async {

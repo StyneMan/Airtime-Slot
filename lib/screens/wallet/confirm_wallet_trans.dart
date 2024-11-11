@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:airtimeslot_app/components/drawer/custom_drawer.dart';
 import 'package:airtimeslot_app/components/inputs/rounded_button.dart';
 import 'package:airtimeslot_app/components/text_components.dart';
@@ -9,12 +7,9 @@ import 'package:airtimeslot_app/helper/service/api_service.dart';
 import 'package:airtimeslot_app/helper/state/state_controller.dart';
 import 'package:airtimeslot_app/screens/home/home.dart';
 import 'package:airtimeslot_app/screens/services/components/card_details.dart';
-import 'package:airtimeslot_app/screens/services/payment_success.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/instance_manager.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmWalletTrans extends StatefulWidget {
@@ -33,11 +28,9 @@ class ConfirmWalletTrans extends StatefulWidget {
 class _ConfirmWalletTransState extends State<ConfirmWalletTrans> {
   final _controller = Get.find<StateController>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final plugin = PaystackPlugin();
 
   @override
   void initState() {
-    // plugin.initialize(publicKey: Constants.payKey);
     super.initState();
   }
 
@@ -152,7 +145,7 @@ class _ConfirmWalletTransState extends State<ConfirmWalletTrans> {
               RoundedButton(
                 text: "Pay Now",
                 press: () {
-                  _payCard();
+                  // _payCard();
                 },
               ),
               const SizedBox(height: 10.0),
@@ -170,73 +163,73 @@ class _ConfirmWalletTransState extends State<ConfirmWalletTrans> {
     );
   }
 
-  _payCard() async {
-    _controller.setLoading(true);
-    final _prefs = await SharedPreferences.getInstance();
-    final _token = _prefs.getString("accessToken") ?? "";
+  // _payCard() async {
+  //   _controller.setLoading(true);
+  //   final _prefs = await SharedPreferences.getInstance();
+  //   final _token = _prefs.getString("accessToken") ?? "";
 
-    Charge charge = Charge()
-      ..amount = int.parse("${widget.model['amount']}") * 100
-      ..reference = widget.model['transaction_ref']
-      ..email = widget.model['email'];
+  //   Charge charge = Charge()
+  //     ..amount = int.parse("${widget.model['amount']}") * 100
+  //     ..reference = widget.model['transaction_ref']
+  //     ..email = widget.model['email'];
 
-    // var accessCode = widget.model.transactionRef;
-    // charge.accessCode = accessCode;
+  //   // var accessCode = widget.model.transactionRef;
+  //   // charge.accessCode = accessCode;
 
-    try {
-      CheckoutResponse response = await plugin.checkout(
-        context,
-        method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
-        charge: charge,
-        fullscreen: true,
-        logo: Image.asset("assets/images/app_logo.png", width: 100),
-      );
+  //   try {
+  //     CheckoutResponse response = await plugin.checkout(
+  //       context,
+  //       method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+  //       charge: charge,
+  //       fullscreen: true,
+  //       logo: Image.asset("assets/images/app_logo.png", width: 100),
+  //     );
 
-      debugPrint('Transaction Response => $response');
-      debugPrint('Transaction Response Ref => ${response.reference}');
-      // _verifyOnServer(response.reference, cart, listMap, user);
-      _controller.setLoading(false);
+  //     debugPrint('Transaction Response => $response');
+  //     debugPrint('Transaction Response Ref => ${response.reference}');
+  //     // _verifyOnServer(response.reference, cart, listMap, user);
+  //     _controller.setLoading(false);
 
-      //Show success screen here
-      if (response.message == "Success" || response.verify == true) {
-        //Now refresh user data
-        if (_token.isNotEmpty) {
-          final userCall = await APIService().getProfile(_token);
-          debugPrint("USER PROFILE :: ${userCall.body}");
-          if (userCall.statusCode == 200) {
-            Map<String, dynamic> _userMap = jsonDecode(userCall.body);
+  //     //Show success screen here
+  //     if (response.message == "Success" || response.verify == true) {
+  //       //Now refresh user data
+  //       if (_token.isNotEmpty) {
+  //         final userCall = await APIService().getProfile(_token);
+  //         debugPrint("USER PROFILE :: ${userCall.body}");
+  //         if (userCall.statusCode == 200) {
+  //           Map<String, dynamic> _userMap = jsonDecode(userCall.body);
 
-            String userData = jsonEncode(_userMap['data']);
-            widget.manager.updateUserData(userData);
+  //           String userData = jsonEncode(_userMap['data']);
+  //           widget.manager.updateUserData(userData);
 
-            await APIService().fetchTransactions(_token);
+  //           await APIService().fetchTransactions(_token);
 
-            Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                isIos: true,
-                child: PaymentSuccess(manager: widget.manager),
-              ),
-            );
-          }
-        } else {
-          Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.rightToLeft,
-              isIos: true,
-              child: PaymentSuccess(manager: widget.manager),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      _controller.setLoading(false);
-      debugPrint('Transaction Error Response => $e');
-      rethrow;
-    }
-  }
+  //           Navigator.push(
+  //             context,
+  //             PageTransition(
+  //               type: PageTransitionType.rightToLeft,
+  //               isIos: true,
+  //               child: PaymentSuccess(manager: widget.manager),
+  //             ),
+  //           );
+  //         }
+  //       } else {
+  //         Navigator.push(
+  //           context,
+  //           PageTransition(
+  //             type: PageTransitionType.rightToLeft,
+  //             isIos: true,
+  //             child: PaymentSuccess(manager: widget.manager),
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     _controller.setLoading(false);
+  //     debugPrint('Transaction Error Response => $e');
+  //     rethrow;
+  //   }
+  // }
 
   _cancelTransaction() async {
     _controller.setLoading(true);

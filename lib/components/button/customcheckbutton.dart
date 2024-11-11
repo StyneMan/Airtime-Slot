@@ -46,7 +46,7 @@ class CheckButton extends StatelessWidget {
           ),
         ),
         style: TextButton.styleFrom(
-          primary:
+          foregroundColor:
               (isActive || _isActive) ? Constants.primaryColor : Colors.black54,
         ),
       ),

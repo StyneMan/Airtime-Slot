@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 
 ThemeData appTheme = ThemeData(
   primaryColor: Constants.primaryColor,
-  primaryColorBrightness: Brightness.dark,
   appBarTheme: const AppBarTheme(
     systemOverlayStyle:
         SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
   ),
   textTheme: const TextTheme(
-    bodyText2: TextStyle(),
+    bodyMedium: TextStyle(),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

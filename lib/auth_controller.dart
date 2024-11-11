@@ -2,7 +2,7 @@ import 'package:airtimeslot_app/screens/auth/login/login.dart';
 import 'package:airtimeslot_app/screens/auth/login/login2.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'logout_loader.dart';
 
@@ -42,7 +42,7 @@ class _AuthControllerState extends State<AuthController> {
 
       Future.delayed(const Duration(milliseconds: 50), () {
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const Login(),),);
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           screen: const Login2(),
           withNavBar: false, // OPTIONAL VALUE. True by default.

@@ -157,8 +157,8 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 color: Colors.white,
               ),
               style: ElevatedButton.styleFrom(
-                primary: Constants.primaryColor,
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white,
+                backgroundColor: Constants.primaryColor,
                 padding: const EdgeInsets.all(4.0),
                 elevation: 0.2,
               ),

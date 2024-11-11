@@ -20,7 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -237,14 +237,14 @@ class _DashboardState extends State<Dashboard> {
                           items: _navBarsItems(),
                           backgroundColor: Colors.white,
                           controller: _controller.tabController,
-                          confineInSafeArea: true,
+                          confineToSafeArea: true,
                           navBarHeight: 64,
                           handleAndroidBackButtonPress:
                               false, // Default is true.
                           resizeToAvoidBottomInset:
                               true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
                           stateManagement: true, // Default is true.
-                          hideNavigationBarWhenKeyboardShows:
+                          hideNavigationBarWhenKeyboardAppears:
                               true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
                           decoration: const NavBarDecoration(
                             borderRadius: BorderRadius.only(
@@ -258,21 +258,21 @@ class _DashboardState extends State<Dashboard> {
                               indx = val;
                             });
                           },
-                          popAllScreensOnTapOfSelectedTab: true,
-                          popActionScreens: PopActionScreensType.all,
-                          itemAnimationProperties:
-                              const ItemAnimationProperties(
-                            duration: Duration(
-                              milliseconds: 200,
+                          popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
+                          animationSettings: const NavBarAnimationSettings(
+                            navBarItemAnimation: ItemAnimationSettings(
+                              duration: Duration(
+                                milliseconds: 200,
+                              ),
+                              curve: Curves.ease,
                             ),
-                            curve: Curves.ease,
-                          ),
-                          screenTransitionAnimation:
-                              const ScreenTransitionAnimation(
-                            animateTabTransition: true,
-                            curve: Curves.ease,
-                            duration: Duration(
-                              milliseconds: 200,
+                            screenTransitionAnimation:
+                                ScreenTransitionAnimationSettings(
+                              animateTabTransition: true,
+                              curve: Curves.ease,
+                              duration: Duration(
+                                milliseconds: 200,
+                              ),
                             ),
                           ),
                           navBarStyle: NavBarStyle
